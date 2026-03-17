@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noorish Studio — Video Editing & Graphic Design Studio</title>
+    <meta name="description" content="Award-winning creative studio offering cinematic video editing and stunning graphic design. Crafting visual narratives that move audiences.">
+    <meta name="keywords" content="video editor, graphic design, cinematography, branding, post-production, motion design, visual identity">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,500;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/styles/main.css">
+</head>
+<body>
+    <!-- Interactive Topographic Canvas Background -->
+    <canvas id="topoCanvas" class="topo-canvas"></canvas>
+
+    <!-- Section Background Morph Layers -->
+    <div class="bg-morph" id="bgMorph">
+        <div class="bg-morph-layer bg-morph--dark" data-section="dark"></div>
+        <div class="bg-morph-layer bg-morph--cream active" data-section="cream"></div>
+    </div>
+
+    <!-- Custom Cursor -->
+    <div class="cursor" id="cursor">
+        <div class="cursor-dot"></div>
+        <div class="cursor-ring"></div>
+    </div>
+
+    <!-- Film Grain Overlay -->
+    <div class="film-grain"></div>
+
+    <!-- Floating Animated Vectors -->
+    <div class="floating-vectors" id="floatingVectors">
+        <!-- Video Editing Vectors -->
+        <svg class="float-vec vec-filmstrip" viewBox="0 0 120 40" fill="none">
+            <rect x="2" y="2" width="116" height="36" rx="4" stroke="currentColor" stroke-width="1.5"/>
+            <rect x="8" y="6" width="8" height="8" rx="1" fill="currentColor" opacity="0.3"/>
+            <rect x="8" y="26" width="8" height="8" rx="1" fill="currentColor" opacity="0.3"/>
+            <rect x="104" y="6" width="8" height="8" rx="1" fill="currentColor" opacity="0.3"/>
+            <rect x="104" y="26" width="8" height="8" rx="1" fill="currentColor" opacity="0.3"/>
+            <line x1="22" y1="8" x2="98" y2="8" stroke="currentColor" stroke-width="0.5" opacity="0.4"/>
+            <line x1="22" y1="20" x2="98" y2="20" stroke="currentColor" stroke-width="0.5" opacity="0.4"/>
+            <line x1="22" y1="32" x2="98" y2="32" stroke="currentColor" stroke-width="0.5" opacity="0.4"/>
+        </svg>
+        <!-- Play Button -->
+        <svg class="float-vec vec-play" viewBox="0 0 60 60" fill="none">
+            <circle cx="30" cy="30" r="28" stroke="currentColor" stroke-width="1.5"/>
+            <polygon points="24,18 24,42 44,30" fill="currentColor" opacity="0.4"/>
+        </svg>
+        <!-- Pen Tool (Graphic Design) -->
+        <svg class="float-vec vec-pen" viewBox="0 0 60 60" fill="none">
+            <path d="M30 5 L40 45 L30 38 L20 45 Z" stroke="currentColor" stroke-width="1.5" fill="currentColor" fill-opacity="0.1"/>
+            <circle cx="30" cy="5" r="2" fill="currentColor" opacity="0.5"/>
+        </svg>
+        <!-- Bezier Curve -->
+        <svg class="float-vec vec-bezier" viewBox="0 0 100 60" fill="none">
+            <path d="M10 50 C30 10, 70 10, 90 50" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            <circle cx="10" cy="50" r="3" fill="currentColor" opacity="0.5"/>
+            <circle cx="90" cy="50" r="3" fill="currentColor" opacity="0.5"/>
+            <line x1="10" y1="50" x2="30" y2="10" stroke="currentColor" stroke-width="0.5" stroke-dasharray="3 3" opacity="0.3"/>
+            <line x1="90" y1="50" x2="70" y2="10" stroke="currentColor" stroke-width="0.5" stroke-dasharray="3 3" opacity="0.3"/>
+            <circle cx="30" cy="10" r="2" stroke="currentColor" stroke-width="1" fill="none" opacity="0.5"/>
+            <circle cx="70" cy="10" r="2" stroke="currentColor" stroke-width="1" fill="none" opacity="0.5"/>
+        </svg>
+        <!-- Color Palette -->
+        <svg class="float-vec vec-palette" viewBox="0 0 60 60" fill="none">
+            <circle cx="30" cy="30" r="25" stroke="currentColor" stroke-width="1.5"/>
+            <circle cx="22" cy="22" r="4" fill="currentColor" opacity="0.35"/>
+            <circle cx="38" cy="22" r="4" fill="currentColor" opacity="0.25"/>
+            <circle cx="22" cy="38" r="4" fill="currentColor" opacity="0.15"/>
+            <circle cx="38" cy="38" r="4" fill="currentColor" opacity="0.45"/>
+        </svg>
+        <!-- Camera / Aperture -->
+        <svg class="float-vec vec-aperture" viewBox="0 0 60 60" fill="none">
+            <circle cx="30" cy="30" r="26" stroke="currentColor" stroke-width="1.5"/>
+            <circle cx="30" cy="30" r="16" stroke="currentColor" stroke-width="1"/>
+            <line x1="30" y1="4" x2="30" y2="14" stroke="currentColor" stroke-width="0.8" opacity="0.4"/>
+            <line x1="30" y1="46" x2="30" y2="56" stroke="currentColor" stroke-width="0.8" opacity="0.4"/>
+            <line x1="4" y1="30" x2="14" y2="30" stroke="currentColor" stroke-width="0.8" opacity="0.4"/>
+            <line x1="46" y1="30" x2="56" y2="30" stroke="currentColor" stroke-width="0.8" opacity="0.4"/>
+        </svg>
+        <!-- Typography A -->
+        <svg class="float-vec vec-typo" viewBox="0 0 50 60" fill="none">
+            <path d="M5 55 L25 5 L45 55" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            <line x1="12" y1="38" x2="38" y2="38" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <!-- Grid / Layout -->
+        <svg class="float-vec vec-grid" viewBox="0 0 60 60" fill="none">
+            <rect x="4" y="4" width="22" height="22" rx="3" stroke="currentColor" stroke-width="1.2" opacity="0.5"/>
+            <rect x="34" y="4" width="22" height="22" rx="3" stroke="currentColor" stroke-width="1.2" opacity="0.5"/>
+            <rect x="4" y="34" width="22" height="22" rx="3" stroke="currentColor" stroke-width="1.2" opacity="0.5"/>
+            <rect x="34" y="34" width="22" height="22" rx="3" stroke="currentColor" stroke-width="1.2" opacity="0.5"/>
+        </svg>
+    </div>
+
+    <!-- Loading Screen -->
+    <div class="loader" id="loader">
+        <div class="loader-inner">
+            <div class="countdown-ring">
+                <svg viewBox="0 0 200 200">
+                    <circle class="countdown-circle-bg" cx="100" cy="100" r="80"/>
+                    <circle class="countdown-circle" cx="100" cy="100" r="80"/>
+                    <line class="countdown-cross-1" x1="100" y1="20" x2="100" y2="180"/>
+                    <line class="countdown-cross-2" x1="20" y1="100" x2="180" y2="100"/>
+                </svg>
+                <div class="countdown-number" id="countdownNumber">5</div>
+            </div>
+            <div class="loader-logo-text">
+                <span>N</span><span>O</span><span>O</span><span>R</span><span>I</span><span>S</span><span>H</span>
+            </div>
+            <div class="loader-tagline">VIDEO · DESIGN · STUDIO</div>
+            <div class="loader-bar">
+                <div class="loader-bar-fill" id="loaderBar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <a href="#" class="nav-logo" data-hover>
+            <span class="nav-logo-mark">N</span>
+            <span class="nav-logo-text">NOORISH</span>
+        </a>
+        <div class="nav-center">
+            <a href="#works" class="nav-link" data-hover>Work</a>
+            <a href="#services" class="nav-link" data-hover>Services</a>
+            <a href="#gallery" class="nav-link" data-hover>Gallery</a>
+        </div>
+        <a href="#contact" class="nav-cta" data-hover>
+            <span class="nav-cta-text">CONTACT</span>
+            <span class="nav-cta-arrow">↗</span>
+        </a>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero section-theme--light" id="hero" data-bg="cream">
+        <div class="hero-bg">
+            <!-- Hero portrait removed per request -->
+        </div>
+        <div class="hero-content">
+            <div class="hero-title-wrapper">
+                <h1 class="hero-title" id="heroTitle">
+                    <span class="hero-line"><span class="hero-line-inner" data-text="Creative">Creative</span></span>
+                    <span class="hero-line"><span class="hero-line-inner hero-line-studio font-serif" data-text="Studio">Studio</span></span>
+                </h1>
+            </div>
+            <p class="hero-subtitle" id="heroSubtitle"><span class="text-marker">Video Editing</span> · <span class="text-marker">Graphic Design</span></p>
+            <div class="hero-chips" aria-label="Hero focus areas">
+                <span class="hero-chip hero-chip--pink">Motion</span>
+                <span class="hero-chip hero-chip--blue">3D</span>
+                <span class="hero-chip hero-chip--orange">UI</span>
+                <span class="hero-chip hero-chip--peach">Branding</span>
+            </div>
+            <div class="hero-services-tags">
+                <span class="hero-tag">MOTION</span>
+                <span class="hero-tag-sep">×</span>
+                <span class="hero-tag">DESIGN</span>
+                <span class="hero-tag-sep">×</span>
+                <span class="hero-tag">FILM</span>
+            </div>
+        </div>
+        <div class="hero-reel quick-buttons" id="quickButtons">
+            <a class="quick-button" href="#works" data-hover>Edits</a>
+            <a class="quick-button" href="#gallery" data-hover>Designs</a>
+        </div>
+        <div class="hero-scroll" id="heroScroll">
+            <span class="hero-scroll-text">SCROLL</span>
+            <div class="hero-scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- Section: Services - Video & Design -->
+    <section class="services section-theme--light" id="services" data-bg="cream">
+        <div class="services-header">
+            <h2 class="section-number">01</h2>
+            <h2 class="services-title split-text" data-animate="split">WHAT <span class="font-serif">we do</span></h2>
+        </div>
+        <div class="services-grid">
+            <div class="service-card service-card--video" data-hover>
+                <div class="service-icon">
+                    <svg viewBox="0 0 80 80" fill="none">
+                        <rect x="8" y="16" width="64" height="40" rx="6" stroke="currentColor" stroke-width="2"/>
+                        <polygon points="32,28 32,44 48,36" fill="currentColor" opacity="0.5"/>
+                        <circle cx="60" cy="60" r="10" stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M56 60 L64 60 M60 56 L60 64" stroke="currentColor" stroke-width="1.2"/>
+                    </svg>
+                </div>
+                <h3 class="service-name">Video Editing</h3>
+                <p class="service-desc">Cinematic post-production, color grading, motion graphics, and sound design for commercials, music videos, and brand films.</p>
+                <div class="service-tags">
+                    <span>Post-Production</span>
+                    <span>Color Grading</span>
+                    <span>Motion Graphics</span>
+                    <span>Sound Design</span>
+                </div>
+            </div>
+            <div class="service-card service-card--design" data-hover>
+                <div class="service-icon">
+                    <svg viewBox="0 0 80 80" fill="none">
+                        <path d="M40 8 L52 56 L40 48 L28 56 Z" stroke="currentColor" stroke-width="2" fill="currentColor" fill-opacity="0.1"/>
+                        <circle cx="40" cy="8" r="3" fill="currentColor" opacity="0.5"/>
+                        <path d="M12 68 C24 44, 56 44, 68 68" stroke="currentColor" stroke-width="1.5" fill="none" stroke-dasharray="4 3"/>
+                    </svg>
+                </div>
+                <h3 class="service-name">Graphic Design</h3>
+                <p class="service-desc">Brand identity systems, visual design, typography, packaging, and digital experiences that define how the world sees your brand.</p>
+                <div class="service-tags">
+                    <span>Brand Identity</span>
+                    <span>Visual Design</span>
+                    <span>Typography</span>
+                    <span>Packaging</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Section 1: Selected Works - Horizontal Filmstrip -->
+    <section class="works section-theme--light" id="works" data-bg="cream">
+        <div class="works-header">
+            <div class="works-header-left">
+                <h2 class="section-number">02</h2>
+                <h2 class="works-title split-text" data-animate="split">SAMPLE <span class="font-serif">edits</span></h2>
+                <p class="works-subtitle">Video editing & design projects that move audiences</p>
+            </div>
+        </div>
+        <div class="filmstrip-wrapper">
+            <div class="works-nav works-nav--inline" aria-label="Works navigation">
+                <button class="works-nav-btn" type="button" data-dir="prev" aria-label="Previous works">
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M14.5 6 L8.5 12 L14.5 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <button class="works-nav-btn" type="button" data-dir="next" aria-label="Next works">
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M9.5 6 L15.5 12 L9.5 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="filmstrip" id="filmstrip">
+                <div class="filmstrip-track">
+                    <article class="filmstrip-item" data-hover>
+                        <div class="filmstrip-media" tabindex="0" role="button" aria-label="Play sample 01">
+                            <div class="filmstrip-poster" style="--poster: url('https://drive.google.com/thumbnail?id=1ZxOeSxDtorxop0wBF8gpSzNgpjytdtXp&sz=w1000');"></div>
+                            <iframe class="filmstrip-embed" data-src="https://drive.google.com/file/d/1ZxOeSxDtorxop0wBF8gpSzNgpjytdtXp/preview" title="Video sample 01" allow="autoplay; fullscreen" loading="lazy" allowfullscreen></iframe>
+                            <div class="filmstrip-overlay"></div>
+                            
+                            <div class="filmstrip-play" aria-hidden="true">
+                                <svg viewBox="0 0 60 60" fill="none">
+                                    <circle cx="30" cy="30" r="24" stroke="currentColor" stroke-width="2"/>
+                                    <polygon points="26,20 26,40 42,30" fill="currentColor"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="filmstrip-info">
+                            <span class="filmstrip-number">01</span>
+                            <h3 class="filmstrip-name">SAMPLE 01</h3>
+                            <p class="filmstrip-cat">Video Edit</p>
+                        </div>
+                    </article>
+                    <article class="filmstrip-item" data-hover>
+                        <div class="filmstrip-media" tabindex="0" role="button" aria-label="Play sample 02">
+                            <div class="filmstrip-poster" style="--poster: url('https://drive.google.com/thumbnail?id=1WABU2-OsHhG-K0n19TV5XMHCEph7xI2d&sz=w1000');"></div>
+                            <iframe class="filmstrip-embed" data-src="https://drive.google.com/file/d/1WABU2-OsHhG-K0n19TV5XMHCEph7xI2d/preview" title="Video sample 02" allow="autoplay; fullscreen" loading="lazy" allowfullscreen></iframe>
+                            <div class="filmstrip-overlay"></div>
+                            
+                            <div class="filmstrip-play" aria-hidden="true">
+                                <svg viewBox="0 0 60 60" fill="none">
+                                    <circle cx="30" cy="30" r="24" stroke="currentColor" stroke-width="2"/>
+                                    <polygon points="26,20 26,40 42,30" fill="currentColor"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="filmstrip-info">
+                            <span class="filmstrip-number">02</span>
+                            <h3 class="filmstrip-name">SAMPLE 02</h3>
+                            <p class="filmstrip-cat">Video Edit</p>
+                        </div>
+                    </article>
+                    <article class="filmstrip-item" data-hover>
+                        <div class="filmstrip-media" tabindex="0" role="button" aria-label="Play sample 03">
+                            <div class="filmstrip-poster" style="--poster: url('https://drive.google.com/thumbnail?id=1mVfvRKfbsz7755-DH0Q2-J8amya9RbqJ&sz=w1000');"></div>
+                            <iframe class="filmstrip-embed" data-src="https://drive.google.com/file/d/1mVfvRKfbsz7755-DH0Q2-J8amya9RbqJ/preview" title="Video sample 03" allow="autoplay; fullscreen" loading="lazy" allowfullscreen></iframe>
+                            <div class="filmstrip-overlay"></div>
+                            
+                            <div class="filmstrip-play" aria-hidden="true">
+                                <svg viewBox="0 0 60 60" fill="none">
+                                    <circle cx="30" cy="30" r="24" stroke="currentColor" stroke-width="2"/>
+                                    <polygon points="26,20 26,40 42,30" fill="currentColor"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="filmstrip-info">
+                            <span class="filmstrip-number">03</span>
+                            <h3 class="filmstrip-name">SAMPLE 03</h3>
+                            <p class="filmstrip-cat">Video Edit</p>
+                        </div>
+                    </article>
+                    <article class="filmstrip-item" data-hover>
+                        <div class="filmstrip-media" tabindex="0" role="button" aria-label="Play sample 04">
+                            <div class="filmstrip-poster" style="--poster: url('https://drive.google.com/thumbnail?id=1YMTSqiplINgHMPlfGSG8ASiRKSfE_doE&sz=w1000');"></div>
+                            <iframe class="filmstrip-embed" data-src="https://drive.google.com/file/d/1YMTSqiplINgHMPlfGSG8ASiRKSfE_doE/preview" title="Video sample 04" allow="autoplay; fullscreen" loading="lazy" allowfullscreen></iframe>
+                            <div class="filmstrip-overlay"></div>
+                            
+                            <div class="filmstrip-play" aria-hidden="true">
+                                <svg viewBox="0 0 60 60" fill="none">
+                                    <circle cx="30" cy="30" r="24" stroke="currentColor" stroke-width="2"/>
+                                    <polygon points="26,20 26,40 42,30" fill="currentColor"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="filmstrip-info">
+                            <span class="filmstrip-number">04</span>
+                            <h3 class="filmstrip-name">SAMPLE 04</h3>
+                            <p class="filmstrip-cat">Video Edit</p>
+                        </div>
+                    </article>
+                    <article class="filmstrip-item" data-hover>
+                        <div class="filmstrip-media" tabindex="0" role="button" aria-label="Play sample 05">
+                            <div class="filmstrip-poster" style="--poster: url('https://drive.google.com/thumbnail?id=1m_bGBf1TanHQhEBXM9VUsUkCMNE4S28p&sz=w1000');"></div>
+                            <iframe class="filmstrip-embed" data-src="https://drive.google.com/file/d/1m_bGBf1TanHQhEBXM9VUsUkCMNE4S28p/preview" title="Video sample 05" allow="autoplay; fullscreen" loading="lazy" allowfullscreen></iframe>
+                            <div class="filmstrip-overlay"></div>
+                            
+                            <div class="filmstrip-play" aria-hidden="true">
+                                <svg viewBox="0 0 60 60" fill="none">
+                                    <circle cx="30" cy="30" r="24" stroke="currentColor" stroke-width="2"/>
+                                    <polygon points="26,20 26,40 42,30" fill="currentColor"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="filmstrip-info">
+                            <span class="filmstrip-number">05</span>
+                            <h3 class="filmstrip-name">SAMPLE 05</h3>
+                            <p class="filmstrip-cat">Video Edit</p>
+                        </div>
+                    </article>
+                    <article class="filmstrip-item" data-hover>
+                        <div class="filmstrip-media" tabindex="0" role="button" aria-label="Play sample 06">
+                            <div class="filmstrip-poster" style="--poster: url('https://drive.google.com/thumbnail?id=1D3f3Gd9dU7X4zkCnSbtT7RhOjFni2qTa&sz=w1000');"></div>
+                            <iframe class="filmstrip-embed" data-src="https://drive.google.com/file/d/1D3f3Gd9dU7X4zkCnSbtT7RhOjFni2qTa/preview" title="Video sample 06" allow="autoplay; fullscreen" loading="lazy" allowfullscreen></iframe>
+                            <div class="filmstrip-overlay"></div>
+                            
+                            <div class="filmstrip-play" aria-hidden="true">
+                                <svg viewBox="0 0 60 60" fill="none">
+                                    <circle cx="30" cy="30" r="24" stroke="currentColor" stroke-width="2"/>
+                                    <polygon points="26,20 26,40 42,30" fill="currentColor"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="filmstrip-info">
+                            <span class="filmstrip-number">06</span>
+                            <h3 class="filmstrip-name">SAMPLE 06</h3>
+                            <p class="filmstrip-cat">Video Edit</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+        <div class="section-cta">
+            <a class="section-cta-btn" href="https://drive.google.com/drive/folders/1fSsUyln-bX-gM27vO5mLD5h3MrNL11FA?usp=drive_link" target="_blank" rel="noopener" data-hover>
+                <span class="section-cta-text">DISCOVER MORE</span>
+                <span class="section-cta-arrow">→</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Section 2: Kinetic Typography Manifesto -->
+    <section class="manifesto section-theme--dark" id="manifesto" data-bg="dark">
+        <div class="manifesto-inner">
+            <div class="manifesto-line" data-speed="0.8">
+                <span class="manifesto-word" data-animate="scale">Cutting</span>
+                <span class="manifesto-word font-serif" data-animate="scale">Stories</span>
+            </div>
+            <div class="manifesto-line" data-speed="1.2">
+                <span class="manifesto-word manifesto-accent" data-animate="scale">Crafting</span>
+                <span class="manifesto-word font-serif" data-animate="scale">Emotion</span>
+            </div>
+            <div class="manifesto-line" data-speed="0.6">
+                <span class="manifesto-word" data-animate="scale">Designing</span>
+                <span class="manifesto-word font-serif" data-animate="scale">Impact</span>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Section 3: Graphic Design Gallery - Masonry -->
+    <section class="gallery section-theme--light" id="gallery" data-bg="cream">
+        <div class="gallery-header">
+            <h2 class="section-number">03</h2>
+            <h2 class="gallery-title split-text" data-animate="split">GRAPHIC DESIGN <span class="font-serif">gallery</span></h2>
+        </div>
+        <div class="gallery-grid">
+            <div class="gallery-item gallery-item--tall" data-hover>
+                <div class="gallery-media" data-animate="wipe">
+                    <img src="/src/graphic%20design%20asset/g1.jpg" alt="Graphic design sample 01" loading="lazy">
+                </div>
+                <div class="gallery-info">
+                    <h3>NOORISH</h3>
+                    <span>Graphic Design</span>
+                </div>
+            </div>
+            <div class="gallery-item" data-hover>
+                <div class="gallery-media" data-animate="wipe">
+                    <img src="/src/graphic%20design%20asset/g2.jpg" alt="Graphic design sample 02" loading="lazy">
+                </div>
+                <div class="gallery-info">
+                    <h3>FRAME</h3>
+                    <span>Brand System</span>
+                </div>
+            </div>
+            <div class="gallery-item" data-hover>
+                <div class="gallery-media" data-animate="wipe">
+                    <img src="/src/graphic%20design%20asset/g3.jpg" alt="Graphic design sample 03" loading="lazy">
+                </div>
+                <div class="gallery-info">
+                    <h3>ATLAS</h3>
+                    <span>Typography</span>
+                </div>
+            </div>
+            <div class="gallery-item gallery-item--wide" data-hover>
+                <div class="gallery-media" data-animate="wipe">
+                    <img src="/src/graphic%20design%20asset/g4.jpg" alt="Graphic design sample 04" loading="lazy">
+                </div>
+                <div class="gallery-info">
+                    <h3>RHYTHM</h3>
+                    <span>Visual Identity</span>
+                </div>
+            </div>
+            <div class="gallery-item" data-hover>
+                <div class="gallery-media" data-animate="wipe">
+                    <img src="/src/graphic%20design%20asset/g5.jpg" alt="Graphic design sample 05" loading="lazy">
+                </div>
+                <div class="gallery-info">
+                    <h3>CHRONICLE</h3>
+                    <span>Editorial</span>
+                </div>
+            </div>
+            <div class="gallery-item gallery-item--tall" data-hover>
+                <div class="gallery-media" data-animate="wipe">
+                    <img src="/src/graphic%20design%20asset/g6.jpg" alt="Graphic design sample 06" loading="lazy">
+                </div>
+                <div class="gallery-info">
+                    <h3>ASCEND</h3>
+                    <span>Packaging</span>
+                </div>
+            </div>
+        </div>
+        <div class="section-cta section-cta--gallery">
+            <a class="section-cta-btn" href="https://drive.google.com/open?id=15KZ9qb6AOsW6ABaSZT_KC7E72szkrxoT&usp=drive_copy" target="_blank" rel="noopener" data-hover>
+                <span class="section-cta-text">DISCOVER MORE</span>
+                <span class="section-cta-arrow">→</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Section 4: Gear & Software -->
+    <section class="gear section-theme--light" id="gear" data-bg="cream">
+        <div class="gear-header">
+            <h2 class="section-number">04</h2>
+            <h2 class="gear-title split-text" data-animate="split">Gear <span class="font-serif">software</span></h2>
+            <p class="gear-subtitle">Tools for both video production and visual design</p>
+        </div>
+        <div class="gear-grid" id="gearGrid">
+            <div class="gear-card" data-hover>
+                <div class="gear-icon" data-tilt>
+                    <svg viewBox="0 0 80 80" class="gear-svg">
+                        <rect x="10" y="10" width="60" height="60" rx="12" fill="none" stroke="var(--c-accent)" stroke-width="2"/>
+                        <text x="40" y="45" text-anchor="middle" fill="var(--c-accent)" font-size="12" font-family="Space Grotesk">Pr</text>
+                    </svg>
+                </div>
+                <h3 class="gear-name">Premiere Pro</h3>
+                <p class="gear-desc">Primary NLE for editorial work</p>
+            </div>
+            <div class="gear-card" data-hover>
+                <div class="gear-icon" data-tilt>
+                    <svg viewBox="0 0 80 80" class="gear-svg">
+                        <rect x="10" y="10" width="60" height="60" rx="12" fill="none" stroke="var(--c-accent)" stroke-width="2"/>
+                        <text x="40" y="45" text-anchor="middle" fill="var(--c-accent)" font-size="12" font-family="Space Grotesk">Ae</text>
+                    </svg>
+                </div>
+                <h3 class="gear-name">After Effects</h3>
+                <p class="gear-desc">Motion design & VFX</p>
+            </div>
+            <div class="gear-card" data-hover>
+                <div class="gear-icon" data-tilt>
+                    <svg viewBox="0 0 80 80" class="gear-svg">
+                        <rect x="10" y="10" width="60" height="60" rx="12" fill="none" stroke="var(--c-accent)" stroke-width="2"/>
+                        <text x="40" y="45" text-anchor="middle" fill="var(--c-accent)" font-size="12" font-family="Space Grotesk">Ai</text>
+                    </svg>
+                </div>
+                <h3 class="gear-name">Illustrator</h3>
+                <p class="gear-desc">Vector graphics & branding</p>
+            </div>
+            <div class="gear-card" data-hover>
+                <div class="gear-icon" data-tilt>
+                    <svg viewBox="0 0 80 80" class="gear-svg">
+                        <rect x="10" y="10" width="60" height="60" rx="12" fill="none" stroke="var(--c-accent)" stroke-width="2"/>
+                        <text x="40" y="45" text-anchor="middle" fill="var(--c-accent)" font-size="12" font-family="Space Grotesk">Ps</text>
+                    </svg>
+                </div>
+                <h3 class="gear-name">Photoshop</h3>
+                <p class="gear-desc">Compositing & photo editing</p>
+            </div>
+            <div class="gear-card" data-hover>
+                <div class="gear-icon" data-tilt>
+                    <svg viewBox="0 0 80 80" class="gear-svg">
+                        <rect x="10" y="10" width="60" height="60" rx="12" fill="none" stroke="var(--c-accent)" stroke-width="2"/>
+                        <text x="40" y="45" text-anchor="middle" fill="var(--c-accent)" font-size="12" font-family="Space Grotesk">DV</text>
+                    </svg>
+                </div>
+                <h3 class="gear-name">DaVinci Resolve</h3>
+                <p class="gear-desc">Color grading & finishing</p>
+            </div>
+            <div class="gear-card" data-hover>
+                <div class="gear-icon" data-tilt>
+                    <svg viewBox="0 0 80 80" class="gear-svg">
+                        <rect x="10" y="10" width="60" height="60" rx="12" fill="none" stroke="var(--c-accent)" stroke-width="2"/>
+                        <text x="40" y="45" text-anchor="middle" fill="var(--c-accent)" font-size="10" font-family="Space Grotesk">Fg</text>
+                    </svg>
+                </div>
+                <h3 class="gear-name">Figma</h3>
+                <p class="gear-desc">UI/UX & design systems</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: Testimonials Marquee -->
+    <section class="testimonials section-theme--dark" id="testimonials" data-bg="dark">
+        <div class="marquee-wrapper">
+            <div class="marquee" id="marquee">
+                <div class="marquee-track">
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"Noorish transformed our brand story into something cinematic and unforgettable."</p>
+                        <div class="testimonial-author">
+                            <span class="testimonial-name">— Sarah Chen</span>
+                            <span class="testimonial-role">Creative Director, Apex Sports</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"Their design work elevated our entire visual identity. The brand system they created is pure art."</p>
+                        <div class="testimonial-author">
+                            <span class="testimonial-name">— Marcus Rivera</span>
+                            <span class="testimonial-role">Head of Brand, TechVault</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"Every frame is deliberate. Every cut is intentional. This is next-level editing."</p>
+                        <div class="testimonial-author">
+                            <span class="testimonial-name">— Emma Blackwell</span>
+                            <span class="testimonial-role">Producer, Meridian Films</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"From logo to launch video — Noorish handled everything. Truly a one-stop creative powerhouse."</p>
+                        <div class="testimonial-author">
+                            <span class="testimonial-name">— David Park</span>
+                            <span class="testimonial-role">Founder, Eidolon Motors</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"Working with Noorish feels like collaborating with a true visual artist."</p>
+                        <div class="testimonial-author">
+                            <span class="testimonial-name">— Lina Kaur</span>
+                            <span class="testimonial-role">Director, Lumina Agency</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 6: Contact -->
+    <section class="contact section-theme--light" id="contact" data-bg="cream">
+        <div class="contact-inner">
+            <div class="contact-header">
+                <h2 class="contact-title split-text" data-animate="split">LET'S <span class="font-serif">create</span></h2>
+                <p class="contact-subtitle"><span class="text-marker">let's bring your vision to life.</span></p>
+            </div>
+            <form class="contact-form" id="contactForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="name">YOUR NAME</label>
+                        <input type="text" id="name" class="form-input" placeholder="John Doe" data-hover required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="email">YOUR EMAIL</label>
+                        <input type="email" id="email" class="form-input" placeholder="john@example.com" data-hover required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="project">PROJECT TYPE</label>
+                    <select id="project" class="form-input" data-hover>
+                        <option value="" disabled selected>Select project type</option>
+                        <option value="video-commercial">Video — Commercial / Ad</option>
+                        <option value="video-music">Video — Music Video</option>
+                        <option value="video-brand">Video — Brand Film</option>
+                        <option value="design-brand">Design — Brand Identity</option>
+                        <option value="design-packaging">Design — Packaging</option>
+                        <option value="design-digital">Design — Digital / Social</option>
+                        <option value="both">Both Video & Design</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="message">TELL US ABOUT YOUR PROJECT</label>
+                    <textarea id="message" class="form-input form-textarea" placeholder="Describe your vision..." data-hover rows="4"></textarea>
+                </div>
+                <button type="submit" class="form-submit" data-hover>
+                    <span class="form-submit-text">SEND MESSAGE</span>
+                    <span class="form-submit-arrow">→</span>
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer section-theme--light">
+        <div class="footer-inner">
+            <div class="footer-left">
+                <span class="footer-logo">NOORISH STUDIO</span>
+                <span class="footer-copy">© 2024 All rights reserved</span>
+            </div>
+            <div class="footer-links">
+                <a href="#" class="footer-link" data-hover>Instagram</a>
+                <a href="#" class="footer-link" data-hover>Behance</a>
+                <a href="#" class="footer-link" data-hover>Dribbble</a>
+                <a href="#" class="footer-link" data-hover>Vimeo</a>
+            </div>
+            <div class="footer-right">
+                <a href="mailto:hello@noorishstudio.com" class="footer-email" data-hover>hello@noorishstudio.com</a>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="/src/js/main.js"></script>
+</body>
+</html>
