@@ -696,8 +696,31 @@ footer.section-theme--light,
   color: var(--c-cream);
 }
 
+.section-theme--dark .testimonial-text,
+.section-theme--dark .testimonial-name {
+  color: var(--c-cream);
+}
+
 .section-theme--dark .testimonial-role {
   color: rgba(245, 245, 240, 0.6);
+}
+
+.section-theme--light .testimonial-card {
+  background: rgba(0,0,0,0.03);
+  border-color: var(--c-border-light);
+  color: var(--c-dark-text);
+}
+
+.section-theme--light .testimonial-text {
+  color: var(--c-dark-text);
+}
+
+.section-theme--light .testimonial-name {
+  color: var(--c-accent-dark);
+}
+
+.section-theme--light .testimonial-role {
+  color: var(--c-dark-text-dim);
 }
 
 /* Form Submit Force Pink */
@@ -1618,8 +1641,15 @@ footer.section-theme--light,
 .testimonials {
   padding: var(--s-section) 0;
   overflow: hidden;
-  border-top: 1px solid var(--c-border-light);
-  border-bottom: 1px solid var(--c-border-light);
+  border-top: none;
+  border-bottom: none;
+}
+
+.testimonials.section-theme--light,
+.testimonials.section-theme--dark {
+  background: transparent;
+  position: relative;
+  z-index: 2;
 }
 
 .marquee-wrapper { position: relative; }
@@ -1633,6 +1663,7 @@ footer.section-theme--light,
   height: 100%;
   z-index: 2;
   pointer-events: none;
+  display: none;
 }
 
 .marquee-wrapper::before {
@@ -1674,6 +1705,7 @@ footer.section-theme--light,
   font-weight: 300;
   margin-bottom: 1.5rem;
   font-style: italic;
+  color: inherit;
 }
 
 .testimonial-author {
@@ -1694,6 +1726,22 @@ footer.section-theme--light,
   font-size: 0.7rem;
   color: var(--c-dark-text-dim);
   letter-spacing: 0.1em;
+}
+
+.testimonials .testimonial-card {
+  background: var(--light-card-bg);
+  border-color: var(--light-card-border);
+  color: var(--light-text);
+  box-shadow: var(--light-card-shadow);
+}
+
+.testimonials .testimonial-text,
+.testimonials .testimonial-name {
+  color: var(--light-text);
+}
+
+.testimonials .testimonial-role {
+  color: var(--light-dim);
 }
 
 /* === Contact Section === */
@@ -1725,7 +1773,16 @@ footer.section-theme--light,
   letter-spacing: -0.02em;
   text-transform: uppercase;
   line-height: 1;
-  color: var(--c-cream);
+  color: var(--light-text);
+}
+
+.contact.section-theme--dark .contact-title,
+.contact.section-theme--light .contact-title {
+  color: var(--light-text);
+}
+
+.contact-title .font-serif {
+  color: var(--c-accent);
 }
 
 .contact-subtitle {
@@ -1741,7 +1798,7 @@ footer.section-theme--light,
   flex-direction: column;
   gap: 2rem;
   position: relative;
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.6);
   border-radius: 24px;
   padding: 2.75rem;
   box-shadow:
@@ -1751,6 +1808,27 @@ footer.section-theme--light,
   width: min(100%, 720px);
   margin: 0 auto;
   overflow: hidden;
+}
+
+.contact-form .form-label {
+  color: rgba(26, 26, 26, 0.7);
+}
+
+.contact-form .form-input {
+  color: var(--c-dark-text);
+}
+
+.contact-form .form-input::placeholder {
+  color: rgba(26, 26, 26, 0.45);
+}
+
+.contact-form .form-file {
+  color: rgba(26, 26, 26, 0.7);
+}
+
+.contact-form select.form-input option {
+  background: #ffffff;
+  color: var(--c-dark-text);
 }
 
 .contact-form::before {

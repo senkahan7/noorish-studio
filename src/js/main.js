@@ -245,20 +245,29 @@ class BackgroundMorph {
   init() {
     // Determine initial background based on scroll position
     this.sections.forEach(section => {
+      const start = section.dataset.bgStart || 'top top';
+      const end = section.dataset.bgEnd || 'bottom top';
       ScrollTrigger.create({
         trigger: section,
-        start: 'top 50%',
-        end: 'bottom 50%',
-        onToggle: self => {
-          if (self.isActive) {
-            this.morphTo(section.dataset.bg);
-          }
-        }
+        start,
+        end,
+        onEnter: () => this.morphTo(section.dataset.bg),
+        onEnterBack: () => this.morphTo(section.dataset.bg),
+        invalidateOnRefresh: true
       });
     });
     
     // Set initial text color match immediately
     gsap.set(document.body, { color: '#1a1a1a' });
+
+    // Sync background to the first visible section on load
+    const currentSection = Array.from(this.sections).find(section => {
+      const rect = section.getBoundingClientRect();
+      return rect.top <= window.innerHeight && rect.bottom >= 0;
+    });
+    if (currentSection) {
+      this.morphTo(currentSection.dataset.bg);
+    }
   }
 
   morphTo(bgType) {
