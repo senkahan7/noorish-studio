@@ -4,6 +4,12 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const IS_TOUCH = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+const PREFERS_REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const LOW_POWER = IS_TOUCH || PREFERS_REDUCED;
+document.documentElement.classList.toggle('is-touch', IS_TOUCH);
+document.documentElement.classList.toggle('reduce-motion', PREFERS_REDUCED);
+
 // ==========================================
 // 1. LOADER ANIMATION
 // ==========================================
@@ -82,6 +88,7 @@ class TopographicBackground {
     this.time = 0;
     this.mouse = { x: this.width/2, y: this.height/2, targetX: this.width/2, targetY: this.height/2 };
     this.isDark = false; 
+    this.lowPower = LOW_POWER;
     
     // Look up table for marching squares based on 4 corners crossing thresholds
     this.edgeTable = [
@@ -89,8 +96,9 @@ class TopographicBackground {
       [[2, 3]], [[0, 2]], [[0, 3], [1, 2]], [[1, 2]], [[1, 3]], [[0, 1]], [[0, 3]], []
     ];
     
-    this.thresholds = [-2.4, -1.6, -0.8, 0, 0.8, 1.6, 2.4]; 
-    this.cellSize = 18; // Higher resolution for smoother segments
+    this.thresholds = this.lowPower ? [-2, -0.8, 0.8, 2] : [-2.4, -1.6, -0.8, 0, 0.8, 1.6, 2.4];
+    this.cellSize = this.lowPower ? 28 : 18; // Higher resolution for smoother segments
+    this.timeStep = this.lowPower ? 0.003 : 0.005;
 
     this.init();
   }
@@ -98,11 +106,17 @@ class TopographicBackground {
   init() {
     this.resize();
     window.addEventListener('resize', () => this.resize());
-    window.addEventListener('mousemove', (e) => {
-      this.mouse.targetX = e.clientX;
-      this.mouse.targetY = e.clientY;
-    });
+    if (!this.lowPower) {
+      window.addEventListener('mousemove', (e) => {
+        this.mouse.targetX = e.clientX;
+        this.mouse.targetY = e.clientY;
+      });
+    }
 
+    if (this.lowPower) {
+      this.renderFrame(false);
+      return;
+    }
     this.render();
   }
 
@@ -119,10 +133,16 @@ class TopographicBackground {
     this.cols = Math.ceil(this.width / this.cellSize) + 1;
     this.rows = Math.ceil(this.height / this.cellSize) + 1;
     this.grid = new Float32Array(this.cols * this.rows);
+    if (this.lowPower) {
+      this.renderFrame(false);
+    }
   }
 
   setTheme(isDark) {
     this.isDark = !!isDark;
+    if (this.lowPower) {
+      this.renderFrame(false);
+    }
   }
 
   getValue(x, y, t, mouseX, mouseY) {
@@ -133,7 +153,7 @@ class TopographicBackground {
     // Smooth mouse repulsion effect
     let pushX = 0;
     let pushY = 0;
-    if (dist < 420 && dist > 0) {
+    if (!this.lowPower && dist < 420 && dist > 0) {
         let falloff = 1 - (dist / 420);
         let push = Math.pow(falloff, 2) * 140;
         pushX = (dx / dist) * push;
@@ -171,12 +191,16 @@ class TopographicBackground {
     return { x: x * this.cellSize, y: y * this.cellSize };
   }
 
-  render() {
-    this.time += 0.005;
+  renderFrame(advanceTime = true) {
+    if (advanceTime) {
+      this.time += this.timeStep;
+    }
     
     // Smooth mouse target follow
-    this.mouse.x += (this.mouse.targetX - this.mouse.x) * 0.05;
-    this.mouse.y += (this.mouse.targetY - this.mouse.y) * 0.05;
+    if (!this.lowPower) {
+      this.mouse.x += (this.mouse.targetX - this.mouse.x) * 0.05;
+      this.mouse.y += (this.mouse.targetY - this.mouse.y) * 0.05;
+    }
 
     this.ctx.clearRect(0, 0, this.width, this.height);
     
@@ -226,6 +250,10 @@ class TopographicBackground {
     }
     
     this.ctx.stroke();
+  }
+
+  render() {
+    this.renderFrame(true);
     requestAnimationFrame(() => this.render());
   }
 }
@@ -386,7 +414,7 @@ function initAnimations() {
 
   // --- B. Gallery 3D Tilt ---
   const gallery = document.getElementById('gallery');
-  if (gallery) {
+  if (gallery && !IS_TOUCH) {
     document.addEventListener('mousemove', (e) => {
       const x = (e.clientX / window.innerWidth - 0.5) * 2;
       const y = (e.clientY / window.innerHeight - 0.5) * 2;
@@ -486,22 +514,46 @@ function initAnimations() {
   const worksNavButtons = document.querySelectorAll('.works-nav-btn');
   if (worksNavButtons.length && filmstripTrack && filmstripWrapper) {
     let filmstripOffset = 0;
+    const touchQuery = window.matchMedia('(hover: none) and (pointer: coarse)');
+    let isTouch = touchQuery.matches;
+
+    const applyFilmstripMode = () => {
+      isTouch = touchQuery.matches;
+      filmstripWrapper.classList.toggle('is-touch', isTouch);
+      if (isTouch) {
+        filmstripTrack.style.transform = 'none';
+        filmstripOffset = filmstripWrapper.scrollLeft || 0;
+      } else {
+        filmstripWrapper.scrollLeft = 0;
+        filmstripOffset = 0;
+        updateFilmstrip();
+      }
+    };
 
     const updateFilmstrip = () => {
+      if (isTouch) return;
       const maxOffset = Math.max(filmstripTrack.scrollWidth - filmstripWrapper.clientWidth, 0);
       filmstripOffset = Math.max(0, Math.min(filmstripOffset, maxOffset));
       filmstripTrack.style.transform = `translateX(-${filmstripOffset}px)`;
     };
 
-    updateFilmstrip();
+    applyFilmstripMode();
+    if (touchQuery.addEventListener) {
+      touchQuery.addEventListener('change', applyFilmstripMode);
+    }
+
     window.addEventListener('resize', updateFilmstrip);
 
     worksNavButtons.forEach((btn) => {
       btn.addEventListener('click', () => {
         const direction = btn.dataset.dir === 'next' ? 1 : -1;
         const step = filmstripWrapper.clientWidth * 0.85;
-        filmstripOffset += direction * step;
-        updateFilmstrip();
+        if (isTouch) {
+          filmstripWrapper.scrollBy({ left: direction * step, behavior: 'smooth' });
+        } else {
+          filmstripOffset += direction * step;
+          updateFilmstrip();
+        }
       });
     });
   }
@@ -538,14 +590,16 @@ function initAnimations() {
   
   // --- G. Floating Vectors Setup ---
   const vectors = document.querySelectorAll('.float-vec');
-  document.addEventListener('mousemove', (e) => {
-    const x = (e.clientX / window.innerWidth - 0.5) * 2;
-    const y = (e.clientY / window.innerHeight - 0.5) * 2;
-    vectors.forEach((vec, i) => {
-      const factor = (i + 1) * 5;
-      gsap.to(vec, { x: x * factor, y: y * factor, rotation: x * 3, duration: 2, ease: 'power2.out' });
+  if (!IS_TOUCH) {
+    document.addEventListener('mousemove', (e) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 2;
+      const y = (e.clientY / window.innerHeight - 0.5) * 2;
+      vectors.forEach((vec, i) => {
+        const factor = (i + 1) * 5;
+        gsap.to(vec, { x: x * factor, y: y * factor, rotation: x * 3, duration: 2, ease: 'power2.out' });
+      });
     });
-  });
+  }
 }
 
 // ==========================================
@@ -623,24 +677,27 @@ class CustomCursor {
 // BOOTSTRAP APP
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. Initialize Lenis Smooth Scroll FIRST
-  const lenis = new Lenis({
-    duration: 0.65,
-    easing: (t) => 1 - Math.pow(1 - t, 3),
-    smoothWheel: true,
-    smoothTouch: true,
-    syncTouch: true,
-    touchMultiplier: 1.25,
-    wheelMultiplier: 1.15,
-    normalizeWheel: true
-  });
+  // 1. Initialize Lenis Smooth Scroll FIRST (desktop only)
+  const lenis = LOW_POWER
+    ? null
+    : new Lenis({
+        duration: 0.65,
+        easing: (t) => 1 - Math.pow(1 - t, 3),
+        smoothWheel: true,
+        smoothTouch: false,
+        syncTouch: false,
+        touchMultiplier: 1,
+        wheelMultiplier: 1.15,
+        normalizeWheel: true
+      });
   
-  // Connect Lenis to ScrollTrigger
-  lenis.on('scroll', ScrollTrigger.update);
-  gsap.ticker.add((time) => {
-    lenis.raf(time * 1000); // Important for lenis tick
-  });
-  gsap.ticker.lagSmoothing(0); // Prevents GSAP lag from skipping frames
+  if (lenis) {
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000);
+    });
+    gsap.ticker.lagSmoothing(0);
+  }
 
   // 2. Start background systems immediately (run behind loader)
   const topo = new TopographicBackground();
@@ -649,7 +706,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // 3. Start Loader sequence immediately
   initLoader(() => {
     // Once loader finishes, setup the rest:
-    new CustomCursor();
+    if (!IS_TOUCH) {
+      new CustomCursor();
+    }
     
     // Initialize standard animations (includes ScrollTrigger pinning for horizontal scroll)
     initAnimations();
