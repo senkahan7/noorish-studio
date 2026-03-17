@@ -1007,7 +1007,10 @@ footer.section-theme--light,
 .works-header {
   padding: 0 var(--s-page);
   margin-bottom: 3rem;
-  display: block;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
 }
 
 .works-header-left {
@@ -1023,7 +1026,7 @@ footer.section-theme--light,
 }
 
 .works-nav--inline {
-  margin: 0 var(--s-page) 1.25rem;
+  margin: 0;
 }
 
 .works-nav-btn {
@@ -1131,6 +1134,7 @@ footer.section-theme--light,
   inset: 0;
   z-index: 0;
   pointer-events: none;
+  border-radius: inherit;
   transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -1160,12 +1164,11 @@ footer.section-theme--light,
 
 @media (max-width: 900px) {
   .filmstrip-embed {
-    transform: scale(1.06);
-    transform-origin: center;
+    transform: none;
   }
 
   .filmstrip-item:hover .filmstrip-embed {
-    transform: scale(1.08);
+    transform: none;
   }
 }
 
@@ -2165,45 +2168,46 @@ select.form-input option {
 
   .works-nav--inline {
     margin: 0 0 1rem;
+    align-self: flex-end;
   }
 
   .manifesto {
-    min-height: 90vh;
-    padding: 4.5rem var(--s-page) 6rem;
+    min-height: 85vh;
+    padding: 5rem var(--s-page) 6.5rem;
   }
 
   .manifesto-inner {
-    text-align: left;
-    width: min(420px, 100%);
+    text-align: center;
+    width: min(360px, 100%);
     margin: 0 auto;
-    padding: 2.5rem 2rem;
-    border-radius: 26px;
-    background: rgba(12, 12, 16, 0.45);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
-    backdrop-filter: blur(8px);
+    padding: 0;
+    background: none;
+    border: 0;
+    box-shadow: none;
+    backdrop-filter: none;
   }
 
   .manifesto-line {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     gap: 0.35rem;
   }
 
   .manifesto-word {
-    font-size: clamp(2.3rem, 12vw, 4.6rem);
+    font-size: clamp(2.6rem, 12vw, 4.8rem);
     line-height: 1.05;
+    letter-spacing: -0.02em;
   }
 
   .manifesto-accent {
-    font-size: clamp(2.8rem, 14vw, 5.2rem);
+    font-size: clamp(3rem, 14vw, 5.4rem);
   }
 
   .manifesto-word.font-serif {
-    font-size: 0.95rem;
-    letter-spacing: 0.35em;
+    font-size: 0.75rem;
+    letter-spacing: 0.32em;
     text-transform: uppercase;
-    opacity: 0.75;
+    opacity: 0.7;
   }
 
   .testimonial-card { width: 320px; padding: 1.5rem; }

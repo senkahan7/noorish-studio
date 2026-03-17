@@ -271,19 +271,34 @@ class BackgroundMorph {
   }
 
   init() {
-    // Determine initial background based on scroll position
-    this.sections.forEach(section => {
-      const start = section.dataset.bgStart || 'top top';
-      const end = section.dataset.bgEnd || 'bottom top';
-      ScrollTrigger.create({
-        trigger: section,
-        start,
-        end,
-        onEnter: () => this.morphTo(section.dataset.bg),
-        onEnterBack: () => this.morphTo(section.dataset.bg),
-        invalidateOnRefresh: true
+    if (LOW_POWER) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          const visible = entries
+            .filter((entry) => entry.isIntersecting && entry.intersectionRatio > 0.12)
+            .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+          if (visible.length) {
+            this.morphTo(visible[0].target.dataset.bg);
+          }
+        },
+        { threshold: [0.12, 0.25, 0.5, 0.75] }
+      );
+      this.sections.forEach((section) => observer.observe(section));
+    } else {
+      // Determine initial background based on scroll position
+      this.sections.forEach(section => {
+        const start = section.dataset.bgStart || 'top top';
+        const end = section.dataset.bgEnd || 'bottom top';
+        ScrollTrigger.create({
+          trigger: section,
+          start,
+          end,
+          onEnter: () => this.morphTo(section.dataset.bg),
+          onEnterBack: () => this.morphTo(section.dataset.bg),
+          invalidateOnRefresh: true
+        });
       });
-    });
+    }
     
     // Set initial text color match immediately
     gsap.set(document.body, { color: '#1a1a1a' });
