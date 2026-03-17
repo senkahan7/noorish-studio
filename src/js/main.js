@@ -598,9 +598,14 @@ class CustomCursor {
 document.addEventListener('DOMContentLoaded', () => {
   // 1. Initialize Lenis Smooth Scroll FIRST
   const lenis = new Lenis({
-    duration: 1.2,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    smoothWheel: true
+    duration: 0.65,
+    easing: (t) => 1 - Math.pow(1 - t, 3),
+    smoothWheel: true,
+    smoothTouch: true,
+    syncTouch: true,
+    touchMultiplier: 1.25,
+    wheelMultiplier: 1.15,
+    normalizeWheel: true
   });
   
   // Connect Lenis to ScrollTrigger
