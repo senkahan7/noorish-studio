@@ -163,6 +163,10 @@ body::after {
   mix-blend-mode: normal;
 }
 
+.cursor.cursor--hidden {
+  opacity: 0;
+}
+
 .cursor-dot {
   position: absolute;
   width: 8px;
@@ -1119,6 +1123,11 @@ footer.section-theme--light,
 
 .filmstrip-item.is-active .filmstrip-embed {
   pointer-events: auto;
+}
+
+.filmstrip-item.is-active .filmstrip-media,
+.filmstrip-item.is-active .filmstrip-embed {
+  cursor: auto;
 }
 
 .filmstrip-item:hover .filmstrip-media img,

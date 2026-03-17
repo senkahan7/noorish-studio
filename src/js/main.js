@@ -422,6 +422,12 @@ function initAnimations() {
 
   const filmstripItems = Array.from(document.querySelectorAll('.filmstrip-item'));
   if (filmstripItems.length) {
+    const cursorEl = document.getElementById('cursor');
+    const setCursorHidden = (hidden) => {
+      if (!cursorEl) return;
+      cursorEl.classList.toggle('cursor--hidden', hidden);
+    };
+
     const deactivateItem = (item) => {
       item.classList.remove('is-active');
       item.classList.remove('show-poster');
@@ -441,6 +447,10 @@ function initAnimations() {
           frame.src = frame.dataset.src;
         }
       }
+      const media = item.querySelector('.filmstrip-media');
+      if (media && media.matches(':hover')) {
+        setCursorHidden(true);
+      }
     };
 
     filmstripItems.forEach((item) => {
@@ -452,6 +462,14 @@ function initAnimations() {
           e.preventDefault();
           activateItem(item);
         }
+      });
+      media.addEventListener('mouseenter', () => {
+        if (item.classList.contains('is-active')) {
+          setCursorHidden(true);
+        }
+      });
+      media.addEventListener('mouseleave', () => {
+        setCursorHidden(false);
       });
     });
 
