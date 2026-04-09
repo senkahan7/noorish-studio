@@ -375,42 +375,13 @@ class BackgroundMorph {
     const textColor = bgType === 'cream' ? '#1a1a1a' : '#f5f5f0';
     gsap.to(document.body, { color: textColor, duration: 0.8 });
 
-    // Morph light-theme colors for sections as the background changes
+    // Morph light-theme colors via CSS classes instead of heavy JS var animations
     const isDark = bgType === 'dark' || bgType === 'gradient';
-    const lightVars = isDark
-      ? {
-          '--light-text': '#f5f5f0',
-          '--light-dim': 'rgba(245, 245, 240, 0.6)',
-          '--light-number': '#E879F9',
-          '--light-tag': '#E879F9',
-          '--light-border': 'rgba(217, 70, 239, 0.4)',
-          '--light-marker-bg': '#000000',
-          '--light-marker-text': '#E879F9',
-          '--light-marker-border': 'rgba(217, 70, 239, 0.2)',
-          '--light-card-bg': 'rgba(255, 255, 255, 0.06)',
-          '--light-card-border': 'rgba(245, 245, 240, 0.18)',
-          '--light-card-shadow': '0 18px 50px rgba(0, 0, 0, 0.45)'
-        }
-      : {
-          '--light-text': '#1a1a1a',
-          '--light-dim': 'rgba(26, 26, 26, 0.5)',
-          '--light-number': '#A21CAF',
-          '--light-tag': '#A21CAF',
-          '--light-border': 'rgba(217, 70, 239, 0.4)',
-          '--light-marker-bg': '#1a1a1a',
-          '--light-marker-text': '#E879F9',
-          '--light-marker-border': 'transparent',
-          '--light-card-bg': 'rgba(0, 0, 0, 0.04)',
-          '--light-card-border': 'rgba(0, 0, 0, 0.08)',
-          '--light-card-shadow': '0 12px 40px rgba(0, 0, 0, 0.08)'
-        };
-
-    gsap.to(document.body, {
-      ...lightVars,
-      duration: 0.9,
-      ease: 'power2.out',
-      overwrite: 'auto'
-    });
+    if (isDark) {
+      document.body.classList.add('theme-dark');
+    } else {
+      document.body.classList.remove('theme-dark');
+    }
   }
 }
 
