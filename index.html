@@ -15,6 +15,11 @@
     <!-- Interactive Topographic Canvas Background -->
     <canvas id="topoCanvas" class="topo-canvas"></canvas>
 
+    <!-- Section Background Morph Layers -->
+    <div class="bg-morph" id="bgMorph">
+        <div class="bg-morph-layer bg-morph--dark" data-section="dark"></div>
+        <div class="bg-morph-layer bg-morph--cream active" data-section="cream"></div>
+    </div>
 
     <!-- Custom Cursor -->
     <div class="cursor" id="cursor">
@@ -419,7 +424,7 @@
     </section>
 
     <!-- Section 2: Kinetic Typography Manifesto -->
-    <section class="manifesto section-theme--dark" id="manifesto" data-bg="dark" data-bg-start="top bottom" data-bg-end="bottom top">
+    <section class="manifesto section-theme--light" id="manifesto" data-bg="cream" data-bg-start="top bottom" data-bg-end="bottom top">
         <div class="manifesto-inner">
             <div class="manifesto-line" data-speed="0.8">
                 <span class="manifesto-word" data-animate="scale">Cutting</span>
@@ -652,7 +657,7 @@
     </section>
 
     <!-- Section 6: Contact -->
-    <section class="contact theme-dark" id="contact">
+    <section class="contact section-theme--dark" id="contact" data-bg="dark" data-bg-start="top bottom" data-bg-end="bottom bottom">
         <div class="contact-inner">
             <div class="contact-header">
                 <h2 class="contact-title split-text" data-animate="split">LET'S <span class="font-serif">create</span></h2>
@@ -700,7 +705,7 @@
     </section>
 
     <!-- Footer -->
-    <footer class="footer section-theme--light" data-bg="cream" data-bg-start="top bottom" data-bg-end="bottom top">
+    <footer class="footer section-theme--dark" data-bg="dark" data-bg-start="top bottom" data-bg-end="bottom top">
         <div class="footer-inner">
             <div class="footer-left">
                 <span class="footer-logo">NOORISH STUDIO</span>

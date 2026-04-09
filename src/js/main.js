@@ -298,7 +298,92 @@ class TopographicBackground {
   }
 }
 
+// ==========================================
+// 3. BACKGROUND MORPHING (GSAP based)
+// ==========================================
+class BackgroundMorph {
+  constructor(topoCanvas) {
+    this.layers = document.querySelectorAll('.bg-morph-layer');
+    this.sections = document.querySelectorAll('[data-bg]');
+    this.topoCanvas = topoCanvas;
+    this.currentBg = 'cream'; // Start with light hero explicitly
+    this.init();
+  }
 
+  init() {
+    if (LOW_POWER) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          const visible = entries
+            .filter((entry) => entry.isIntersecting && entry.intersectionRatio > 0.12)
+            .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+          if (visible.length) {
+            this.morphTo(visible[0].target.dataset.bg);
+          }
+        },
+        { threshold: [0.12, 0.25, 0.5, 0.75] }
+      );
+      this.sections.forEach((section) => observer.observe(section));
+    } else {
+      // Determine initial background based on scroll position
+      this.sections.forEach(section => {
+        const start = section.dataset.bgStart || 'top top';
+        const end = section.dataset.bgEnd || 'bottom top';
+        ScrollTrigger.create({
+          trigger: section,
+          start,
+          end,
+          onEnter: () => this.morphTo(section.dataset.bg),
+          onEnterBack: () => this.morphTo(section.dataset.bg),
+          invalidateOnRefresh: true
+        });
+      });
+    }
+    
+    // Set initial text color match immediately
+    gsap.set(document.body, { color: '#1a1a1a' });
+
+    // Sync background to the first visible section on load
+    const currentSection = Array.from(this.sections).find(section => {
+      const rect = section.getBoundingClientRect();
+      return rect.top <= window.innerHeight && rect.bottom >= 0;
+    });
+    if (currentSection) {
+      this.morphTo(currentSection.dataset.bg);
+    }
+  }
+
+  morphTo(bgType) {
+    if (this.currentBg === bgType) return;
+    this.currentBg = bgType;
+
+    // Fade appropriate background layers
+    this.layers.forEach(layer => {
+      if (layer.classList.contains(`bg-morph--${bgType}`)) {
+        gsap.to(layer, { opacity: 1, duration: 0.8, ease: 'power2.inOut' });
+      } else {
+        gsap.to(layer, { opacity: 0, duration: 0.8, ease: 'power2.inOut' });
+      }
+    });
+
+    // Change canvas theme
+    if (this.topoCanvas) {
+      this.topoCanvas.setTheme(bgType === 'dark' || bgType === 'gradient');
+    }
+
+    // Text color swap on body
+    const textColor = bgType === 'cream' ? '#1a1a1a' : '#f5f5f0';
+    gsap.to(document.body, { color: textColor, duration: 0.8 });
+
+    // Morph light-theme colors via CSS classes instead of heavy JS var animations
+    const isDark = bgType === 'dark' || bgType === 'gradient';
+    if (isDark) {
+      document.body.classList.add('theme-dark');
+    } else {
+      document.body.classList.remove('theme-dark');
+    }
+  }
+}
 
 // ==========================================
 // 4. ANIMATIONS & INTERACTIONS
@@ -783,8 +868,9 @@ document.addEventListener('DOMContentLoaded', () => {
     gsap.ticker.lagSmoothing(0);
   }
 
-  // 2. Start topo background behind loader
+  // 2. Start background systems immediately (run behind loader)
   const topo = new TopographicBackground();
+  new BackgroundMorph(topo);
 
   // 3. Start Loader sequence immediately
   initLoader(() => {
