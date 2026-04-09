@@ -94,27 +94,69 @@
         </svg>
     </div>
 
-    <!-- Loading Screen -->
-    <div class="loader" id="loader">
-        <div class="loader-inner">
-            <div class="countdown-ring">
-                <svg viewBox="0 0 200 200">
-                    <circle class="countdown-circle-bg" cx="100" cy="100" r="80"/>
-                    <circle class="countdown-circle" cx="100" cy="100" r="80"/>
-                    <line class="countdown-cross-1" x1="100" y1="20" x2="100" y2="180"/>
-                    <line class="countdown-cross-2" x1="20" y1="100" x2="180" y2="100"/>
-                </svg>
-                <div class="countdown-number" id="countdownNumber">5</div>
+    <!-- THE SLATE — Cinematic Clapperboard Loader -->
+    <div class="sl" id="siteLoader">
+        <!-- Film grain overlay -->
+        <div class="sl-grain"></div>
+        <!-- White snap flash -->
+        <div class="sl-flash" id="slFlash"></div>
+
+        <!-- Clapperboard -->
+        <div class="sl-clap" id="slClap">
+            <!-- Sticks / Head (rotating part) -->
+            <div class="sl-clap-head" id="slClapHead">
+                <div class="sl-clap-sticks"></div>
+                <div class="sl-clap-hinge-row">
+                    <div class="sl-hinge"></div>
+                    <div class="sl-hinge"></div>
+                </div>
             </div>
-            <div class="loader-logo-text">
-                <span>N</span><span>O</span><span>O</span><span>R</span><span>I</span><span>S</span><span>H</span>
-            </div>
-            <div class="loader-tagline">VIDEO · DESIGN · STUDIO</div>
-            <div class="loader-bar">
-                <div class="loader-bar-fill" id="loaderBar"></div>
+            <!-- Information Board -->
+            <div class="sl-clap-body">
+                <div class="sl-clap-row sl-clap-row--main">
+                    <span class="sl-key">PRODUCTION</span>
+                    <span class="sl-val sl-val--big">NOORISH STUDIO</span>
+                </div>
+                <div class="sl-clap-row">
+                    <span class="sl-key">DIRECTOR</span>
+                    <span class="sl-val">NOORISH</span>
+                </div>
+                <div class="sl-clap-divider"></div>
+                <div class="sl-clap-meta">
+                    <div class="sl-meta-col">
+                        <span class="sl-key">SCENE</span>
+                        <span class="sl-val">PORTFOLIO · WEB</span>
+                    </div>
+                    <div class="sl-meta-col sl-meta-col--take">
+                        <span class="sl-key">TAKE</span>
+                        <span class="sl-val sl-val--take">01</span>
+                    </div>
+                    <div class="sl-meta-col">
+                        <span class="sl-key">DATE</span>
+                        <span class="sl-val">2025</span>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <!-- Logo Reveal Stage (shown after clap exits) -->
+        <div class="sl-stage" id="slStage">
+            <div class="sl-logo-chars" id="slLogoChars">
+                <span>N</span><span>O</span><span>O</span><span>R</span><span>I</span><span>S</span><span>H</span>
+            </div>
+            <div class="sl-logo-sub" id="slLogoSub">STUDIO</div>
+            <div class="sl-progress-wrap">
+                <div class="sl-progress-track">
+                    <div class="sl-progress-fill" id="slProgressFill"></div>
+                </div>
+                <span class="sl-percent" id="slPercent">0%</span>
+            </div>
+            <div class="sl-stage-tag" id="slStageTag">Content that builds brands.</div>
+        </div>
     </div>
+
+    <!-- Page Wipe Transition (exits after loader) -->
+    <div class="page-wipe" id="pageWipe"></div>
 
     <!-- Navigation -->
     <nav class="nav" id="nav">
@@ -141,23 +183,18 @@
         <div class="hero-content">
             <div class="hero-title-wrapper">
                 <h1 class="hero-title" id="heroTitle">
-                    <span class="hero-line"><span class="hero-line-inner" data-text="Creative">Creative</span></span>
-                    <span class="hero-line"><span class="hero-line-inner hero-line-studio font-serif" data-text="Studio">Studio</span></span>
+                    <span class="hero-line"><span class="hero-line-inner" data-text="Content that">Content that</span></span>
+                    <span class="hero-line"><span class="hero-line-inner hero-line-studio font-serif" data-text="builds brands.">builds brands.</span></span>
                 </h1>
             </div>
-            <p class="hero-subtitle" id="heroSubtitle"><span class="text-marker">Video Editing</span> · <span class="text-marker">Graphic Design</span></p>
-            <div class="hero-chips" aria-label="Hero focus areas">
-                <span class="hero-chip hero-chip--pink">Motion</span>
-                <span class="hero-chip hero-chip--blue">3D</span>
-                <span class="hero-chip hero-chip--orange">UI</span>
-                <span class="hero-chip hero-chip--peach">Branding</span>
-            </div>
+            <p class="hero-subtitle" id="heroSubtitle"><span class="text-marker">Video, motion & design for social growth.</span></p>
+            <p class="hero-supporting" id="heroSupporting">Scroll-stopping video. High-impact design. Built for attention.</p>
             <div class="hero-services-tags">
+                <span class="hero-tag">VIDEO</span>
+                <span class="hero-tag-sep">×</span>
                 <span class="hero-tag">MOTION</span>
                 <span class="hero-tag-sep">×</span>
                 <span class="hero-tag">DESIGN</span>
-                <span class="hero-tag-sep">×</span>
-                <span class="hero-tag">FILM</span>
             </div>
         </div>
         <div class="hero-reel quick-buttons" id="quickButtons">
@@ -176,7 +213,7 @@
             <h2 class="section-number">01</h2>
             <h2 class="services-title split-text" data-animate="split">WHAT <span class="font-serif">we do</span></h2>
         </div>
-        <div class="services-grid">
+        <div class="services-grid services-grid--three">
             <div class="service-card service-card--video" data-hover>
                 <div class="service-icon">
                     <svg viewBox="0 0 80 80" fill="none">
@@ -187,29 +224,52 @@
                     </svg>
                 </div>
                 <h3 class="service-name">Video Editing</h3>
-                <p class="service-desc">Cinematic post-production, color grading, motion graphics, and sound design for commercials, music videos, and brand films.</p>
+                <p class="service-desc">High-quality video editing built for social media. Designed to capture attention, increase engagement, and elevate your brand presence.</p>
                 <div class="service-tags">
-                    <span>Post-Production</span>
-                    <span>Color Grading</span>
-                    <span>Motion Graphics</span>
-                    <span>Sound Design</span>
+                    <span>Short-form content</span>
+                    <span>Motion graphics</span>
+                    <span>Social media videos</span>
+                    <span>Brand content</span>
                 </div>
             </div>
-            <div class="service-card service-card--design" data-hover>
+            <div class="service-card service-card--social" data-hover>
+                <div class="service-icon">
+                    <svg viewBox="0 0 80 80" fill="none">
+                        <rect x="6" y="18" width="44" height="44" rx="8" stroke="currentColor" stroke-width="2"/>
+                        <rect x="30" y="6" width="44" height="44" rx="8" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+                        <circle cx="28" cy="40" r="6" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                        <line x1="18" y1="52" x2="38" y2="52" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+                        <line x1="18" y1="58" x2="32" y2="58" stroke="currentColor" stroke-width="1.2" opacity="0.3"/>
+                    </svg>
+                </div>
+                <h3 class="service-name">Social Media Design & Marketing</h3>
+                <p class="service-desc">High-impact social media content and management designed to build brand presence, maintain consistency, and grow your audience across digital platforms.</p>
+                <div class="service-tags">
+                    <span>Social media posts</span>
+                    <span>Promotional material</span>
+                    <span>Meta ads</span>
+                    <span>Account management</span>
+                    <span>Paid advertising</span>
+                </div>
+            </div>
+            <div class="service-card service-card--branding" data-hover>
                 <div class="service-icon">
                     <svg viewBox="0 0 80 80" fill="none">
                         <path d="M40 8 L52 56 L40 48 L28 56 Z" stroke="currentColor" stroke-width="2" fill="currentColor" fill-opacity="0.1"/>
                         <circle cx="40" cy="8" r="3" fill="currentColor" opacity="0.5"/>
-                        <path d="M12 68 C24 44, 56 44, 68 68" stroke="currentColor" stroke-width="1.5" fill="none" stroke-dasharray="4 3"/>
+                        <path d="M12 72 L68 72" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.4"/>
+                        <circle cx="20" cy="64" r="5" stroke="currentColor" stroke-width="1.5" opacity="0.5"/>
+                        <circle cx="40" cy="64" r="5" fill="currentColor" opacity="0.25"/>
+                        <circle cx="60" cy="64" r="5" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
                     </svg>
                 </div>
-                <h3 class="service-name">Graphic Design</h3>
-                <p class="service-desc">Brand identity systems, visual design, typography, packaging, and digital experiences that define how the world sees your brand.</p>
+                <h3 class="service-name">Branding</h3>
+                <p class="service-desc">Brand identity systems designed to give your business a clear, consistent, and memorable visual presence across every platform and touchpoint.</p>
                 <div class="service-tags">
-                    <span>Brand Identity</span>
-                    <span>Visual Design</span>
-                    <span>Typography</span>
-                    <span>Packaging</span>
+                    <span>Brand identity</span>
+                    <span>Logo design</span>
+                    <span>Visual identity</span>
+                    <span>Brand guidelines</span>
                 </div>
             </div>
         </div>
@@ -383,68 +443,161 @@
 
 
 
-    <!-- Section 3: Graphic Design Gallery - Masonry -->
+    <!-- Section 3: Graphic Design Gallery - Categorized -->
     <section class="gallery section-theme--light" id="gallery" data-bg="cream" data-bg-start="top top" data-bg-end="bottom top">
         <div class="gallery-header">
             <h2 class="section-number">03</h2>
             <h2 class="gallery-title split-text" data-animate="split">GRAPHIC DESIGN <span class="font-serif">gallery</span></h2>
         </div>
-        <div class="gallery-grid">
-            <div class="gallery-item gallery-item--tall" data-hover>
-                <div class="gallery-media" data-animate="wipe">
-                    <img src="/src/graphic%20design%20asset/g1.jpg" alt="Graphic design sample 01" loading="lazy">
-                </div>
-                <div class="gallery-info">
-                    <h3>NOORISH</h3>
-                    <span>Graphic Design</span>
-                </div>
+
+        <!-- Gallery Category Tabs -->
+        <div class="gallery-tabs" role="tablist" aria-label="Gallery categories">
+            <button class="gallery-tab active" data-tab="social" role="tab" aria-selected="true" aria-controls="tab-social">Social Media Design</button>
+            <button class="gallery-tab" data-tab="brand" role="tab" aria-selected="false" aria-controls="tab-brand">Brand Identity</button>
+            <button class="gallery-tab" data-tab="print" role="tab" aria-selected="false" aria-controls="tab-print">Print & Marketing</button>
+        </div>
+
+        <!-- Tab: Social Media Design -->
+        <div class="gallery-panel active" id="tab-social" role="tabpanel" aria-label="Social Media Design">
+            <div class="gallery-panel-label">
+                <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" stroke-width="1.5"/><path d="M6 14 L8 10 L11 13 L13 9 L15 14" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
+                Social Media Design
+                <span class="gallery-panel-sub">Instagram grids · Post designs · Carousel posts · Story designs · Ad creatives</span>
             </div>
-            <div class="gallery-item" data-hover>
-                <div class="gallery-media" data-animate="wipe">
-                    <img src="/src/graphic%20design%20asset/g2.jpg" alt="Graphic design sample 02" loading="lazy">
+            <div class="gallery-grid">
+                <div class="gallery-item gallery-item--tall" data-hover>
+                    <div class="gallery-media" data-animate="wipe">
+                        <img src="/src/graphic%20design%20asset/g1.jpg" alt="Instagram grid design" loading="lazy">
+                    </div>
+                    <div class="gallery-info">
+                        <h3>INSTAGRAM GRID</h3>
+                        <span>Social Media Design</span>
+                    </div>
                 </div>
-                <div class="gallery-info">
-                    <h3>FRAME</h3>
-                    <span>Brand System</span>
+                <div class="gallery-item" data-hover>
+                    <div class="gallery-media" data-animate="wipe">
+                        <img src="/src/graphic%20design%20asset/g2.jpg" alt="Post design" loading="lazy">
+                    </div>
+                    <div class="gallery-info">
+                        <h3>POST DESIGN</h3>
+                        <span>Social Media Design</span>
+                    </div>
                 </div>
-            </div>
-            <div class="gallery-item" data-hover>
-                <div class="gallery-media" data-animate="wipe">
-                    <img src="/src/graphic%20design%20asset/g3.jpg" alt="Graphic design sample 03" loading="lazy">
+                <div class="gallery-item" data-hover>
+                    <div class="gallery-media" data-animate="wipe">
+                        <img src="/src/graphic%20design%20asset/g3.jpg" alt="Carousel post" loading="lazy">
+                    </div>
+                    <div class="gallery-info">
+                        <h3>CAROUSEL POST</h3>
+                        <span>Social Media Design</span>
+                    </div>
                 </div>
-                <div class="gallery-info">
-                    <h3>ATLAS</h3>
-                    <span>Typography</span>
+                <div class="gallery-item gallery-item--wide" data-hover>
+                    <div class="gallery-media" data-animate="wipe">
+                        <img src="/src/graphic%20design%20asset/g4.jpg" alt="Story design" loading="lazy">
+                    </div>
+                    <div class="gallery-info">
+                        <h3>STORY DESIGN</h3>
+                        <span>Social Media Design</span>
+                    </div>
                 </div>
-            </div>
-            <div class="gallery-item gallery-item--wide" data-hover>
-                <div class="gallery-media" data-animate="wipe">
-                    <img src="/src/graphic%20design%20asset/g4.jpg" alt="Graphic design sample 04" loading="lazy">
+                <div class="gallery-item" data-hover>
+                    <div class="gallery-media" data-animate="wipe">
+                        <img src="/src/graphic%20design%20asset/g5.jpg" alt="Meta ad creative" loading="lazy">
+                    </div>
+                    <div class="gallery-info">
+                        <h3>META AD CREATIVE</h3>
+                        <span>Ad Creatives</span>
+                    </div>
                 </div>
-                <div class="gallery-info">
-                    <h3>RHYTHM</h3>
-                    <span>Visual Identity</span>
-                </div>
-            </div>
-            <div class="gallery-item" data-hover>
-                <div class="gallery-media" data-animate="wipe">
-                    <img src="/src/graphic%20design%20asset/g5.jpg" alt="Graphic design sample 05" loading="lazy">
-                </div>
-                <div class="gallery-info">
-                    <h3>CHRONICLE</h3>
-                    <span>Editorial</span>
-                </div>
-            </div>
-            <div class="gallery-item gallery-item--tall" data-hover>
-                <div class="gallery-media" data-animate="wipe">
-                    <img src="/src/graphic%20design%20asset/g6.jpg" alt="Graphic design sample 06" loading="lazy">
-                </div>
-                <div class="gallery-info">
-                    <h3>ASCEND</h3>
-                    <span>Packaging</span>
+                <div class="gallery-item gallery-item--tall" data-hover>
+                    <div class="gallery-media" data-animate="wipe">
+                        <img src="/src/graphic%20design%20asset/g6.jpg" alt="Social media design" loading="lazy">
+                    </div>
+                    <div class="gallery-info">
+                        <h3>BRAND SOCIAL</h3>
+                        <span>Social Media Design</span>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <!-- Tab: Brand Identity -->
+        <div class="gallery-panel" id="tab-brand" role="tabpanel" aria-label="Brand Identity">
+            <div class="gallery-panel-label">
+                <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2 L13 12 L10 10 L7 12 Z" stroke="currentColor" stroke-width="1.5" fill="currentColor" fill-opacity="0.15"/><path d="M4 18 L16 18" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2 2" opacity="0.5"/></svg>
+                Brand Identity
+                <span class="gallery-panel-sub">Logo designs · Logo variations · Basic brand mockups</span>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item" data-hover>
+                    <div class="gallery-media" data-animate="wipe">
+                        <img src="/src/graphic%20design%20asset/g1.jpg" alt="Logo design" loading="lazy">
+                    </div>
+                    <div class="gallery-info">
+                        <h3>LOGO DESIGN</h3>
+                        <span>Brand Identity</span>
+                    </div>
+                </div>
+                <div class="gallery-item gallery-item--tall" data-hover>
+                    <div class="gallery-media" data-animate="wipe">
+                        <img src="/src/graphic%20design%20asset/g3.jpg" alt="Logo variations" loading="lazy">
+                    </div>
+                    <div class="gallery-info">
+                        <h3>LOGO VARIATIONS</h3>
+                        <span>Brand Identity</span>
+                    </div>
+                </div>
+                <div class="gallery-item gallery-item--wide" data-hover>
+                    <div class="gallery-media" data-animate="wipe">
+                        <img src="/src/graphic%20design%20asset/g5.jpg" alt="Brand mockup" loading="lazy">
+                    </div>
+                    <div class="gallery-info">
+                        <h3>BRAND MOCKUP</h3>
+                        <span>Brand Identity</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Print & Marketing Design -->
+        <div class="gallery-panel" id="tab-print" role="tabpanel" aria-label="Print & Marketing Design">
+            <div class="gallery-panel-label">
+                <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="3" y="2" width="14" height="16" rx="2" stroke="currentColor" stroke-width="1.5"/><line x1="6" y1="7" x2="14" y2="7" stroke="currentColor" stroke-width="1.2" opacity="0.6"/><line x1="6" y1="10" x2="14" y2="10" stroke="currentColor" stroke-width="1.2" opacity="0.4"/><line x1="6" y1="13" x2="10" y2="13" stroke="currentColor" stroke-width="1.2" opacity="0.3"/></svg>
+                Print & Marketing Design
+                <span class="gallery-panel-sub">Posters · Flyers · Banners · Brochures · Promotional designs</span>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item gallery-item--tall" data-hover>
+                    <div class="gallery-media" data-animate="wipe">
+                        <img src="/src/graphic%20design%20asset/g2.jpg" alt="Poster design" loading="lazy">
+                    </div>
+                    <div class="gallery-info">
+                        <h3>POSTER</h3>
+                        <span>Print & Marketing</span>
+                    </div>
+                </div>
+                <div class="gallery-item" data-hover>
+                    <div class="gallery-media" data-animate="wipe">
+                        <img src="/src/graphic%20design%20asset/g4.jpg" alt="Flyer design" loading="lazy">
+                    </div>
+                    <div class="gallery-info">
+                        <h3>FLYER</h3>
+                        <span>Print & Marketing</span>
+                    </div>
+                </div>
+                <div class="gallery-item gallery-item--wide" data-hover>
+                    <div class="gallery-media" data-animate="wipe">
+                        <img src="/src/graphic%20design%20asset/g6.jpg" alt="Banner design" loading="lazy">
+                    </div>
+                    <div class="gallery-info">
+                        <h3>BANNER</h3>
+                        <span>Print & Marketing</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="section-cta section-cta--gallery">
             <a class="section-cta-btn" href="https://drive.google.com/open?id=15KZ9qb6AOsW6ABaSZT_KC7E72szkrxoT&usp=drive_copy" target="_blank" rel="noopener" data-hover>
                 <span class="section-cta-text">DISCOVER MORE</span>

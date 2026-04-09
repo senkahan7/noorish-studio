@@ -11,68 +11,108 @@ document.documentElement.classList.toggle('is-touch', IS_TOUCH);
 document.documentElement.classList.toggle('reduce-motion', PREFERS_REDUCED);
 
 // ==========================================
-// 1. LOADER ANIMATION
+// 1. LOADER — "THE SLATE" Clapperboard
 // ==========================================
 function initLoader(onComplete) {
-  const loader = document.getElementById('loader');
-  const number = document.getElementById('countdownNumber');
-  const barFill = document.getElementById('loaderBar');
-  const circle = document.querySelector('.countdown-circle');
-  const textSpans = document.querySelectorAll('.loader-logo-text span');
-  const tagline = document.querySelector('.loader-tagline');
-  
-  if (!loader) return onComplete();
+  const loader    = document.getElementById('siteLoader');
+  if (!loader) { onComplete(); return; }
 
-  // Reset states
-  gsap.set(textSpans, { opacity: 0, y: 20 });
-  gsap.set(tagline, { opacity: 0 });
-  
-  const tl = gsap.timeline({
-    onComplete: () => {
-      gsap.to(loader, {
-        yPercent: -100,
-        duration: 0.8,
-        ease: 'power4.inOut',
-        onComplete: () => {
-          loader.style.display = 'none';
-          onComplete();
-        }
-      });
-    }
+  const clap      = document.getElementById('slClap');
+  const clapHead  = document.getElementById('slClapHead');
+  const flash     = document.getElementById('slFlash');
+  const stage     = document.getElementById('slStage');
+  const chars     = document.querySelectorAll('#slLogoChars span');
+  const fillEl    = document.getElementById('slProgressFill');
+  const pctEl     = document.getElementById('slPercent');
+  const subEl     = document.getElementById('slLogoSub');
+  const tagEl     = document.getElementById('slStageTag');
+  const pageWipe  = document.getElementById('pageWipe');
+
+  // Initial states
+  gsap.set(clap,  { y: -(window.innerHeight * 0.5 + 320) });
+  gsap.set([flash, stage], { opacity: 0 });
+  gsap.set(chars, { opacity: 0, scale: 1.4, y: -8 });
+  gsap.set([subEl, tagEl], { opacity: 0, y: 8 });
+
+  const tl = gsap.timeline();
+
+  // Phase 1: Clapperboard drops in with spring bounce
+  tl.to(clap, { y: 0, duration: 0.9, ease: 'back.out(1.15)', delay: 0.25 });
+
+  // Phase 2: Hold so viewer reads the slate
+  tl.to({}, { duration: 0.6 });
+
+  // Phase 3: Sticks SNAP + white flash + screen shake
+  tl.call(() => { if (clapHead) clapHead.classList.add('is-snapped'); });
+  tl.to(flash, { opacity: 1, duration: 0.04 }, '<+=0.01');
+  tl.to(clap,  { x: -6, duration: 0.04, yoyo: true, repeat: 3, ease: 'none' }, '<');
+  tl.to(flash, { opacity: 0, duration: 0.35 });
+
+  // Phase 4: Clapperboard exits upward
+  tl.to(clap, {
+    y: -(window.innerHeight * 0.5 + 350),
+    duration: 0.55,
+    ease: 'power3.in'
+  }, '-=0.08');
+
+  // Phase 5: Logo stage appears
+  tl.to(stage, { opacity: 1, duration: 0.12 });
+
+  // Phase 6: Letters slam in — hard cut, no easing
+  tl.to(chars, {
+    opacity: 1, scale: 1, y: 0,
+    duration: 0.001,
+    stagger: { each: 0.07, ease: 'none' },
+    ease: 'none'
   });
 
-  // Circle countdown animation
-  tl.to(circle, {
-    strokeDashoffset: 0,
-    duration: 2,
-    ease: 'power2.inOut',
-    onUpdate: function() {
-      // Countdown from 5 to 1
-      const prog = this.progress();
-      const val = Math.max(1, Math.ceil(5 - (prog * 5)));
-      if (number) number.innerText = val;
-    }
-  }, 0);
+  // Accent glow flash on each char
+  tl.call(() => {
+    chars.forEach((ch, i) => {
+      setTimeout(() => {
+        ch.style.textShadow = '0 0 40px rgba(217,70,239,0.9)';
+        setTimeout(() => { ch.style.textShadow = ''; }, 350);
+      }, i * 70);
+    });
+  }, null, '-=0.5');
 
-  // Bar fill
-  if (barFill) {
-    tl.to(barFill, { width: '100%', duration: 2, ease: 'power2.inOut' }, 0);
-  }
+  // STUDIO sub-label
+  tl.to(subEl, { opacity: 1, y: 0, duration: 0.35 }, '+=0.1');
 
-  // Text reveal
-  tl.to(textSpans, {
-    opacity: 1,
-    y: 0,
-    duration: 0.5,
-    stagger: 0.05,
-    ease: 'back.out(1.5)'
-  }, 0.5);
+  // Phase 7: Progress bar fills (rAF-driven)
+  const PROG_MS = 1350;
+  let progStart = null;
+  tl.call(() => {
+    const tick = (ts) => {
+      if (!progStart) progStart = ts;
+      const ratio = Math.min((ts - progStart) / PROG_MS, 1);
+      const eased = 1 - Math.pow(1 - ratio, 2);
+      const pct   = Math.round(eased * 100);
+      if (fillEl) fillEl.style.width = pct + '%';
+      if (pctEl)  pctEl.textContent  = pct + '%';
+      if (ratio < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  });
 
-  tl.to(tagline, {
-    opacity: 1,
-    duration: 0.5
-  }, 1.2);
+  tl.to({}, { duration: 1.45 });
+  tl.to(tagEl, { opacity: 1, y: 0, duration: 0.4 });
+  tl.to({}, { duration: 0.3 });
+
+  // Phase 8: Pink page-wipe sweeps over, loader hides, wipe exits
+  tl.to(pageWipe, { xPercent: 0, duration: 0.38, ease: 'power4.in' });
+  tl.call(() => {
+    loader.style.display = 'none';
+    onComplete();
+  });
+  tl.to(pageWipe, {
+    xPercent: 100,
+    duration: 0.38,
+    ease: 'power4.out',
+    onComplete: () => { pageWipe.style.display = 'none'; }
+  });
 }
+
 
 // ==========================================
 // 2. TRUE TOPOGRAPHIC CANVAS
@@ -457,7 +497,8 @@ function initAnimations() {
     delay: 0.2
   });
   gsap.to('.hero-subtitle', { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1, delay: 0.8 });
-  gsap.to('.hero-services-tags', { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1, delay: 1 });
+  gsap.to('.hero-supporting', { opacity: 1, y: 0, duration: 0.8, delay: 1 });
+  gsap.to('.hero-services-tags', { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1, delay: 1.1 });
 
   // --- D. Horizontal Filmstrip ---
   const filmstripWrapper = document.querySelector('.filmstrip-wrapper');
@@ -615,6 +656,41 @@ function initAnimations() {
       });
     });
   }
+
+  // --- H. Gallery Tab Switching ---
+  const galleryTabs = document.querySelectorAll('.gallery-tab');
+  const galleryPanels = document.querySelectorAll('.gallery-panel');
+
+  galleryTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.dataset.tab;
+
+      // Update tab active state
+      galleryTabs.forEach(t => {
+        t.classList.remove('active');
+        t.setAttribute('aria-selected', 'false');
+      });
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
+
+      // Show matching panel, hide others
+      galleryPanels.forEach(panel => {
+        if (panel.id === `tab-${target}`) {
+          panel.classList.add('active');
+          // Re-trigger wipe reveals for newly shown images
+          panel.querySelectorAll('.gallery-media[data-animate="wipe"]').forEach(wipe => {
+            if (!wipe.classList.contains('revealed')) {
+              wipe.classList.remove('pre-reveal');
+              wipe.classList.add('revealed');
+            }
+          });
+          ScrollTrigger.refresh();
+        } else {
+          panel.classList.remove('active');
+        }
+      });
+    });
+  });
 }
 
 // ==========================================
