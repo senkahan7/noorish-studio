@@ -15,11 +15,6 @@
     <!-- Interactive Topographic Canvas Background -->
     <canvas id="topoCanvas" class="topo-canvas"></canvas>
 
-    <!-- Section Background Morph Layers -->
-    <div class="bg-morph" id="bgMorph">
-        <div class="bg-morph-layer bg-morph--dark" data-section="dark"></div>
-        <div class="bg-morph-layer bg-morph--cream active" data-section="cream"></div>
-    </div>
 
     <!-- Custom Cursor -->
     <div class="cursor" id="cursor">
@@ -608,6 +603,11 @@
 
     <!-- Section 4: Testimonials Marquee -->
     <section class="testimonials section-theme--light" id="testimonials" data-bg="cream">
+        <div class="testimonials-header">
+            <h2 class="section-number">04</h2>
+            <h2 class="testimonials-title split-text" data-animate="split">CLIENT <span class="font-serif">reviews</span></h2>
+            <p class="testimonials-subtitle">What people say about our work</p>
+        </div>
         <div class="marquee-wrapper">
             <div class="marquee" id="marquee">
                 <div class="marquee-track">
@@ -652,7 +652,7 @@
     </section>
 
     <!-- Section 6: Contact -->
-    <section class="contact section-theme--dark" id="contact" data-bg="dark" data-bg-start="top bottom" data-bg-end="bottom bottom">
+    <section class="contact theme-dark" id="contact">
         <div class="contact-inner">
             <div class="contact-header">
                 <h2 class="contact-title split-text" data-animate="split">LET'S <span class="font-serif">create</span></h2>

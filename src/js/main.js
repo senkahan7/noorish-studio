@@ -298,92 +298,7 @@ class TopographicBackground {
   }
 }
 
-// ==========================================
-// 3. BACKGROUND MORPHING (GSAP based)
-// ==========================================
-class BackgroundMorph {
-  constructor(topoCanvas) {
-    this.layers = document.querySelectorAll('.bg-morph-layer');
-    this.sections = document.querySelectorAll('[data-bg]');
-    this.topoCanvas = topoCanvas;
-    this.currentBg = 'cream'; // Start with light hero explicitly
-    this.init();
-  }
 
-  init() {
-    if (LOW_POWER) {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          const visible = entries
-            .filter((entry) => entry.isIntersecting && entry.intersectionRatio > 0.12)
-            .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-          if (visible.length) {
-            this.morphTo(visible[0].target.dataset.bg);
-          }
-        },
-        { threshold: [0.12, 0.25, 0.5, 0.75] }
-      );
-      this.sections.forEach((section) => observer.observe(section));
-    } else {
-      // Determine initial background based on scroll position
-      this.sections.forEach(section => {
-        const start = section.dataset.bgStart || 'top top';
-        const end = section.dataset.bgEnd || 'bottom top';
-        ScrollTrigger.create({
-          trigger: section,
-          start,
-          end,
-          onEnter: () => this.morphTo(section.dataset.bg),
-          onEnterBack: () => this.morphTo(section.dataset.bg),
-          invalidateOnRefresh: true
-        });
-      });
-    }
-    
-    // Set initial text color match immediately
-    gsap.set(document.body, { color: '#1a1a1a' });
-
-    // Sync background to the first visible section on load
-    const currentSection = Array.from(this.sections).find(section => {
-      const rect = section.getBoundingClientRect();
-      return rect.top <= window.innerHeight && rect.bottom >= 0;
-    });
-    if (currentSection) {
-      this.morphTo(currentSection.dataset.bg);
-    }
-  }
-
-  morphTo(bgType) {
-    if (this.currentBg === bgType) return;
-    this.currentBg = bgType;
-
-    // Fade appropriate background layers
-    this.layers.forEach(layer => {
-      if (layer.classList.contains(`bg-morph--${bgType}`)) {
-        gsap.to(layer, { opacity: 1, duration: 0.8, ease: 'power2.inOut' });
-      } else {
-        gsap.to(layer, { opacity: 0, duration: 0.8, ease: 'power2.inOut' });
-      }
-    });
-
-    // Change canvas theme
-    if (this.topoCanvas) {
-      this.topoCanvas.setTheme(bgType === 'dark' || bgType === 'gradient');
-    }
-
-    // Text color swap on body
-    const textColor = bgType === 'cream' ? '#1a1a1a' : '#f5f5f0';
-    gsap.to(document.body, { color: textColor, duration: 0.8 });
-
-    // Morph light-theme colors via CSS classes instead of heavy JS var animations
-    const isDark = bgType === 'dark' || bgType === 'gradient';
-    if (isDark) {
-      document.body.classList.add('theme-dark');
-    } else {
-      document.body.classList.remove('theme-dark');
-    }
-  }
-}
 
 // ==========================================
 // 4. ANIMATIONS & INTERACTIONS
@@ -665,7 +580,7 @@ function initAnimations() {
 }
 
 // ==========================================
-// 4.5 TESTIMONIALS MARQUEE LOOP
+// 4.5 TESTIMONIALS MARQUEE LOOP (Interactive)
 // ==========================================
 function initMarqueeLoop() {
   const track = document.querySelector('.marquee-track');
@@ -674,6 +589,7 @@ function initMarqueeLoop() {
   const items = Array.from(track.children);
   if (items.length === 0) return;
 
+  // Duplicate items for seamless wrapping
   const fragment = document.createDocumentFragment();
   items.forEach((item) => {
     const clone = item.cloneNode(true);
@@ -682,6 +598,8 @@ function initMarqueeLoop() {
   });
   track.appendChild(fragment);
 
+  // We only really need 2 sets if the combined width exceeds the screen width.
+  // But just to be completely safe, duplicate once more if still narrow.
   while (track.scrollWidth < window.innerWidth * 2) {
     const more = document.createDocumentFragment();
     items.forEach((item) => {
@@ -691,8 +609,112 @@ function initMarqueeLoop() {
     });
     track.appendChild(more);
   }
-
   track.dataset.looped = 'true';
+
+  let currentX = 0;
+  let targetX = 0;
+  let isDragging = false;
+  let startDragX = 0;
+  let dragOffset = 0;
+  let baseSpeed = 1; // pixels per frame
+  let direction = -1; // -1 for left, 1 for right
+  let scrollVelocity = 0;
+  let lastScrollY = window.scrollY;
+  let isHovered = false;
+
+  // Track scroll velocity proxy
+  window.addEventListener('scroll', () => {
+    const currentScrollY = window.scrollY;
+    // Calculate velocity
+    let delta = currentScrollY - lastScrollY;
+    scrollVelocity = delta * 0.15; // scalar
+    lastScrollY = currentScrollY;
+  }, { passive: true });
+
+  // Hover state pauses the base automatic scroll (but drag/scroll overrides it)
+  track.addEventListener('mouseenter', () => isHovered = true);
+  track.addEventListener('mouseleave', () => {
+    isHovered = false;
+    isDragging = false;
+  });
+
+  // Drag logic
+  const onDragStart = (e) => {
+    isDragging = true;
+    startDragX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+    document.body.style.cursor = 'grabbing';
+    track.style.cursor = 'grabbing';
+  };
+  
+  const onDragMove = (e) => {
+    if (!isDragging) return;
+    const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+    const diff = clientX - startDragX;
+    targetX += diff * 1.5; // Drag sensitivity
+    startDragX = clientX;
+    
+    // Auto-detect direction based on drag
+    if (diff > 0) direction = 1;
+    else if (diff < 0) direction = -1;
+  };
+  
+  const onDragEnd = () => {
+    isDragging = false;
+    document.body.style.cursor = '';
+    track.style.cursor = '';
+  };
+
+  track.addEventListener('mousedown', onDragStart);
+  window.addEventListener('mousemove', onDragMove);
+  window.addEventListener('mouseup', onDragEnd);
+  
+  track.addEventListener('touchstart', onDragStart, { passive: true });
+  window.addEventListener('touchmove', onDragMove, { passive: true });
+  window.addEventListener('touchend', onDragEnd);
+
+  // Animation Loop
+  const loop = () => {
+    // 1. Friction for scroll velocity
+    scrollVelocity *= 0.92;
+    if (Math.abs(scrollVelocity) < 0.1) scrollVelocity = 0;
+
+    // Change direction based on scroll velocity if it gets fast enough
+    if (scrollVelocity < -1) direction = 1;   // Scroll up -> move right
+    if (scrollVelocity > 1) direction = -1;   // Scroll down -> move left
+
+    // 2. Base speed addition (only if not hovered and not dragging)
+    let addedSpeed = 0;
+    if (!isDragging) {
+      if (!isHovered) {
+        addedSpeed = baseSpeed * direction;
+      }
+      // Apply scroll velocity burst
+      addedSpeed += (Math.abs(scrollVelocity) * direction);
+      targetX += addedSpeed;
+    }
+
+    // 3. Smooth interpolation towards target
+    currentX += (targetX - currentX) * 0.1;
+
+    // 4. Wrapping logic (assuming half of the scrollWidth is the original set cloned once)
+    // The exact half width is track.scrollWidth / 2, but we must measure dynamically
+    const trackWidth = track.scrollWidth;
+    const viewWidth = window.innerWidth;
+    const wrapWidth = trackWidth / 2; // Since we duplicated everything at least once symmetrically
+
+    if (currentX <= -wrapWidth) {
+      currentX += wrapWidth;
+      targetX += wrapWidth;
+    } else if (currentX > 0) {
+      currentX -= wrapWidth;
+      targetX -= wrapWidth;
+    }
+
+    gsap.set(track, { x: currentX });
+    requestAnimationFrame(loop);
+  };
+  
+  requestAnimationFrame(loop);
 }
 
 // ==========================================
@@ -761,9 +783,8 @@ document.addEventListener('DOMContentLoaded', () => {
     gsap.ticker.lagSmoothing(0);
   }
 
-  // 2. Start background systems immediately (run behind loader)
+  // 2. Start topo background behind loader
   const topo = new TopographicBackground();
-  new BackgroundMorph(topo);
 
   // 3. Start Loader sequence immediately
   initLoader(() => {
