@@ -818,9 +818,9 @@ function initNewGalleryToggle() {
           desc: 'Cohesive, clean and on-brand grids that create a strong visual identity.',
           mediaClass: 'ng-media--3',
           images: [
-            { src: '/social-image?file=Instagram%20grid%20%231.png', alt: 'Instagram grid design 1' },
-            { src: '/social-image?file=Instagram%20grid%20%232.png', alt: 'Instagram grid design 2' },
-            { src: '/social-image?file=Instagram%20grid%20%233.png', alt: 'Instagram grid design 3' }
+            { src: '/social-image?file=Instagram%20grid%201.png', alt: 'Instagram grid design 1' },
+            { src: '/social-image?file=Instagram%20grid%202.png', alt: 'Instagram grid design 2' },
+            { src: '/social-image?file=Instagram%20grid%203.png', alt: 'Instagram grid design 3' }
           ]
         },
         {
@@ -829,9 +829,9 @@ function initNewGalleryToggle() {
           mediaClass: 'ng-media--3',
           flush: true,
           images: [
-            { src: '/social-image?file=Carousel%20Posts%20%231.png', alt: 'Carousel post design 1' },
-            { src: '/social-image?file=Carousel%20Posts%20%232.png', alt: 'Carousel post design 2' },
-            { src: '/social-image?file=Carousel%20Posts%20%233.png', alt: 'Carousel post design 3' }
+            { src: '/social-image?file=Carousel%20Posts%201.png', alt: 'Carousel post design 1' },
+            { src: '/social-image?file=Carousel%20Posts%202.png', alt: 'Carousel post design 2' },
+            { src: '/social-image?file=Carousel%20Posts%203.png', alt: 'Carousel post design 3' }
           ]
         },
         {
@@ -839,10 +839,10 @@ function initNewGalleryToggle() {
           desc: 'Engaging story designs that capture attention and keep your brand top-of-mind.',
           mediaClass: 'ng-media--4',
           images: [
-            { src: '/social-image?file=Story%20Design%20%231.png', alt: 'Story design 1' },
-            { src: '/social-image?file=Story%20Design%20%232.png', alt: 'Story design 2' },
-            { src: '/social-image?file=Story%20Design%20%233.png', alt: 'Story design 3' },
-            { src: '/social-image?file=Story%20Design%20%234.png', alt: 'Story design 4' }
+            { src: '/social-image?file=Story%20Design%201.png', alt: 'Story design 1' },
+            { src: '/social-image?file=Story%20Design%202.png', alt: 'Story design 2' },
+            { src: '/social-image?file=Story%20Design%203.png', alt: 'Story design 3' },
+            { src: '/social-image?file=Story%20Design%204.png', alt: 'Story design 4' }
           ]
         },
         {
@@ -850,10 +850,10 @@ function initNewGalleryToggle() {
           desc: 'High-converting ad designs that stop the scroll and drive results.',
           mediaClass: 'ng-media--4',
           images: [
-            { src: '/social-image?file=Ad%20Creatives%20%231.jpg', alt: 'Ad creative design 1' },
-            { src: '/social-image?file=Ad%20Creatives%20%232.jpg', alt: 'Ad creative design 2' },
-            { src: '/social-image?file=Ad%20Creatives%20%233.png', alt: 'Ad creative design 3' },
-            { src: '/social-image?file=Ad%20Creatives%20%234.jpg', alt: 'Ad creative design 4' }
+            { src: '/social-image?file=Ad%20Creatives%201.jpg', alt: 'Ad creative design 1' },
+            { src: '/social-image?file=Ad%20Creatives%202.jpg', alt: 'Ad creative design 2' },
+            { src: '/social-image?file=Ad%20Creatives%203.png', alt: 'Ad creative design 3' },
+            { src: '/social-image?file=Ad%20Creatives%204.jpg', alt: 'Ad creative design 4' }
           ]
         }
       ]
