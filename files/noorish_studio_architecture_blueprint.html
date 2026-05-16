@@ -1,0 +1,636 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --gold:#c9a96e;--gold-dim:#8a6f42;--dark:#0c0c0e;--panel:#13131a;
+    --border:rgba(201,169,110,0.18);--text:#e8e4dc;--muted:#6b6660;
+    --webgl:#c9a96e;--html:#4a8fa8;--anim:#a06eb4;--perf:#5a9e6f;
+  }
+  body{background:transparent;font-family:'DM Sans',sans-serif;color:var(--text)}
+  h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+
+  .bp-root{background:var(--dark);border-radius:12px;padding:0;overflow:hidden;border:1px solid var(--border)}
+  
+  .bp-tabs{display:flex;border-bottom:1px solid var(--border);background:var(--panel)}
+  .bp-tab{padding:10px 18px;font-size:12px;font-family:'Syne',sans-serif;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;color:var(--muted);border:none;background:none;transition:all .2s;border-bottom:2px solid transparent;white-space:nowrap}
+  .bp-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+  .bp-tab:hover:not(.active){color:var(--text)}
+  
+  .bp-body{padding:24px}
+  .panel{display:none}
+  .panel.active{display:block}
+
+  /* SECTION STRUCTURE */
+  .section-row{display:grid;grid-template-columns:28px 1fr auto;align-items:start;gap:12px;padding:12px 0;border-bottom:1px solid rgba(201,169,110,0.08)}
+  .section-row:last-child{border-bottom:none}
+  .sec-num{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--gold-dim);padding-top:2px}
+  .sec-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px}
+  .sec-desc{font-size:12px;color:var(--muted);line-height:1.5}
+  .sec-tags{display:flex;gap:6px;flex-wrap:wrap;padding-top:4px}
+  .tag{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:20px}
+  .tag-webgl{background:rgba(201,169,110,0.12);color:var(--webgl);border:1px solid rgba(201,169,110,0.25)}
+  .tag-html{background:rgba(74,143,168,0.12);color:var(--html);border:1px solid rgba(74,143,168,0.25)}
+  .tag-hybrid{background:rgba(160,110,180,0.12);color:var(--anim);border:1px solid rgba(160,110,180,0.25)}
+  .sec-badge{font-size:10px;font-family:'Syne',sans-serif;font-weight:700;padding:3px 10px;border-radius:4px;white-space:nowrap;align-self:start;margin-top:2px}
+  .badge-hero{background:rgba(201,169,110,0.15);color:var(--gold)}
+  .badge-work{background:rgba(74,143,168,0.15);color:var(--html)}
+  .badge-services{background:rgba(90,158,111,0.15);color:#5a9e6f}
+  .badge-gallery{background:rgba(160,110,180,0.15);color:var(--anim)}
+  .badge-contact{background:rgba(180,70,70,0.15);color:#b44646}
+
+  /* WIREFRAME */
+  .wire-wrap{display:flex;flex-direction:column;gap:8px}
+  .wire-section{border:1px solid var(--border);border-radius:8px;overflow:hidden}
+  .wire-header{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;background:rgba(201,169,110,0.06);cursor:pointer}
+  .wire-label{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)}
+  .wire-tech{font-size:10px;color:var(--muted)}
+  .wire-content{padding:12px 14px;border-top:1px solid rgba(201,169,110,0.06)}
+  .wire-layout{display:flex;gap:8px;align-items:stretch;min-height:60px;flex-wrap:wrap}
+  .wire-block{border:1px solid rgba(255,255,255,0.08);border-radius:5px;padding:8px 10px;font-size:11px;color:var(--muted);display:flex;align-items:center;justify-content:center;text-align:center;flex:1;min-width:100px}
+  .wire-block.highlight{border-color:rgba(201,169,110,0.3);color:var(--text);background:rgba(201,169,110,0.05)}
+  .wire-block.full{width:100%;flex:none;min-width:auto}
+  .wire-note{font-size:11px;color:var(--muted);margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.05);line-height:1.6}
+
+  /* ANIMATION */
+  .anim-grid{display:flex;flex-direction:column;gap:10px}
+  .anim-row{display:grid;grid-template-columns:120px 1fr;gap:12px;align-items:start}
+  .anim-section-name{font-size:11px;font-family:'Syne',sans-serif;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.06em;padding-top:3px}
+  .anim-items{display:flex;flex-direction:column;gap:5px}
+  .anim-item{font-size:12px;color:var(--muted);padding:5px 10px;background:rgba(255,255,255,0.03);border-radius:4px;border-left:2px solid var(--border)}
+  .anim-item span{color:var(--text);font-weight:500}
+
+  /* PERFORMANCE */
+  .perf-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .perf-card{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:16px}
+  .perf-icon{width:28px;height:28px;border-radius:6px;background:rgba(201,169,110,0.12);display:flex;align-items:center;justify-content:center;margin-bottom:10px;font-size:14px}
+  .perf-title{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--text);margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em}
+  .perf-list{list-style:none;display:flex;flex-direction:column;gap:5px}
+  .perf-list li{font-size:11px;color:var(--muted);padding-left:12px;position:relative;line-height:1.5}
+  .perf-list li::before{content:'→';position:absolute;left:0;color:var(--gold-dim)}
+  
+  /* ROADMAP */
+  .road-phases{display:flex;flex-direction:column;gap:0}
+  .road-phase{display:grid;grid-template-columns:48px 1fr;gap:0}
+  .road-spine{display:flex;flex-direction:column;align-items:center}
+  .road-dot{width:20px;height:20px;border-radius:50%;border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:9px;font-family:'Syne',sans-serif;font-weight:700;color:var(--gold);flex-shrink:0;background:var(--dark)}
+  .road-line{width:1px;background:var(--border);flex:1;min-height:8px}
+  .road-content{padding:0 0 20px 12px}
+  .road-title{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px;padding-top:1px}
+  .road-tasks{display:flex;flex-direction:column;gap:3px}
+  .road-task{font-size:11px;color:var(--muted);padding:4px 10px;background:rgba(255,255,255,0.03);border-radius:4px;line-height:1.4}
+  .road-task b{color:var(--text);font-weight:500}
+  
+  /* MOBILE */
+  .mob-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .mob-card{background:var(--panel);border-radius:8px;padding:14px;border:1px solid var(--border)}
+  .mob-section{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+  .mob-items{display:flex;flex-direction:column;gap:4px}
+  .mob-item{font-size:11px;color:var(--muted);line-height:1.5;padding-left:12px;position:relative}
+  .mob-item::before{content:'·';position:absolute;left:3px;color:var(--gold-dim)}
+  
+  .legend{display:flex;gap:16px;flex-wrap:wrap;padding:12px 0;border-bottom:1px solid rgba(201,169,110,0.08);margin-bottom:16px}
+  .legend-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted)}
+  .legend-dot{width:8px;height:8px;border-radius:2px}
+</style>
+
+<div class="bp-root">
+  <h2 class="sr-only">Noorish Studio portfolio redesign architectural blueprint covering section structure, wireframes, animations, performance, and implementation roadmap</h2>
+  
+  <div style="padding:20px 24px 16px;border-bottom:1px solid var(--border);background:var(--panel)">
+    <div style="font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:4px">Noorish Studio — Architecture Brief</div>
+    <div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:var(--text)">Cinematic Portfolio Redesign</div>
+    <div style="font-size:12px;color:var(--muted);margin-top:3px">React + Vite · R3F · GSAP ScrollTrigger · Lenis · Tailwind CSS</div>
+  </div>
+  
+  <div class="bp-tabs">
+    <button class="bp-tab active" onclick="showPanel('structure',this)">Sections</button>
+    <button class="bp-tab" onclick="showPanel('wireframe',this)">Wireframe</button>
+    <button class="bp-tab" onclick="showPanel('animation',this)">Animation</button>
+    <button class="bp-tab" onclick="showPanel('performance',this)">Performance</button>
+    <button class="bp-tab" onclick="showPanel('mobile',this)">Mobile</button>
+    <button class="bp-tab" onclick="showPanel('roadmap',this)">Roadmap</button>
+  </div>
+  
+  <div class="bp-body">
+
+    <!-- SECTIONS PANEL -->
+    <div class="panel active" id="panel-structure">
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--webgl)"></div>WebGL / R3F</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--html)"></div>HTML + GSAP</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--anim)"></div>Hybrid (Canvas bg + HTML)</div>
+      </div>
+      
+      <div class="section-row">
+        <div class="sec-num">01</div>
+        <div>
+          <div class="sec-title">Cinematic Hero — Full Viewport Entry</div>
+          <div class="sec-desc">Film grain overlay. Studio-room text reveal: "NOORISH STUDIO" letter-by-letter with shutter timing. Subtitle fades in. Looping ambient reel plays muted behind a dark scrim. Camera-lens bokeh particle field in R3F. CTA appears last with golden underline draw animation.</div>
+          <div class="sec-tags"><span class="tag tag-webgl">WebGL</span><span class="tag tag-hybrid">Film Grain</span></div>
+        </div>
+        <div class="sec-badge badge-hero">Hero</div>
+      </div>
+
+      <div class="section-row">
+        <div class="sec-num">02</div>
+        <div>
+          <div class="sec-title">Statement Reel — Horizontal Scroll Filmstrip</div>
+          <div class="sec-desc">Pinned horizontal scroll section. Video thumbnails arranged as a cinema filmstrip (with sprocket holes as decoration). On hover, each clip auto-previews. Scroll velocity controls playback speed via GSAP. "SAMPLE EDITS" counter increments as you scroll.</div>
+          <div class="sec-tags"><span class="tag tag-hybrid">Hybrid</span><span class="tag tag-html">GSAP Pin</span></div>
+        </div>
+        <div class="sec-badge badge-work">Reel</div>
+      </div>
+
+      <div class="section-row">
+        <div class="sec-num">03</div>
+        <div>
+          <div class="sec-title">Services — Scroll-Triggered Depth Cards</div>
+          <div class="sec-desc">Three service panels (Video Editing, Design, Branding). Each stacks and pins like a deck of cards as you scroll — Z-depth illusion via CSS 3D perspective. Service icon is a minimal SVG that draws on entry. Soft parallax on card bg textures.</div>
+          <div class="sec-tags"><span class="tag tag-html">HTML</span><span class="tag tag-html">CSS 3D</span></div>
+        </div>
+        <div class="sec-badge badge-services">Services</div>
+      </div>
+
+      <div class="section-row">
+        <div class="sec-num">04</div>
+        <div>
+          <div class="sec-title">Process — Cinematic Timeline</div>
+          <div class="sec-desc">4-step creative process (Discover → Direct → Design → Deliver). Horizontal timeline with a golden line that draws as you scroll. Each step fades + slides in. A 3D camera model in R3F rotates to face each step. Number counter in monospaced font.</div>
+          <div class="sec-tags"><span class="tag tag-hybrid">Hybrid</span><span class="tag tag-webgl">R3F Accent</span></div>
+        </div>
+        <div class="sec-badge badge-work">Process</div>
+      </div>
+
+      <div class="section-row">
+        <div class="sec-num">05</div>
+        <div>
+          <div class="sec-title">Design Gallery — Masonry with Magnetic Hover</div>
+          <div class="sec-desc">Masonry grid of design works. Custom magnetic cursor that follows with spring physics. Images have a cinematic letterbox reveal on scroll. Hovering an item zooms + tints with a golden overlay and shows the project type. Fullscreen lightbox with GSAP morph transition.</div>
+          <div class="sec-tags"><span class="tag tag-html">HTML</span><span class="tag tag-html">GSAP</span></div>
+        </div>
+        <div class="sec-badge badge-gallery">Gallery</div>
+      </div>
+
+      <div class="section-row">
+        <div class="sec-num">06</div>
+        <div>
+          <div class="sec-title">Testimonials — Kinetic Marquee Loop</div>
+          <div class="sec-desc">Infinite horizontal marquee of client quotes. Two rows moving in opposite directions at different speeds. On hover, row decelerates smoothly. Typography is large, editorial, clipped text. Background has a subtle film-burn texture. No cards, no boxes — pure type.</div>
+          <div class="sec-tags"><span class="tag tag-html">HTML</span><span class="tag tag-html">CSS Marquee</span></div>
+        </div>
+        <div class="sec-badge badge-gallery">Reviews</div>
+      </div>
+
+      <div class="section-row">
+        <div class="sec-num">07</div>
+        <div>
+          <div class="sec-title">Contact — Immersive CTA with R3F Background</div>
+          <div class="sec-desc">Full-viewport section. "LET'S CREATE" in massive display type. Background: a subtle 3D scene — floating film frames in R3F that slowly drift. Form fields are cinematic: minimal border-only inputs that glow gold on focus. Mouse parallax tilts the scene slightly.</div>
+          <div class="sec-tags"><span class="tag tag-webgl">WebGL bg</span><span class="tag tag-html">Form HTML</span></div>
+        </div>
+        <div class="sec-badge badge-contact">Contact</div>
+      </div>
+
+      <div class="section-row" style="border-bottom:none">
+        <div class="sec-num">08</div>
+        <div>
+          <div class="sec-title">Footer — Cinematic Credits Roll</div>
+          <div class="sec-desc">Styled like film credits. Logo mark (a minimal N monogram in SVG) centered. Social links as minimal icon glyphs. Copyright styled as a film slate "© 2025 — NOORISH STUDIO — ALL RIGHTS RESERVED". Golden hairline rule separates sections. No heavy layout.</div>
+          <div class="sec-tags"><span class="tag tag-html">HTML</span></div>
+        </div>
+        <div class="sec-badge badge-contact">Footer</div>
+      </div>
+    </div>
+
+    <!-- WIREFRAME PANEL -->
+    <div class="panel" id="panel-wireframe">
+      <div style="font-size:11px;color:var(--muted);margin-bottom:16px;line-height:1.6">Vertical layout flow, top to bottom. Tap any section for layout notes.</div>
+      <div class="wire-wrap">
+
+        <div class="wire-section">
+          <div class="wire-header" onclick="toggleWire(this)">
+            <span class="wire-label">01 — Hero (100vh)</span>
+            <span class="wire-tech">WebGL + Grain Overlay</span>
+          </div>
+          <div class="wire-content" style="display:none">
+            <div class="wire-layout">
+              <div class="wire-block highlight full" style="min-height:80px">R3F Canvas — Bokeh particles, full bleed behind content</div>
+            </div>
+            <div class="wire-layout" style="margin-top:8px">
+              <div class="wire-block" style="flex:0 0 80px">Nav logo left</div>
+              <div class="wire-block highlight" style="flex:1;font-size:10px">NOORISH STUDIO — massive display type, center</div>
+              <div class="wire-block" style="flex:0 0 80px">Nav links right</div>
+            </div>
+            <div class="wire-layout" style="margin-top:8px">
+              <div class="wire-block full">Subtitle line + animated golden CTA button (bottom third)</div>
+            </div>
+            <div class="wire-note">Film grain CSS overlay sits as fixed pseudo-element. Muted video reel plays behind. Scroll indicator: minimal arrow pulsing at bottom center.</div>
+          </div>
+        </div>
+
+        <div class="wire-section">
+          <div class="wire-header" onclick="toggleWire(this)">
+            <span class="wire-label">02 — Filmstrip Reel (300vh pinned)</span>
+            <span class="wire-tech">Horizontal Scroll + GSAP Pin</span>
+          </div>
+          <div class="wire-content" style="display:none">
+            <div class="wire-layout">
+              <div class="wire-block" style="flex:0 0 40px;font-size:10px">Sprocket holes (decorative SVG)</div>
+              <div class="wire-block highlight">Clip 01</div>
+              <div class="wire-block highlight">Clip 02</div>
+              <div class="wire-block highlight">Clip 03</div>
+              <div class="wire-block highlight">Clip 04</div>
+              <div class="wire-block" style="font-size:10px">→ continues...</div>
+            </div>
+            <div class="wire-note">The entire strip is 600vw wide. Scroll translates horizontally via GSAP. Velocity is mapped to a scrub value. Top strip scrolls right; decorative film noise strip below scrolls left (opposite direction). Section title "SAMPLE EDITS" is sticky left.</div>
+          </div>
+        </div>
+
+        <div class="wire-section">
+          <div class="wire-header" onclick="toggleWire(this)">
+            <span class="wire-label">03 — Services (stacked cards, 200vh)</span>
+            <span class="wire-tech">CSS 3D + GSAP ScrollTrigger</span>
+          </div>
+          <div class="wire-content" style="display:none">
+            <div class="wire-layout" style="flex-direction:column">
+              <div class="wire-block" style="background:rgba(201,169,110,0.08)">Card 1 — VIDEO EDITING (front, full width)</div>
+              <div class="wire-block" style="background:rgba(201,169,110,0.04);margin-top:-20px">Card 2 — DESIGN (behind card 1, peeking)</div>
+              <div class="wire-block" style="background:rgba(201,169,110,0.02);margin-top:-20px">Card 3 — BRANDING (behind card 2)</div>
+            </div>
+            <div class="wire-note">As user scrolls, card 1 rotates along X axis and scales back, revealing card 2. CSS perspective: 1200px. Each card: two-column layout — service title + icon left, bullet list + CTA right. Background uses a dark noise texture.</div>
+          </div>
+        </div>
+
+        <div class="wire-section">
+          <div class="wire-header" onclick="toggleWire(this)">
+            <span class="wire-label">04 — Process (100vh)</span>
+            <span class="wire-tech">GSAP DrawSVG + R3F Accent</span>
+          </div>
+          <div class="wire-content" style="display:none">
+            <div class="wire-layout">
+              <div class="wire-block">01 Discover</div>
+              <div class="wire-block highlight">→ golden line draws</div>
+              <div class="wire-block">02 Direct</div>
+              <div class="wire-block highlight">→</div>
+              <div class="wire-block">03 Design</div>
+              <div class="wire-block highlight">→</div>
+              <div class="wire-block">04 Deliver</div>
+            </div>
+            <div class="wire-note">Timeline sits in center of viewport. R3F accent: a small floating 3D camera mesh (low-poly) to the left that subtly rotates. Steps are hidden and animate in with ScrollTrigger stagger. This is the "breathing" section — less heavy, more editorial.</div>
+          </div>
+        </div>
+
+        <div class="wire-section">
+          <div class="wire-header" onclick="toggleWire(this)">
+            <span class="wire-label">05 — Gallery (auto height)</span>
+            <span class="wire-tech">CSS Masonry + Magnetic Cursor</span>
+          </div>
+          <div class="wire-content" style="display:none">
+            <div class="wire-layout" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px">
+              <div class="wire-block highlight" style="min-height:80px">Tall 2:3</div>
+              <div class="wire-block">Wide 16:9</div>
+              <div class="wire-block highlight">Square 1:1</div>
+              <div class="wire-block">Square 1:1</div>
+              <div class="wire-block highlight" style="min-height:80px">Tall 2:3</div>
+              <div class="wire-block">Wide 16:9</div>
+            </div>
+            <div class="wire-note">3-column masonry (CSS columns property). Category filter tabs above — clicking filters with a GSAP Flip animation. Custom cursor: a circular ring that expands on hover with "VIEW" text. Images use a lazy-loading reveal with ClipPath animation.</div>
+          </div>
+        </div>
+
+        <div class="wire-section">
+          <div class="wire-header" onclick="toggleWire(this)">
+            <span class="wire-label">06 — Testimonials (50vh)</span>
+            <span class="wire-tech">CSS Marquee</span>
+          </div>
+          <div class="wire-content" style="display:none">
+            <div class="wire-layout" style="flex-direction:column;gap:6px">
+              <div class="wire-block full" style="font-size:10px">→ "Noorish transformed our brand story..."  — Sarah Chen  · · ·  "Every frame is..."  — Emma Blackwell →</div>
+              <div class="wire-block full" style="font-size:10px">← "Working with Noorish..."  — Lina Kaur  · · ·  "Their design work..."  — Marcus Rivera ←</div>
+            </div>
+            <div class="wire-note">Row 1 scrolls right at 30px/s, Row 2 scrolls left at 22px/s. Each quote separated by a golden "·" divider. On mouse enter on a row, animation pauses that row. Font: large editorial sans (40px+). No cards, no attribution boxes.</div>
+          </div>
+        </div>
+
+        <div class="wire-section">
+          <div class="wire-header" onclick="toggleWire(this)">
+            <span class="wire-label">07 — Contact (100vh)</span>
+            <span class="wire-tech">WebGL bg + HTML Form</span>
+          </div>
+          <div class="wire-content" style="display:none">
+            <div class="wire-layout" style="flex-direction:column;gap:8px">
+              <div class="wire-block highlight full" style="font-size:10px">R3F — Drifting film frames (3D planes with dark texture)</div>
+              <div class="wire-layout" style="margin-top:0">
+                <div class="wire-block" style="flex:0 0 45%">LET'S CREATE — display headline left</div>
+                <div class="wire-block highlight" style="flex:1">Form — Name / Email / Type / Message (right column)</div>
+              </div>
+            </div>
+            <div class="wire-note">Two-column layout: headline + tagline left, form right. R3F scene behind everything (z-index -1, pointer-events none). Form fields have no background — only a bottom border that glows gold on focus. Submit button: cinematic → style.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ANIMATION PANEL -->
+    <div class="panel" id="panel-animation">
+      <div class="anim-grid">
+        <div class="anim-row">
+          <div class="anim-section-name">Hero Entry</div>
+          <div class="anim-items">
+            <div class="anim-item"><span>Stagger letter reveal</span> — "NOORISH STUDIO" each char: opacity 0→1 + y: 40→0, 0.04s stagger, ease: Power3.out, 1.8s total</div>
+            <div class="anim-item"><span>Subtitle</span> — delay 1.4s, clip-path: inset(0 100% 0 0) → inset(0 0% 0 0), ease: expo.out</div>
+            <div class="anim-item"><span>CTA button</span> — delay 2.0s, scaleX border draw + opacity, golden underline SVG path draw</div>
+            <div class="anim-item"><span>Film grain overlay</span> — CSS: background-position shifts every 100ms via JS random offset (noise flicker)</div>
+          </div>
+        </div>
+        <div class="anim-row">
+          <div class="anim-section-name">Scroll Reel</div>
+          <div class="anim-items">
+            <div class="anim-item"><span>GSAP ScrollTrigger pin</span> — scrub: 1, translateX on inner container. Velocity mapped via ticker delta</div>
+            <div class="anim-item"><span>Clip preview</span> — onMouseEnter play(), onMouseLeave pause() reset. Scale 1→1.04 with ease spring</div>
+            <div class="anim-item"><span>Counter</span> — GSAP scramble text effect on number, counts 01→06 as clips enter viewport</div>
+          </div>
+        </div>
+        <div class="anim-row">
+          <div class="anim-section-name">Services</div>
+          <div class="anim-items">
+            <div class="anim-item"><span>Card stack reveal</span> — CSS 3D: rotateX(-8deg) scale(0.96) on buried cards. ScrollTrigger pulls front card back with rotateX + y offset</div>
+            <div class="anim-item"><span>Service icon SVG</span> — strokeDashoffset draw animation, 0.8s, triggered when card enters viewport</div>
+            <div class="anim-item"><span>List items</span> — stagger 0.06s y:20→0, delay after card is fully centered</div>
+          </div>
+        </div>
+        <div class="anim-row">
+          <div class="anim-section-name">Process</div>
+          <div class="anim-items">
+            <div class="anim-item"><span>Golden line draw</span> — GSAP drawSVG plugin on horizontal path, scrub 1, 0→100% as section scrolls through</div>
+            <div class="anim-item"><span>Step nodes</span> — scale 0→1 with elastic ease as line reaches each point. Number scramble on entry</div>
+          </div>
+        </div>
+        <div class="anim-row">
+          <div class="anim-section-name">Gallery</div>
+          <div class="anim-items">
+            <div class="anim-item"><span>Image reveal</span> — clipPath: inset(100% 0 0 0) → inset(0% 0 0 0), staggered by index × 80ms. ScrollTrigger batch</div>
+            <div class="anim-item"><span>Magnetic cursor</span> — custom cursor div follows mouse at lerp 0.12. On .hoverable enter: cursor scale 3×, mix-blend-mode difference</div>
+            <div class="anim-item"><span>Filter transition</span> — GSAP Flip plugin: items animate to new positions on category change. Exiting items: opacity 0 + scale 0.9</div>
+          </div>
+        </div>
+        <div class="anim-row">
+          <div class="anim-section-name">Contact</div>
+          <div class="anim-items">
+            <div class="anim-item"><span>Headline split</span> — SplitText line-by-line, y: 80→0, clip-path reveal per line, stagger 0.12s</div>
+            <div class="anim-item"><span>Mouse parallax</span> — R3F scene reacts to mousemove: camera.rotation.y ±0.04, camera.rotation.x ±0.02, lerped at 0.05</div>
+            <div class="anim-item"><span>Field focus glow</span> — box-shadow 0→0 0 0 1px gold, border-color transition 0.3s</div>
+          </div>
+        </div>
+        <div class="anim-row">
+          <div class="anim-section-name">Global</div>
+          <div class="anim-items">
+            <div class="anim-item"><span>Lenis smooth scroll</span> — lerp: 0.08, duration: 1.2, easing: easeInOutCubic. GSAP ScrollTrigger synced via lenis.on('scroll', ScrollTrigger.update)</div>
+            <div class="anim-item"><span>Page load</span> — custom loader: film countdown (3-2-1), then curtain wipe vertical reveal. Total: 2.2s before hero animates in</div>
+            <div class="anim-item"><span>Nav on scroll</span> — after 80px scroll, nav background: transparent→rgba(0,0,0,0.85) backdrop-blur, height reduces 80px→60px</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PERFORMANCE PANEL -->
+    <div class="panel" id="panel-performance">
+      <div class="perf-grid">
+        <div class="perf-card">
+          <div class="perf-icon">🎬</div>
+          <div class="perf-title">Video Strategy</div>
+          <ul class="perf-list">
+            <li>Poster images load first, video deferred until IntersectionObserver fires</li>
+            <li>Videos served in WebM + MP4 fallback, compressed to ≤3MB each</li>
+            <li>Hero reel: autoplay muted loop, max 720p, preload="none"</li>
+            <li>Filmstrip clips: preload first 2 frames only (metadata)</li>
+            <li>Consider Cloudinary or Cloudflare Stream for adaptive HLS</li>
+          </ul>
+        </div>
+        <div class="perf-card">
+          <div class="perf-icon">🧊</div>
+          <div class="perf-title">WebGL Budget</div>
+          <ul class="perf-list">
+            <li>Single shared WebGL context (R3F Canvas, not per-section)</li>
+            <li>Bokeh particles: ≤500 instances using InstancedMesh</li>
+            <li>Film frame scene: max 8 plane geometries, shared material</li>
+            <li>Suspend all R3F scenes off-screen using <Canvas frameloop="demand"&gt;</li>
+            <li>DREI's useIntersect to pause renders outside viewport</li>
+          </ul>
+        </div>
+        <div class="perf-card">
+          <div class="perf-icon">🖼️</div>
+          <div class="perf-title">Image Strategy</div>
+          <ul class="perf-list">
+            <li>All gallery images: WebP format, 1× and 2× srcset</li>
+            <li>Native loading="lazy" + GSAP reveal after load fires</li>
+            <li>Masonry images: fixed aspect ratios to prevent layout shift (CLS 0)</li>
+            <li>LCP image (hero reel poster): preload link in &lt;head&gt;, eager load</li>
+            <li>LQIP (Low Quality Image Placeholders) for gallery tiles</li>
+          </ul>
+        </div>
+        <div class="perf-card">
+          <div class="perf-icon">⚡</div>
+          <div class="perf-title">JS Bundle</div>
+          <ul class="perf-list">
+            <li>Code-split by route; R3F components lazy-loaded with Suspense</li>
+            <li>GSAP: import only used plugins (no full bundle)</li>
+            <li>Three.js: tree-shake via import from 'three/src/...'</li>
+            <li>Fonts: subset to Latin charset only, preconnect to Google Fonts</li>
+            <li>Target: LCP &lt;2.5s, TBT &lt;200ms, CLS = 0</li>
+          </ul>
+        </div>
+        <div class="perf-card">
+          <div class="perf-icon">🎞️</div>
+          <div class="perf-title">Animation Performance</div>
+          <ul class="perf-list">
+            <li>Only animate transform + opacity — avoid paint-triggering properties</li>
+            <li>will-change: transform on cards that will 3D-transform</li>
+            <li>GSAP's force3D: true on all tween targets</li>
+            <li>Filmstrip scroll: use translate3d, not left/top</li>
+            <li>Kill all ScrollTriggers on component unmount (cleanup)</li>
+          </ul>
+        </div>
+        <div class="perf-card">
+          <div class="perf-icon">🏗️</div>
+          <div class="perf-title">Build + Infra</div>
+          <ul class="perf-list">
+            <li>Vite: manual chunk splitting for three, gsap, r3f</li>
+            <li>Rollup visualizer to audit bundle on each build</li>
+            <li>Netlify: edge caching, HTTP/2 push for critical CSS</li>
+            <li>Environment flag: VITE_ENABLE_WEBGL=false for perf testing</li>
+            <li>Prerender critical HTML with vite-plugin-ssr for SEO</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- MOBILE PANEL -->
+    <div class="panel" id="panel-mobile">
+      <div style="font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.6">Mobile-first fallback strategy. All WebGL sections degrade gracefully. Target: iPhone 13+, Android mid-range (Snapdragon 778G equivalent).</div>
+      <div class="mob-grid">
+        <div class="mob-card">
+          <div class="mob-section">Hero</div>
+          <div class="mob-items">
+            <div class="mob-item">R3F bokeh: disabled if GPU tier &lt; 2 (detected via drei/detect-gpu)</div>
+            <div class="mob-item">Replaced with: static gradient mesh + CSS film grain only</div>
+            <div class="mob-item">Hero video: hidden on mobile, replaced by high-quality poster image</div>
+            <div class="mob-item">Letter animation: keep but reduce duration 1.8s → 1.2s</div>
+          </div>
+        </div>
+        <div class="mob-card">
+          <div class="mob-section">Filmstrip Reel</div>
+          <div class="mob-items">
+            <div class="mob-item">Horizontal scroll: converted to swipeable Embla Carousel</div>
+            <div class="mob-item">Velocity-based scrub disabled; snap-to-slide instead</div>
+            <div class="mob-item">Video previews: tap to play (no hover state on mobile)</div>
+            <div class="mob-item">Sprocket decoration: hidden on screens &lt; 768px</div>
+          </div>
+        </div>
+        <div class="mob-card">
+          <div class="mob-section">Services</div>
+          <div class="mob-items">
+            <div class="mob-item">3D card stack: simplified to accordion expand/collapse</div>
+            <div class="mob-item">CSS 3D perspective removed; cards slide in from bottom instead</div>
+            <div class="mob-item">Two-column service layout becomes single column</div>
+            <div class="mob-item">ScrollTrigger scrub reduced to simple "once" trigger</div>
+          </div>
+        </div>
+        <div class="mob-card">
+          <div class="mob-section">Gallery</div>
+          <div class="mob-items">
+            <div class="mob-item">3-column masonry → 2-column on tablet, 1-column on mobile</div>
+            <div class="mob-item">Magnetic cursor: disabled (pointer: coarse detection)</div>
+            <div class="mob-item">Custom cursor div: hidden entirely on touch devices</div>
+            <div class="mob-item">Lightbox: full-screen modal with touch swipe navigation</div>
+          </div>
+        </div>
+        <div class="mob-card">
+          <div class="mob-section">Contact R3F</div>
+          <div class="mob-items">
+            <div class="mob-item">Floating film frames: disabled, replaced with CSS parallax divs</div>
+            <div class="mob-item">Mouse parallax: converted to gyroscope tilt (DeviceOrientation API)</div>
+            <div class="mob-item">Form: full-width single column, larger tap targets (min 44px)</div>
+            <div class="mob-item">Submit button: standard — no custom cursor interaction</div>
+          </div>
+        </div>
+        <div class="mob-card">
+          <div class="mob-section">Global Rules</div>
+          <div class="mob-items">
+            <div class="mob-item">prefers-reduced-motion: all animations off except opacity fades</div>
+            <div class="mob-item">Lenis: disabled on iOS Safari ≤ 15 (native momentum scroll used)</div>
+            <div class="mob-item">Font sizes scale with clamp() — no overflow on small screens</div>
+            <div class="mob-item">detect-gpu hook: sets a React context WEBGL_ENABLED globally</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROADMAP PANEL -->
+    <div class="panel" id="panel-roadmap">
+      <div style="font-size:11px;color:var(--muted);margin-bottom:16px">Recommended implementation order. Each phase should be shippable independently.</div>
+      <div class="road-phases">
+
+        <div class="road-phase">
+          <div class="road-spine"><div class="road-dot">1</div><div class="road-line"></div></div>
+          <div class="road-content">
+            <div class="road-title">Foundation (Days 1–3)</div>
+            <div class="road-tasks">
+              <div class="road-task"><b>Vite + React + Tailwind</b> setup with custom CSS variables (--gold, --dark, --grain)</div>
+              <div class="road-task"><b>Lenis smooth scroll</b> installed and wired to GSAP ScrollTrigger via raf loop</div>
+              <div class="road-task"><b>Typography system</b> — choose display font (Syne / Neue Montreal / Editorial New), install via Fontsource</div>
+              <div class="road-task"><b>Custom cursor component</b> — global div following mouse, toggling states on .hoverable elements</div>
+              <div class="road-task"><b>Film grain overlay</b> — CSS pseudo-element + JS flicker, applied globally</div>
+              <div class="road-task"><b>Page loader</b> — film countdown animation (3-2-1), curtain wipe, then sets a loaded state</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="road-phase">
+          <div class="road-spine"><div class="road-dot">2</div><div class="road-line"></div></div>
+          <div class="road-content">
+            <div class="road-title">Hero Section (Days 4–6)</div>
+            <div class="road-tasks">
+              <div class="road-task"><b>R3F canvas</b> setup with bokeh particle system (InstancedMesh + shader material)</div>
+              <div class="road-task"><b>Hero text animation</b> — GSAP SplitText stagger + clip-path reveal sequence</div>
+              <div class="road-task"><b>Muted video background</b> — deferred load with poster fallback</div>
+              <div class="road-task"><b>Nav component</b> — sticky with scroll-triggered glass morphism</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="road-phase">
+          <div class="road-spine"><div class="road-dot">3</div><div class="road-line"></div></div>
+          <div class="road-content">
+            <div class="road-title">Reel + Services (Days 7–11)</div>
+            <div class="road-tasks">
+              <div class="road-task"><b>Horizontal filmstrip</b> — GSAP pin + horizontal translate, velocity scrub, sprocket SVG decoration</div>
+              <div class="road-task"><b>Video clip previews</b> — IntersectionObserver load, hover play/pause logic</div>
+              <div class="road-task"><b>Services card stack</b> — CSS 3D perspective setup, ScrollTrigger for card reveal sequence</div>
+              <div class="road-task"><b>SVG icon draw animations</b> — strokeDashoffset per service, triggered on card enter</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="road-phase">
+          <div class="road-spine"><div class="road-dot">4</div><div class="road-line"></div></div>
+          <div class="road-content">
+            <div class="road-title">Gallery + Process (Days 12–16)</div>
+            <div class="road-tasks">
+              <div class="road-task"><b>Masonry gallery</b> — CSS columns, category filter with GSAP Flip, lazy image loading</div>
+              <div class="road-task"><b>Magnetic cursor logic</b> — spring physics cursor on gallery hover targets</div>
+              <div class="road-task"><b>Lightbox component</b> — GSAP morph from thumbnail to fullscreen, swipe support</div>
+              <div class="road-task"><b>Process timeline</b> — GSAP drawSVG on horizontal path, step node reveals</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="road-phase">
+          <div class="road-spine"><div class="road-dot">5</div><div class="road-line"></div></div>
+          <div class="road-content">
+            <div class="road-title">Contact + Testimonials (Days 17–20)</div>
+            <div class="road-tasks">
+              <div class="road-task"><b>Testimonials marquee</b> — dual-row opposing CSS animation, hover pause via JS</div>
+              <div class="road-task"><b>Contact R3F scene</b> — floating film frame planes, mouse parallax camera tilt</div>
+              <div class="road-task"><b>Form component</b> — minimal gold-focus inputs, validation states, EmailJS or Netlify Forms</div>
+              <div class="road-task"><b>Footer</b> — film credits styling, N monogram SVG logo, social links</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="road-phase">
+          <div class="road-spine"><div class="road-dot">6</div></div>
+          <div class="road-content" style="padding-bottom:0">
+            <div class="road-title">Polish + Performance (Days 21–25)</div>
+            <div class="road-tasks">
+              <div class="road-task"><b>detect-gpu integration</b> — disable R3F globally on low-tier devices, mobile fallbacks</div>
+              <div class="road-task"><b>Bundle audit</b> — Rollup visualizer, split chunks for three/gsap/r3f</div>
+              <div class="road-task"><b>Lighthouse pass</b> — target LCP &lt;2.5s, CLS = 0, accessibility audit</div>
+              <div class="road-task"><b>Cross-browser QA</b> — Safari 16+, Chrome, Firefox, iOS Safari, Android Chrome</div>
+              <div class="road-task"><b>prefers-reduced-motion</b> — wrap all GSAP animations, test with OS setting on</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function showPanel(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.bp-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+function toggleWire(header) {
+  const content = header.nextElementSibling;
+  const wasHidden = content.style.display === 'none';
+  document.querySelectorAll('.wire-content').forEach(c => c.style.display = 'none');
+  if (wasHidden) content.style.display = 'block';
+}
+</script>

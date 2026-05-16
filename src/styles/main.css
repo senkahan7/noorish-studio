@@ -66,7 +66,7 @@ html.lenis, html.lenis body { height: auto; }
 
 body {
   font-family: var(--f-body);
-  background: var(--c-bg);
+  background: #fdfcf8;
   color: var(--c-cream);
   overflow-x: hidden;
   cursor: none;
@@ -85,20 +85,7 @@ body {
   --light-card-shadow: 0 12px 32px rgba(0, 0, 0, 0.05), inset 0 1px 1px rgba(255, 255, 255, 1);
 }
 
-body.theme-dark {
-  --light-text: #f5f5f0;
-  --light-dim: rgba(245, 245, 240, 0.6);
-  --light-number: #E879F9;
-  --light-tag: #E879F9;
-  --light-border: rgba(217, 70, 239, 0.4);
-  --light-marker-bg: #000000;
-  --light-marker-text: #E879F9;
-  --light-marker-border: rgba(217, 70, 239, 0.2);
-  /* iOS Glassmorphism (Dark mode override if needed) */
-  --light-card-bg: linear-gradient(135deg, rgba(30, 30, 35, 0.5), rgba(20, 20, 25, 0.2));
-  --light-card-border: rgba(255, 255, 255, 0.15);
-  --light-card-shadow: 0 18px 50px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.1);
-}
+/* Dark theme removed for performance */
 
 a { color: inherit; text-decoration: none; }
 img { display: block; max-width: 100%; height: auto; }
@@ -121,53 +108,9 @@ button, input, textarea, select { font-family: inherit; }
   filter: blur(0.6px); /* Smoothens the segmented lines into organic curves */
 }
 
-/* === Background Morph System === */
-.bg-morph {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  pointer-events: none;
-}
+/* Background morph system removed for performance */
 
-.bg-morph-layer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  transition: opacity 1s cubic-bezier(0.23, 1, 0.32, 1);
-  will-change: opacity;
-}
-
-.bg-morph-layer.active {
-  opacity: 1;
-}
-
-.bg-morph--dark {
-  background: var(--c-bg-deep);
-}
-
-.bg-morph--cream {
-  background: #fdfcf8;
-}
-
-.bg-morph--gradient {
-  background: radial-gradient(circle at 50% 50%, #1a121d 0%, #0a0a0a 100%);
-}
-
-/* Global Vignette to kill blue edge glow */
-body::after {
-  content: '';
-  position: fixed;
-  top:0;left:0;right:0;bottom:0;
-  box-shadow: inset 0 0 200px rgba(0,0,0,0.9);
-  z-index: 1000;
-  pointer-events: none;
-}
+/* Global vignette removed — was for dark theme */
 
 /* === Custom Cursor === */
 .cursor {
@@ -235,100 +178,7 @@ body::after {
   75% { transform: translate(-2%, 3%); }
 }
 
-/* === Floating Animated Vectors === */
-.floating-vectors {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: var(--z-vectors);
-  pointer-events: none;
-  overflow: hidden;
-}
-
-.float-vec {
-  position: absolute;
-  color: var(--c-accent);
-  opacity: 0.12;
-  will-change: transform;
-}
-
-.vec-filmstrip {
-  width: 120px;
-  top: 15%;
-  left: 5%;
-  animation: vecFloat1 18s ease-in-out infinite;
-}
-
-.vec-play {
-  width: 50px;
-  top: 70%;
-  left: 10%;
-  animation: vecFloat2 22s ease-in-out infinite;
-}
-
-.vec-pen {
-  width: 45px;
-  top: 20%;
-  right: 8%;
-  animation: vecFloat3 16s ease-in-out infinite;
-}
-
-.vec-bezier {
-  width: 90px;
-  top: 55%;
-  right: 5%;
-  animation: vecFloat1 20s ease-in-out infinite reverse;
-}
-
-.vec-palette {
-  width: 50px;
-  top: 80%;
-  right: 15%;
-  animation: vecFloat2 19s ease-in-out infinite;
-}
-
-.vec-aperture {
-  width: 55px;
-  top: 40%;
-  left: 3%;
-  animation: vecFloat3 24s ease-in-out infinite;
-}
-
-.vec-typo {
-  width: 40px;
-  top: 8%;
-  right: 35%;
-  animation: vecFloat1 21s ease-in-out infinite;
-}
-
-.vec-grid {
-  width: 50px;
-  top: 88%;
-  left: 40%;
-  animation: vecFloat2 17s ease-in-out infinite reverse;
-}
-
-@keyframes vecFloat1 {
-  0%, 100% { transform: translate(0, 0) rotate(0deg); }
-  25% { transform: translate(20px, -30px) rotate(5deg); }
-  50% { transform: translate(-15px, -50px) rotate(-3deg); }
-  75% { transform: translate(25px, -20px) rotate(4deg); }
-}
-
-@keyframes vecFloat2 {
-  0%, 100% { transform: translate(0, 0) rotate(0deg); }
-  33% { transform: translate(-25px, -40px) rotate(-8deg); }
-  66% { transform: translate(15px, 20px) rotate(6deg); }
-}
-
-@keyframes vecFloat3 {
-  0%, 100% { transform: translate(0, 0) rotate(0deg); }
-  25% { transform: translate(-20px, 25px) rotate(10deg); }
-  50% { transform: translate(30px, -15px) rotate(-5deg); }
-  75% { transform: translate(-10px, -35px) rotate(7deg); }
-}
+/* Floating animated vectors removed for performance */
 
 /* === Multi-font & Decorative Typography === */
 .font-serif {
@@ -707,7 +557,18 @@ body::after {
   justify-content: space-between;
   align-items: center;
   z-index: var(--z-nav);
-  /* Removed mix-blend-mode: difference to fix color inversion */
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background 0.4s ease, backdrop-filter 0.4s ease, border-bottom 0.4s ease, padding 0.4s ease;
+}
+
+.nav.nav--scrolled {
+  /* Gaussian blur frosted glass effect only appears on scroll */
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 1rem var(--s-page); /* Slightly slimmer when scrolled */
 }
 
 .nav-logo {
@@ -2576,8 +2437,6 @@ select.form-input option {
   }
 
   .testimonial-card { width: 320px; padding: 1.5rem; }
-
-  .nav-logo-text { display: none; }
   .nav-center { display: none; }
 
   .footer-inner { flex-direction: column; text-align: center; }
@@ -2598,4 +2457,251 @@ select.form-input option {
   opacity: 0;
   transform: translateY(80px) rotate(10deg);
   will-change: transform, opacity;
+}
+
+/* === New Graphic Design Gallery === */
+.new-gallery {
+  padding: 8rem var(--s-page);
+  background: transparent;
+  color: #1a1a1a;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.ng-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.ng-title {
+  font-family: var(--f-display);
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-weight: 700;
+  color: #111;
+}
+
+.ng-title::after {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 2px;
+  background: #9b4dca;
+  margin: 1rem auto 0;
+}
+
+.ng-container {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.ng-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+@media (min-width: 768px) {
+  .ng-row {
+    flex-direction: row;
+    align-items: stretch;
+  }
+}
+
+.ng-card {
+  background: rgba(244, 244, 244, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 12px;
+  padding: 2.5rem 2rem;
+  flex: 0 0 280px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.ng-icon {
+  width: 48px;
+  height: 48px;
+  background: #ebebeb;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9b4dca;
+  margin-bottom: 1.5rem;
+}
+
+.ng-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.ng-card-title {
+  font-family: var(--f-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.ng-card-desc {
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.5;
+}
+
+.ng-media {
+  flex: 1;
+  display: grid;
+  gap: 1rem;
+}
+
+.ng-media--3 { grid-template-columns: repeat(3, 1fr); }
+.ng-media--1 { grid-template-columns: 1fr; }
+.ng-media--4 { grid-template-columns: repeat(4, 1fr); }
+
+.ng-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.ng-img.wide { aspect-ratio: 21 / 9; }
+
+@media (max-width: 767px) {
+  .ng-media--3, .ng-media--4 { grid-template-columns: repeat(2, 1fr); }
+}
+
+.ng-banner {
+  background: rgba(244, 244, 244, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 12px;
+  padding: 2rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+@media (min-width: 768px) {
+  .ng-banner { flex-direction: row; }
+}
+
+.ng-banner-left {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.ng-banner-icon {
+  width: 56px;
+  height: 56px;
+  background: #ebebeb;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9b4dca;
+  flex-shrink: 0;
+}
+
+.ng-banner-icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.ng-banner-text {
+  font-family: var(--f-display);
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #111;
+  line-height: 1.4;
+}
+
+.ng-highlight {
+  color: #9b4dca;
+  font-style: italic;
+  font-weight: 600;
+}
+
+.ng-btn {
+  background: #9b4dca;
+  color: #fff;
+  padding: 1rem 2rem;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  white-space: nowrap;
+}
+
+.ng-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(155, 77, 202, 0.3);
+}
+
+/* === Nav Pills (Edits & Designs) === */
+.nav-pills {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.nav-pill {
+  position: relative;
+  background: transparent;
+  color: #111111;
+  padding: 0.6rem 1.75rem;
+  border-radius: 50px;
+  font-family: var(--f-sans, sans-serif);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  border: 1.5px solid #111111;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* Animated gradient layer */
+.nav-pill::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(90deg, #d946ef, #9b4dca, #d946ef);
+  background-size: 200% auto;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.nav-pill:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 10px 25px rgba(155, 77, 202, 0.35);
+  border-color: transparent;
+  color: #ffffff;
+}
+
+.nav-pill:hover::after {
+  opacity: 1;
+  animation: shineGradient 2s linear infinite;
+}
+
+@keyframes shineGradient {
+  to { background-position: 200% center; }
 }

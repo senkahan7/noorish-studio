@@ -245,7 +245,7 @@ class TopographicBackground {
     this.ctx.clearRect(0, 0, this.width, this.height);
     
     // Softer line opacities for more subtle topographic feel
-    this.ctx.strokeStyle = this.isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(30, 30, 30, 0.12)';
+    this.ctx.strokeStyle = this.isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(30, 30, 30, 0.3)';
     this.ctx.lineWidth = 1.2;
     this.ctx.lineCap = 'round';
     this.ctx.lineJoin = 'round';
@@ -615,18 +615,7 @@ function initAnimations() {
     });
   });
   
-  // --- G. Floating Vectors Setup ---
-  const vectors = document.querySelectorAll('.float-vec');
-  if (!IS_TOUCH) {
-    document.addEventListener('mousemove', (e) => {
-      const x = (e.clientX / window.innerWidth - 0.5) * 2;
-      const y = (e.clientY / window.innerHeight - 0.5) * 2;
-      vectors.forEach((vec, i) => {
-        const factor = (i + 1) * 5;
-        gsap.to(vec, { x: x * factor, y: y * factor, rotation: x * 3, duration: 2, ease: 'power2.out' });
-      });
-    });
-  }
+
 
   // --- H. Gallery Tab Switching ---
   const galleryTabs = document.querySelectorAll('.gallery-tab');
@@ -884,5 +873,32 @@ document.addEventListener('DOMContentLoaded', () => {
     initMarqueeLoop();
     
     ScrollTrigger.refresh();
+  });
+
+  // 4. Navigation blur on scroll
+  const nav = document.getElementById('nav');
+  if (nav) {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        nav.classList.add('nav--scrolled');
+      } else {
+        nav.classList.remove('nav--scrolled');
+      }
+    }, { passive: true });
+  }
+
+  // 5. New Graphic Design Gallery animations
+  const ngRows = document.querySelectorAll('.ng-row, .ng-banner');
+  ngRows.forEach(row => {
+    gsap.to(row, {
+      scrollTrigger: {
+        trigger: row,
+        start: 'top 85%',
+      },
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: 'power3.out'
+    });
   });
 });

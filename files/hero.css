@@ -1,0 +1,462 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   hero.css
+   All styles scoped under .hero — no globals polluted.
+
+   Design tokens (set on :root or a parent theme element):
+     --gold      : #c9a96e   warm accent
+     --gold-dim  : #8a6f42   muted gold for secondary elements
+     --hero-bg   : #080808   near-black background
+     --hero-text : #f0ece4   warm off-white
+     --hero-muted: #6b6660   subdued text
+
+   Fonts required (add to index.html or load in main.tsx):
+     @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* ─── Root tokens ────────────────────────────────────────────────────────── */
+
+:root {
+  --gold      : #c9a96e;
+  --gold-dim  : #8a6f42;
+  --hero-bg   : #080808;
+  --hero-text : #f0ece4;
+  --hero-muted: #6b6660;
+}
+
+/* ─── Section shell ──────────────────────────────────────────────────────── */
+
+.hero {
+  position     : relative;
+  width        : 100%;
+  height       : 100svh;       /* svh = safe viewport height (avoids iOS bar) */
+  min-height   : 600px;
+  overflow     : hidden;
+  background   : var(--hero-bg);
+  /* Prevent flash of unstyled content before JS hydrates */
+  contain      : layout style;
+}
+
+/* ─── Canvas layer ───────────────────────────────────────────────────────── */
+
+.hero__canvas {
+  position       : absolute;
+  inset          : 0;
+  z-index        : 0;
+  /* Subtle scale-out masks the canvas edge on ultra-wide viewports */
+  transform      : scale(1.02);
+}
+
+/* ─── Vignette overlay ───────────────────────────────────────────────────── */
+
+.hero__vignette {
+  position       : absolute;
+  inset          : 0;
+  z-index        : 1;
+  pointer-events : none;
+  background     :
+    /* Dark corners pull focus to center */
+    radial-gradient(
+      ellipse 120% 110% at 50% 50%,
+      transparent 40%,
+      rgba(8, 8, 8, 0.60) 100%
+    ),
+    /* Bottom gradient darkens toward the scroll zone */
+    linear-gradient(
+      to bottom,
+      rgba(8, 8, 8, 0.45) 0%,
+      transparent 25%,
+      transparent 65%,
+      rgba(8, 8, 8, 0.75) 100%
+    );
+}
+
+/* ─── Film grain ─────────────────────────────────────────────────────────── */
+/*
+   SVG feTurbulence grain — no external file needed.
+   The ::after pseudo-element is larger than the container (300%) and
+   animates its translate, creating the flicker effect without needing
+   multiple keyframe layers.
+*/
+
+.hero__grain {
+  position       : absolute;
+  inset          : 0;
+  z-index        : 2;
+  pointer-events : none;
+  overflow       : hidden;
+}
+
+.hero__grain::before {
+  content    : '';
+  position   : absolute;
+  /* 300% size so the animated shift is never visible at the edges */
+  inset      : -100%;
+  width      : 300%;
+  height     : 300%;
+  opacity    : 0.038;
+  mix-blend-mode : overlay;
+  background-image : url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.80' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  animation  : heroGrain 0.45s steps(1) infinite;
+  will-change: transform;
+}
+
+@keyframes heroGrain {
+  0%   { transform: translate(0%,   0%) }
+  11%  { transform: translate(-4%,  3%) }
+  22%  { transform: translate( 3%, -5%) }
+  33%  { transform: translate(-2%,  4%) }
+  44%  { transform: translate( 5%, -2%) }
+  55%  { transform: translate(-3%,  6%) }
+  66%  { transform: translate( 2%, -3%) }
+  77%  { transform: translate(-5%,  1%) }
+  88%  { transform: translate( 4%, -4%) }
+  100% { transform: translate(-1%,  2%) }
+}
+
+/* ─── Content container ──────────────────────────────────────────────────── */
+
+.hero__content {
+  position       : absolute;
+  inset          : 0;
+  z-index        : 10;
+  display        : flex;
+  flex-direction : column;
+  justify-content: flex-end;    /* anchor text to bottom third — cinematic */
+  padding        : 0 clamp(24px, 5vw, 80px) clamp(80px, 10vh, 140px);
+  pointer-events : none;        /* allow clicks to pass through to canvas */
+}
+
+/* ─── Eyebrow ────────────────────────────────────────────────────────────── */
+
+.hero__eyebrow {
+  display        : flex;
+  align-items    : center;
+  gap            : 14px;
+  margin-bottom  : 20px;
+  opacity        : 0;  /* GSAP animates this in */
+  transform      : translateY(12px);
+}
+
+.hero__eyebrow-line {
+  display    : block;
+  width      : 32px;
+  height     : 1px;
+  background : var(--gold);
+  opacity    : 0.7;
+  flex-shrink: 0;
+}
+
+.hero__eyebrow-text {
+  font-family    : 'Syne', sans-serif;
+  font-size      : clamp(10px, 1.2vw, 13px);
+  font-weight    : 600;
+  letter-spacing : 0.22em;
+  text-transform : uppercase;
+  color          : var(--gold);
+  opacity        : 0.85;
+}
+
+/* ─── Title ──────────────────────────────────────────────────────────────── */
+
+.hero__title {
+  font-family    : 'Syne', sans-serif;
+  font-size      : clamp(52px, 8.5vw, 130px);
+  font-weight    : 800;
+  line-height    : 0.92;
+  letter-spacing : -0.025em;
+  color          : var(--hero-text);
+  margin         : 0 0 clamp(16px, 2.5vh, 28px);
+  overflow       : hidden;  /* clips chars during y-translate reveal */
+  /* perspective creates depth during the rotateX entrance */
+  perspective    : 1200px;
+}
+
+/* Each character is wrapped by split-type or our manual split in Hero.tsx */
+.hero__title .char {
+  display        : inline-block;
+  /* Initial state — GSAP overrides these */
+  opacity        : 0;
+  transform      : translateY(100%) rotateX(-80deg);
+  transform-origin: top center;
+}
+
+.hero__title .char[data-char=" "] {
+  width: 0.3em;  /* preserve word spacing */
+}
+
+/* ─── Subtitle ───────────────────────────────────────────────────────────── */
+
+.hero__subtitle {
+  font-family    : 'DM Sans', sans-serif;
+  font-size      : clamp(13px, 1.4vw, 18px);
+  font-weight    : 300;
+  letter-spacing : 0.08em;
+  color          : var(--hero-muted);
+  margin         : 0 0 clamp(28px, 4vh, 48px);
+  opacity        : 0;  /* GSAP animates in */
+  clip-path      : inset(0 100% 0 0);
+  pointer-events : none;
+}
+
+.hero__subtitle .sep {
+  color   : var(--gold);
+  opacity : 0.6;
+  padding : 0 10px;
+  font-weight: 400;
+}
+
+/* ─── CTA Button ─────────────────────────────────────────────────────────── */
+
+.hero__cta {
+  display        : inline-flex;
+  align-items    : center;
+  gap            : 12px;
+  background     : transparent;
+  border         : none;
+  padding        : 0;
+  cursor         : pointer;
+  pointer-events : all;  /* re-enable clicks on this element */
+  opacity        : 0;    /* GSAP animates in */
+  transform      : translateY(16px);
+  position       : relative;
+  width          : fit-content;
+}
+
+.hero__cta-text {
+  font-family    : 'Syne', sans-serif;
+  font-size      : clamp(13px, 1.3vw, 16px);
+  font-weight    : 700;
+  letter-spacing : 0.18em;
+  text-transform : uppercase;
+  color          : var(--hero-text);
+  transition     : color 0.3s ease;
+}
+
+/* Animated underline */
+.hero__cta-line {
+  position       : absolute;
+  bottom         : -5px;
+  left           : 0;
+  right          : 48px;      /* stop before arrow */
+  height         : 1px;
+  background     : var(--gold);
+  transform-origin: left center;
+  transform      : scaleX(0);
+  transition     : transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hero__cta:hover .hero__cta-line {
+  transform: scaleX(1);
+}
+
+.hero__cta:hover .hero__cta-text {
+  color: var(--gold);
+}
+
+.hero__cta-arrow {
+  width          : 22px;
+  height         : 22px;
+  color          : var(--gold);
+  opacity        : 0.8;
+  transition     : transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s;
+  flex-shrink    : 0;
+}
+
+.hero__cta:hover .hero__cta-arrow {
+  transform: translate(4px, -4px);
+  opacity  : 1;
+}
+
+/* ─── Scroll indicator ───────────────────────────────────────────────────── */
+
+.hero__scroll {
+  position       : absolute;
+  bottom         : clamp(28px, 4vh, 48px);
+  right          : clamp(24px, 3vw, 48px);
+  z-index        : 10;
+  display        : flex;
+  flex-direction : column;
+  align-items    : center;
+  gap            : 10px;
+  opacity        : 0;  /* GSAP animates in */
+}
+
+.hero__scroll-text {
+  font-family    : 'Syne', sans-serif;
+  font-size      : 10px;
+  font-weight    : 600;
+  letter-spacing : 0.22em;
+  text-transform : uppercase;
+  color          : var(--hero-muted);
+  writing-mode   : vertical-rl;
+  text-orientation: mixed;
+}
+
+.hero__scroll-line {
+  width        : 1px;
+  height       : 52px;
+  background   : linear-gradient(to bottom, var(--gold-dim), transparent);
+  position     : relative;
+  overflow     : hidden;
+}
+
+.hero__scroll-line::after {
+  content          : '';
+  position         : absolute;
+  top              : -100%;
+  left             : 0;
+  width            : 100%;
+  height           : 50%;
+  background       : var(--gold);
+  animation        : scrollPulse 1.8s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
+@keyframes scrollPulse {
+  0%   { top: -50%; opacity: 1 }
+  100% { top: 110%; opacity: 0 }
+}
+
+/* ─── Navigation (sits atop hero) ───────────────────────────────────────── */
+
+.hero__nav {
+  position       : fixed;
+  top            : 0;
+  left           : 0;
+  right          : 0;
+  z-index        : 100;
+  padding        : clamp(20px, 3vh, 32px) clamp(24px, 5vw, 80px);
+  display        : flex;
+  align-items    : center;
+  justify-content: space-between;
+  transition     : padding 0.4s ease;
+}
+
+.hero__nav-logo {
+  font-family    : 'Syne', sans-serif;
+  font-size      : clamp(15px, 1.6vw, 18px);
+  font-weight    : 800;
+  letter-spacing : 0.06em;
+  color          : var(--hero-text);
+  text-decoration: none;
+  text-transform : uppercase;
+  display        : flex;
+  align-items    : center;
+  gap            : 10px;
+}
+
+.hero__nav-logo-mark {
+  width           : 28px;
+  height          : 28px;
+  border          : 1.5px solid var(--gold);
+  border-radius   : 4px;
+  display         : flex;
+  align-items     : center;
+  justify-content : center;
+  font-size       : 14px;
+  font-weight     : 800;
+  color           : var(--gold);
+  letter-spacing  : 0;
+}
+
+.hero__nav-links {
+  display        : flex;
+  align-items    : center;
+  gap            : clamp(24px, 3vw, 48px);
+  list-style     : none;
+  margin         : 0;
+  padding        : 0;
+}
+
+.hero__nav-links a {
+  font-family    : 'Syne', sans-serif;
+  font-size      : clamp(11px, 1.1vw, 13px);
+  font-weight    : 600;
+  letter-spacing : 0.14em;
+  text-transform : uppercase;
+  color          : var(--hero-muted);
+  text-decoration: none;
+  transition     : color 0.25s ease;
+  position       : relative;
+}
+
+.hero__nav-links a::after {
+  content        : '';
+  position       : absolute;
+  bottom         : -3px;
+  left           : 0;
+  width          : 100%;
+  height         : 1px;
+  background     : var(--gold);
+  transform      : scaleX(0);
+  transform-origin: left;
+  transition     : transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hero__nav-links a:hover {
+  color: var(--hero-text);
+}
+
+.hero__nav-links a:hover::after {
+  transform: scaleX(1);
+}
+
+.hero__nav-contact {
+  font-family    : 'Syne', sans-serif;
+  font-size      : clamp(11px, 1.1vw, 13px);
+  font-weight    : 700;
+  letter-spacing : 0.14em;
+  text-transform : uppercase;
+  color          : var(--gold) !important;
+  border         : 1px solid rgba(201, 169, 110, 0.35);
+  padding        : 8px 18px;
+  border-radius  : 3px;
+  transition     : background 0.3s, border-color 0.3s !important;
+}
+
+.hero__nav-contact:hover {
+  background    : rgba(201, 169, 110, 0.1) !important;
+  border-color  : var(--gold) !important;
+}
+
+.hero__nav-contact::after {
+  display: none !important;
+}
+
+/* ─── Reduced motion ─────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__grain::before,
+  .hero__scroll-line::after {
+    animation: none;
+  }
+
+  .hero__cta-line {
+    transition: none;
+  }
+
+  /* GSAP also checks this — wrap all timelines in:
+     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) { ... }
+  */
+}
+
+/* ─── Mobile ─────────────────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .hero__content {
+    padding-bottom: clamp(60px, 12vh, 90px);
+    justify-content: center;   /* vertically center on mobile */
+  }
+
+  .hero__title {
+    font-size: clamp(44px, 12vw, 68px);
+  }
+
+  .hero__scroll {
+    right  : 16px;
+    bottom : 20px;
+  }
+
+  .hero__nav-links {
+    display: none;   /* hamburger menu would replace this on mobile */
+  }
+}

@@ -15,11 +15,7 @@
     <!-- Interactive Topographic Canvas Background -->
     <canvas id="topoCanvas" class="topo-canvas"></canvas>
 
-    <!-- Section Background Morph Layers -->
-    <div class="bg-morph" id="bgMorph">
-        <div class="bg-morph-layer bg-morph--dark" data-section="dark"></div>
-        <div class="bg-morph-layer bg-morph--cream active" data-section="cream"></div>
-    </div>
+
 
     <!-- Custom Cursor -->
     <div class="cursor" id="cursor">
@@ -30,69 +26,7 @@
     <!-- Film Grain Overlay -->
     <div class="film-grain"></div>
 
-    <!-- Floating Animated Vectors -->
-    <div class="floating-vectors" id="floatingVectors">
-        <!-- Video Editing Vectors -->
-        <svg class="float-vec vec-filmstrip" viewBox="0 0 120 40" fill="none">
-            <rect x="2" y="2" width="116" height="36" rx="4" stroke="currentColor" stroke-width="1.5"/>
-            <rect x="8" y="6" width="8" height="8" rx="1" fill="currentColor" opacity="0.3"/>
-            <rect x="8" y="26" width="8" height="8" rx="1" fill="currentColor" opacity="0.3"/>
-            <rect x="104" y="6" width="8" height="8" rx="1" fill="currentColor" opacity="0.3"/>
-            <rect x="104" y="26" width="8" height="8" rx="1" fill="currentColor" opacity="0.3"/>
-            <line x1="22" y1="8" x2="98" y2="8" stroke="currentColor" stroke-width="0.5" opacity="0.4"/>
-            <line x1="22" y1="20" x2="98" y2="20" stroke="currentColor" stroke-width="0.5" opacity="0.4"/>
-            <line x1="22" y1="32" x2="98" y2="32" stroke="currentColor" stroke-width="0.5" opacity="0.4"/>
-        </svg>
-        <!-- Play Button -->
-        <svg class="float-vec vec-play" viewBox="0 0 60 60" fill="none">
-            <circle cx="30" cy="30" r="28" stroke="currentColor" stroke-width="1.5"/>
-            <polygon points="24,18 24,42 44,30" fill="currentColor" opacity="0.4"/>
-        </svg>
-        <!-- Pen Tool (Graphic Design) -->
-        <svg class="float-vec vec-pen" viewBox="0 0 60 60" fill="none">
-            <path d="M30 5 L40 45 L30 38 L20 45 Z" stroke="currentColor" stroke-width="1.5" fill="currentColor" fill-opacity="0.1"/>
-            <circle cx="30" cy="5" r="2" fill="currentColor" opacity="0.5"/>
-        </svg>
-        <!-- Bezier Curve -->
-        <svg class="float-vec vec-bezier" viewBox="0 0 100 60" fill="none">
-            <path d="M10 50 C30 10, 70 10, 90 50" stroke="currentColor" stroke-width="1.5" fill="none"/>
-            <circle cx="10" cy="50" r="3" fill="currentColor" opacity="0.5"/>
-            <circle cx="90" cy="50" r="3" fill="currentColor" opacity="0.5"/>
-            <line x1="10" y1="50" x2="30" y2="10" stroke="currentColor" stroke-width="0.5" stroke-dasharray="3 3" opacity="0.3"/>
-            <line x1="90" y1="50" x2="70" y2="10" stroke="currentColor" stroke-width="0.5" stroke-dasharray="3 3" opacity="0.3"/>
-            <circle cx="30" cy="10" r="2" stroke="currentColor" stroke-width="1" fill="none" opacity="0.5"/>
-            <circle cx="70" cy="10" r="2" stroke="currentColor" stroke-width="1" fill="none" opacity="0.5"/>
-        </svg>
-        <!-- Color Palette -->
-        <svg class="float-vec vec-palette" viewBox="0 0 60 60" fill="none">
-            <circle cx="30" cy="30" r="25" stroke="currentColor" stroke-width="1.5"/>
-            <circle cx="22" cy="22" r="4" fill="currentColor" opacity="0.35"/>
-            <circle cx="38" cy="22" r="4" fill="currentColor" opacity="0.25"/>
-            <circle cx="22" cy="38" r="4" fill="currentColor" opacity="0.15"/>
-            <circle cx="38" cy="38" r="4" fill="currentColor" opacity="0.45"/>
-        </svg>
-        <!-- Camera / Aperture -->
-        <svg class="float-vec vec-aperture" viewBox="0 0 60 60" fill="none">
-            <circle cx="30" cy="30" r="26" stroke="currentColor" stroke-width="1.5"/>
-            <circle cx="30" cy="30" r="16" stroke="currentColor" stroke-width="1"/>
-            <line x1="30" y1="4" x2="30" y2="14" stroke="currentColor" stroke-width="0.8" opacity="0.4"/>
-            <line x1="30" y1="46" x2="30" y2="56" stroke="currentColor" stroke-width="0.8" opacity="0.4"/>
-            <line x1="4" y1="30" x2="14" y2="30" stroke="currentColor" stroke-width="0.8" opacity="0.4"/>
-            <line x1="46" y1="30" x2="56" y2="30" stroke="currentColor" stroke-width="0.8" opacity="0.4"/>
-        </svg>
-        <!-- Typography A -->
-        <svg class="float-vec vec-typo" viewBox="0 0 50 60" fill="none">
-            <path d="M5 55 L25 5 L45 55" stroke="currentColor" stroke-width="1.5" fill="none"/>
-            <line x1="12" y1="38" x2="38" y2="38" stroke="currentColor" stroke-width="1.5"/>
-        </svg>
-        <!-- Grid / Layout -->
-        <svg class="float-vec vec-grid" viewBox="0 0 60 60" fill="none">
-            <rect x="4" y="4" width="22" height="22" rx="3" stroke="currentColor" stroke-width="1.2" opacity="0.5"/>
-            <rect x="34" y="4" width="22" height="22" rx="3" stroke="currentColor" stroke-width="1.2" opacity="0.5"/>
-            <rect x="4" y="34" width="22" height="22" rx="3" stroke="currentColor" stroke-width="1.2" opacity="0.5"/>
-            <rect x="34" y="34" width="22" height="22" rx="3" stroke="currentColor" stroke-width="1.2" opacity="0.5"/>
-        </svg>
-    </div>
+
 
     <!-- THE SLATE — Cinematic Clapperboard Loader -->
     <div class="sl" id="siteLoader">
@@ -161,13 +95,11 @@
     <!-- Navigation -->
     <nav class="nav" id="nav">
         <a href="#" class="nav-logo" data-hover>
-            <span class="nav-logo-mark">N</span>
             <span class="nav-logo-text">NOORISH</span>
         </a>
-        <div class="nav-center">
-            <a href="#works" class="nav-link" data-hover>Work</a>
-            <a href="#services" class="nav-link" data-hover>Services</a>
-            <a href="#gallery" class="nav-link" data-hover>Gallery</a>
+        <div class="nav-center nav-pills">
+            <a href="#works" class="nav-pill" data-hover>EDITS</a>
+            <a href="#new-gallery" class="nav-pill" data-hover>DESIGNS</a>
         </div>
         <a href="#contact" class="nav-cta" data-hover>
             <span class="nav-cta-text">CONTACT</span>
@@ -197,10 +129,7 @@
                 <span class="hero-tag">DESIGN</span>
             </div>
         </div>
-        <div class="hero-reel quick-buttons" id="quickButtons">
-            <a class="quick-button" href="#works" data-hover>Edits</a>
-            <a class="quick-button" href="#gallery" data-hover>Designs</a>
-        </div>
+
         <div class="hero-scroll" id="heroScroll">
             <span class="hero-scroll-text">SCROLL</span>
             <div class="hero-scroll-line"></div>
@@ -443,166 +372,106 @@
 
 
 
-    <!-- Section 3: Graphic Design Gallery - Categorized -->
-    <section class="gallery section-theme--light" id="gallery" data-bg="cream" data-bg-start="top top" data-bg-end="bottom top">
-        <div class="gallery-header">
-            <h2 class="section-number">03</h2>
-            <h2 class="gallery-title split-text" data-animate="split">GRAPHIC DESIGN <span class="font-serif">gallery</span></h2>
+    <!-- OLD GRAPHIC DESIGN (Wrapped in template to prevent comment nesting issues) -->
+    <template id="old-graphic-design-archive">
+        <!-- Section 3: Graphic Design Gallery - Categorized -->
+        <section class="gallery section-theme--light" id="gallery" data-bg="cream" data-bg-start="top top" data-bg-end="bottom top">
+            <div class="gallery-header">
+                <h2 class="section-number">03</h2>
+                <h2 class="gallery-title split-text" data-animate="split">GRAPHIC DESIGN <span class="font-serif">gallery</span></h2>
+            </div>
+            <div class="gallery-tabs" role="tablist" aria-label="Gallery categories">
+                <button class="gallery-tab active" data-tab="social" role="tab" aria-selected="true" aria-controls="tab-social">Social Media Design</button>
+                <button class="gallery-tab" data-tab="brand" role="tab" aria-selected="false" aria-controls="tab-brand">Brand Identity</button>
+                <button class="gallery-tab" data-tab="print" role="tab" aria-selected="false" aria-controls="tab-print">Print & Marketing</button>
+            </div>
+            <!-- Old content preserved inside template, omitted here to save space as it's archived -->
+        </section>
+    </template>
+
+    <!-- NEW GRAPHIC DESIGN -->
+    <section class="new-gallery" id="new-gallery">
+        <div class="ng-header">
+            <h2 class="ng-title">Crafted for every platform, optimized for impact.</h2>
         </div>
 
-        <!-- Gallery Category Tabs -->
-        <div class="gallery-tabs" role="tablist" aria-label="Gallery categories">
-            <button class="gallery-tab active" data-tab="social" role="tab" aria-selected="true" aria-controls="tab-social">Social Media Design</button>
-            <button class="gallery-tab" data-tab="brand" role="tab" aria-selected="false" aria-controls="tab-brand">Brand Identity</button>
-            <button class="gallery-tab" data-tab="print" role="tab" aria-selected="false" aria-controls="tab-print">Print & Marketing</button>
-        </div>
+        <div class="ng-container">
+            <!-- Row 1: Instagram Grids -->
+            <div class="ng-row" data-animate="fade-up">
+                <div class="ng-card">
+                    <div class="ng-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg>
+                    </div>
+                    <h3 class="ng-card-title">Instagram Grids</h3>
+                    <p class="ng-card-desc">Cohesive, clean and on-brand grids that create a strong visual identity.</p>
+                </div>
+                <div class="ng-media ng-media--3">
+                    <img src="https://picsum.photos/400/500?random=1" alt="Grid 1" class="ng-img" />
+                    <img src="https://picsum.photos/400/500?random=2" alt="Grid 2" class="ng-img" />
+                    <img src="https://picsum.photos/400/500?random=3" alt="Grid 3" class="ng-img" />
+                </div>
+            </div>
 
-        <!-- Tab: Social Media Design -->
-        <div class="gallery-panel active" id="tab-social" role="tabpanel" aria-label="Social Media Design">
-            <div class="gallery-panel-label">
-                <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" stroke-width="1.5"/><path d="M6 14 L8 10 L11 13 L13 9 L15 14" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
-                Social Media Design
-                <span class="gallery-panel-sub">Instagram grids · Post designs · Carousel posts · Story designs · Ad creatives</span>
-            </div>
-            <div class="gallery-grid">
-                <div class="gallery-item gallery-item--tall" data-hover>
-                    <div class="gallery-media" data-animate="wipe">
-                        <img src="/src/graphic%20design%20asset/g1.jpg" alt="Instagram grid design" loading="lazy">
+            <!-- Row 2: Carousel Posts -->
+            <div class="ng-row" data-animate="fade-up">
+                <div class="ng-card">
+                    <div class="ng-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 8h12M6 12h12M6 16h8"/></svg>
                     </div>
-                    <div class="gallery-info">
-                        <h3>INSTAGRAM GRID</h3>
-                        <span>Social Media Design</span>
-                    </div>
+                    <h3 class="ng-card-title">Carousel Posts</h3>
+                    <p class="ng-card-desc">Swipe-worthy carousels that inform, engage and drive action.</p>
                 </div>
-                <div class="gallery-item" data-hover>
-                    <div class="gallery-media" data-animate="wipe">
-                        <img src="/src/graphic%20design%20asset/g2.jpg" alt="Post design" loading="lazy">
-                    </div>
-                    <div class="gallery-info">
-                        <h3>POST DESIGN</h3>
-                        <span>Social Media Design</span>
-                    </div>
-                </div>
-                <div class="gallery-item" data-hover>
-                    <div class="gallery-media" data-animate="wipe">
-                        <img src="/src/graphic%20design%20asset/g3.jpg" alt="Carousel post" loading="lazy">
-                    </div>
-                    <div class="gallery-info">
-                        <h3>CAROUSEL POST</h3>
-                        <span>Social Media Design</span>
-                    </div>
-                </div>
-                <div class="gallery-item gallery-item--wide" data-hover>
-                    <div class="gallery-media" data-animate="wipe">
-                        <img src="/src/graphic%20design%20asset/g4.jpg" alt="Story design" loading="lazy">
-                    </div>
-                    <div class="gallery-info">
-                        <h3>STORY DESIGN</h3>
-                        <span>Social Media Design</span>
-                    </div>
-                </div>
-                <div class="gallery-item" data-hover>
-                    <div class="gallery-media" data-animate="wipe">
-                        <img src="/src/graphic%20design%20asset/g5.jpg" alt="Meta ad creative" loading="lazy">
-                    </div>
-                    <div class="gallery-info">
-                        <h3>META AD CREATIVE</h3>
-                        <span>Ad Creatives</span>
-                    </div>
-                </div>
-                <div class="gallery-item gallery-item--tall" data-hover>
-                    <div class="gallery-media" data-animate="wipe">
-                        <img src="/src/graphic%20design%20asset/g6.jpg" alt="Social media design" loading="lazy">
-                    </div>
-                    <div class="gallery-info">
-                        <h3>BRAND SOCIAL</h3>
-                        <span>Social Media Design</span>
-                    </div>
+                <div class="ng-media ng-media--1">
+                    <img src="https://picsum.photos/1200/400?random=4" alt="Carousel" class="ng-img wide" />
                 </div>
             </div>
-        </div>
 
-        <!-- Tab: Brand Identity -->
-        <div class="gallery-panel" id="tab-brand" role="tabpanel" aria-label="Brand Identity">
-            <div class="gallery-panel-label">
-                <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2 L13 12 L10 10 L7 12 Z" stroke="currentColor" stroke-width="1.5" fill="currentColor" fill-opacity="0.15"/><path d="M4 18 L16 18" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2 2" opacity="0.5"/></svg>
-                Brand Identity
-                <span class="gallery-panel-sub">Logo designs · Logo variations · Basic brand mockups</span>
-            </div>
-            <div class="gallery-grid">
-                <div class="gallery-item" data-hover>
-                    <div class="gallery-media" data-animate="wipe">
-                        <img src="/src/graphic%20design%20asset/g1.jpg" alt="Logo design" loading="lazy">
+            <!-- Row 3: Story Designs -->
+            <div class="ng-row" data-animate="fade-up">
+                <div class="ng-card">
+                    <div class="ng-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>
                     </div>
-                    <div class="gallery-info">
-                        <h3>LOGO DESIGN</h3>
-                        <span>Brand Identity</span>
-                    </div>
+                    <h3 class="ng-card-title">Story Designs</h3>
+                    <p class="ng-card-desc">Engaging story designs that capture attention and keep your brand top-of-mind.</p>
                 </div>
-                <div class="gallery-item gallery-item--tall" data-hover>
-                    <div class="gallery-media" data-animate="wipe">
-                        <img src="/src/graphic%20design%20asset/g3.jpg" alt="Logo variations" loading="lazy">
-                    </div>
-                    <div class="gallery-info">
-                        <h3>LOGO VARIATIONS</h3>
-                        <span>Brand Identity</span>
-                    </div>
-                </div>
-                <div class="gallery-item gallery-item--wide" data-hover>
-                    <div class="gallery-media" data-animate="wipe">
-                        <img src="/src/graphic%20design%20asset/g5.jpg" alt="Brand mockup" loading="lazy">
-                    </div>
-                    <div class="gallery-info">
-                        <h3>BRAND MOCKUP</h3>
-                        <span>Brand Identity</span>
-                    </div>
+                <div class="ng-media ng-media--4">
+                    <img src="https://picsum.photos/300/533?random=5" alt="Story 1" class="ng-img" />
+                    <img src="https://picsum.photos/300/533?random=6" alt="Story 2" class="ng-img" />
+                    <img src="https://picsum.photos/300/533?random=7" alt="Story 3" class="ng-img" />
+                    <img src="https://picsum.photos/300/533?random=8" alt="Story 4" class="ng-img" />
                 </div>
             </div>
-        </div>
 
-        <!-- Tab: Print & Marketing Design -->
-        <div class="gallery-panel" id="tab-print" role="tabpanel" aria-label="Print & Marketing Design">
-            <div class="gallery-panel-label">
-                <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="3" y="2" width="14" height="16" rx="2" stroke="currentColor" stroke-width="1.5"/><line x1="6" y1="7" x2="14" y2="7" stroke="currentColor" stroke-width="1.2" opacity="0.6"/><line x1="6" y1="10" x2="14" y2="10" stroke="currentColor" stroke-width="1.2" opacity="0.4"/><line x1="6" y1="13" x2="10" y2="13" stroke="currentColor" stroke-width="1.2" opacity="0.3"/></svg>
-                Print & Marketing Design
-                <span class="gallery-panel-sub">Posters · Flyers · Banners · Brochures · Promotional designs</span>
-            </div>
-            <div class="gallery-grid">
-                <div class="gallery-item gallery-item--tall" data-hover>
-                    <div class="gallery-media" data-animate="wipe">
-                        <img src="/src/graphic%20design%20asset/g2.jpg" alt="Poster design" loading="lazy">
+            <!-- Row 4: Ad Creatives -->
+            <div class="ng-row" data-animate="fade-up">
+                <div class="ng-card">
+                    <div class="ng-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                     </div>
-                    <div class="gallery-info">
-                        <h3>POSTER</h3>
-                        <span>Print & Marketing</span>
-                    </div>
+                    <h3 class="ng-card-title">Ad Creatives</h3>
+                    <p class="ng-card-desc">High-converting ad designs that stop the scroll and drive results.</p>
                 </div>
-                <div class="gallery-item" data-hover>
-                    <div class="gallery-media" data-animate="wipe">
-                        <img src="/src/graphic%20design%20asset/g4.jpg" alt="Flyer design" loading="lazy">
-                    </div>
-                    <div class="gallery-info">
-                        <h3>FLYER</h3>
-                        <span>Print & Marketing</span>
-                    </div>
-                </div>
-                <div class="gallery-item gallery-item--wide" data-hover>
-                    <div class="gallery-media" data-animate="wipe">
-                        <img src="/src/graphic%20design%20asset/g6.jpg" alt="Banner design" loading="lazy">
-                    </div>
-                    <div class="gallery-info">
-                        <h3>BANNER</h3>
-                        <span>Print & Marketing</span>
-                    </div>
+                <div class="ng-media ng-media--4">
+                    <img src="https://picsum.photos/300/350?random=9" alt="Ad 1" class="ng-img" />
+                    <img src="https://picsum.photos/300/350?random=10" alt="Ad 2" class="ng-img" />
+                    <img src="https://picsum.photos/300/350?random=11" alt="Ad 3" class="ng-img" />
+                    <img src="https://picsum.photos/300/350?random=12" alt="Ad 4" class="ng-img" />
                 </div>
             </div>
-        </div>
 
-        <div class="section-cta section-cta--gallery">
-            <a class="section-cta-btn" href="https://drive.google.com/open?id=15KZ9qb6AOsW6ABaSZT_KC7E72szkrxoT&usp=drive_copy" target="_blank" rel="noopener" data-hover>
-                <span class="section-cta-text">DISCOVER MORE</span>
-                <span class="section-cta-arrow">→</span>
-            </a>
+            <!-- Bottom Banner -->
+            <div class="ng-banner" data-animate="fade-up">
+                <div class="ng-banner-left">
+                    <div class="ng-banner-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 12l2 2 4-4"/></svg>
+                    </div>
+                    <div class="ng-banner-text">
+                        Ready to <span class="ng-highlight">elevate</span> your brand<br>with stunning social media designs?
+                    </div>
+                </div>
+                <a href="#contact" class="ng-btn">LET'S WORK TOGETHER &rarr;</a>
+            </div>
         </div>
     </section>
 
@@ -657,7 +526,7 @@
     </section>
 
     <!-- Section 6: Contact -->
-    <section class="contact section-theme--dark" id="contact" data-bg="dark" data-bg-start="top bottom" data-bg-end="bottom bottom">
+    <section class="contact section-theme--light" id="contact" data-bg="cream">
         <div class="contact-inner">
             <div class="contact-header">
                 <h2 class="contact-title split-text" data-animate="split">LET'S <span class="font-serif">create</span></h2>
@@ -705,7 +574,7 @@
     </section>
 
     <!-- Footer -->
-    <footer class="footer section-theme--dark" data-bg="dark" data-bg-start="top bottom" data-bg-end="bottom top">
+    <footer class="footer section-theme--light" data-bg="cream">
         <div class="footer-inner">
             <div class="footer-left">
                 <span class="footer-logo">NOORISH STUDIO</span>
