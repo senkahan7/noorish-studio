@@ -792,7 +792,281 @@ function initMarqueeLoop() {
 }
 
 // ==========================================
-// 5. CUSTOM CURSOR
+// 5. NEW GALLERY MODE TOGGLE
+// ==========================================
+function initNewGalleryToggle() {
+  const section = document.getElementById('new-gallery');
+  if (!section) return;
+
+  const titleEl = section.querySelector('.ng-title');
+  const titleLine = section.querySelector('.ng-title-line');
+  const prevBtn = section.querySelector('#ngPrevBtn');
+  const nextBtn = section.querySelector('#ngNextBtn');
+  const rows = Array.from(section.querySelectorAll('.ng-row'));
+  const banner = section.querySelector('.ng-banner');
+  const container = section.querySelector('.ng-container');
+
+  if (!titleEl || !prevBtn || !nextBtn || rows.length === 0) return;
+
+  const modes = {
+    social: {
+      title: 'SOCIAL MEDIA DESIGN',
+      showBanner: true,
+      rows: [
+        {
+          title: 'Instagram Grids',
+          desc: 'Cohesive, clean and on-brand grids that create a strong visual identity.',
+          mediaClass: 'ng-media--3',
+          images: [
+            { src: '/social-image?file=Instagram%20grid%20%231.png', alt: 'Instagram grid design 1' },
+            { src: '/social-image?file=Instagram%20grid%20%232.png', alt: 'Instagram grid design 2' },
+            { src: '/social-image?file=Instagram%20grid%20%233.png', alt: 'Instagram grid design 3' }
+          ]
+        },
+        {
+          title: 'Carousel Posts',
+          desc: 'Swipe-worthy carousels that inform, engage and drive action.',
+          mediaClass: 'ng-media--3',
+          flush: true,
+          images: [
+            { src: '/social-image?file=Carousel%20Posts%20%231.png', alt: 'Carousel post design 1' },
+            { src: '/social-image?file=Carousel%20Posts%20%232.png', alt: 'Carousel post design 2' },
+            { src: '/social-image?file=Carousel%20Posts%20%233.png', alt: 'Carousel post design 3' }
+          ]
+        },
+        {
+          title: 'Story Designs',
+          desc: 'Engaging story designs that capture attention and keep your brand top-of-mind.',
+          mediaClass: 'ng-media--4',
+          images: [
+            { src: '/social-image?file=Story%20Design%20%231.png', alt: 'Story design 1' },
+            { src: '/social-image?file=Story%20Design%20%232.png', alt: 'Story design 2' },
+            { src: '/social-image?file=Story%20Design%20%233.png', alt: 'Story design 3' },
+            { src: '/social-image?file=Story%20Design%20%234.png', alt: 'Story design 4' }
+          ]
+        },
+        {
+          title: 'Ad Creatives',
+          desc: 'High-converting ad designs that stop the scroll and drive results.',
+          mediaClass: 'ng-media--4',
+          images: [
+            { src: '/social-image?file=Ad%20Creatives%20%231.jpg', alt: 'Ad creative design 1' },
+            { src: '/social-image?file=Ad%20Creatives%20%232.jpg', alt: 'Ad creative design 2' },
+            { src: '/social-image?file=Ad%20Creatives%20%233.png', alt: 'Ad creative design 3' },
+            { src: '/social-image?file=Ad%20Creatives%20%234.jpg', alt: 'Ad creative design 4' }
+          ]
+        }
+      ]
+    },
+    brand: {
+      title: 'BRAND IDENTITY',
+      showBanner: false,
+      rows: [
+        {
+          title: 'Logo Design',
+          desc: 'Custom logos that capture your brand essence and make a lasting impression.',
+          mediaClass: 'ng-media--4',
+          images: [
+            { src: 'https://picsum.photos/seed/logo-a/420/500', alt: 'Brand logo concept 1' },
+            { src: 'https://picsum.photos/seed/logo-b/420/500', alt: 'Brand logo concept 2' },
+            { src: 'https://picsum.photos/seed/logo-c/420/500', alt: 'Brand logo concept 3' },
+            { src: 'https://picsum.photos/seed/logo-d/420/500', alt: 'Brand logo concept 4' }
+          ]
+        },
+        {
+          title: 'Logo Variations',
+          desc: 'Flexible logo variations for different platforms, formats, and uses.',
+          mediaClass: 'ng-media--6',
+          images: [
+            { src: 'https://picsum.photos/seed/variation-a/300/300', alt: 'Logo variation 1' },
+            { src: 'https://picsum.photos/seed/variation-b/300/300', alt: 'Logo variation 2' },
+            { src: 'https://picsum.photos/seed/variation-c/300/300', alt: 'Logo variation 3' },
+            { src: 'https://picsum.photos/seed/variation-d/300/300', alt: 'Logo variation 4' },
+            { src: 'https://picsum.photos/seed/variation-e/300/300', alt: 'Logo variation 5' },
+            { src: 'https://picsum.photos/seed/variation-f/300/300', alt: 'Logo variation 6' }
+          ]
+        },
+        {
+          title: 'Brand Mockups',
+          desc: 'Realistic mockups that showcase your brand in the real world.',
+          mediaClass: 'ng-media--1',
+          images: [
+            { src: 'https://picsum.photos/seed/mockups/1400/720', alt: 'Brand mockup set', wide: true }
+          ]
+        }
+      ]
+    }
+  };
+
+  let currentMode = 'social';
+  let isAnimating = false;
+  let touchStartX = 0;
+  let touchStartY = 0;
+
+  const renderMode = (mode) => {
+    const modeData = modes[mode];
+    if (!modeData) return;
+
+    titleEl.textContent = modeData.title;
+
+    rows.forEach((row, index) => {
+      const rowData = modeData.rows[index];
+      if (!rowData) {
+        row.classList.add('ng-row--hidden');
+        return;
+      }
+
+      row.classList.remove('ng-row--hidden');
+
+      const rowTitle = row.querySelector('.ng-card-title');
+      const rowDesc = row.querySelector('.ng-card-desc');
+      const media = row.querySelector('.ng-media');
+
+      if (rowTitle) rowTitle.textContent = rowData.title;
+      if (rowDesc) rowDesc.textContent = rowData.desc;
+      if (media) {
+        media.className = `ng-media ${rowData.mediaClass}${rowData.flush ? ' ng-media--flush' : ''}`;
+        media.innerHTML = rowData.images.map((image) => (
+          `<img src="${image.src}" alt="${image.alt}" class="ng-img${image.wide ? ' wide' : ''}" />`
+        )).join('');
+      }
+    });
+
+    if (banner) {
+      banner.classList.toggle('ng-banner--hidden', !modeData.showBanner);
+    }
+
+    prevBtn.disabled = mode === 'social';
+    nextBtn.disabled = mode === 'brand';
+
+    currentMode = mode;
+  };
+
+  const animateSwipeTo = (mode, direction) => {
+    if (!container || isAnimating || mode === currentMode) {
+      renderMode(mode);
+      return;
+    }
+
+    isAnimating = true;
+    const outX = direction === 'next' ? -8 : 8;
+    const inX = -outX;
+    const timeline = gsap.timeline({
+      onComplete: () => { isAnimating = false; }
+    });
+
+    timeline.to(container, {
+      xPercent: outX,
+      opacity: 0.45,
+      duration: 0.22,
+      ease: 'power2.in'
+    }, 0);
+
+    timeline.to(titleEl, {
+      xPercent: outX * 2,
+      opacity: 0.35,
+      duration: 0.2,
+      ease: 'power2.in'
+    }, 0);
+
+    if (titleLine) {
+      timeline.to(titleLine, {
+        xPercent: outX * 2,
+        opacity: 0.35,
+        scaleX: 0.45,
+        duration: 0.2,
+        ease: 'power2.in'
+      }, 0);
+    }
+
+    timeline.add(() => {
+      renderMode(mode);
+    });
+
+    timeline.fromTo(
+      container,
+      { xPercent: inX, opacity: 0.45 },
+      {
+        xPercent: 0,
+        opacity: 1,
+        duration: 0.34,
+        ease: 'power2.out'
+      }
+    );
+
+    timeline.fromTo(
+      titleEl,
+      { xPercent: inX * 2, opacity: 0.35 },
+      {
+        xPercent: 0,
+        opacity: 1,
+        duration: 0.34,
+        ease: 'power2.out'
+      },
+      '<'
+    );
+
+    if (titleLine) {
+      timeline.fromTo(
+        titleLine,
+        { xPercent: inX * 2, opacity: 0.35, scaleX: 0.45 },
+        {
+          xPercent: 0,
+          opacity: 1,
+          scaleX: 1,
+          duration: 0.34,
+          ease: 'power2.out'
+        },
+        '<'
+      );
+    }
+  };
+
+  prevBtn.addEventListener('click', () => {
+    if (currentMode !== 'social') {
+      animateSwipeTo('social', 'prev');
+    }
+  });
+
+  nextBtn.addEventListener('click', () => {
+    if (currentMode !== 'brand') {
+      animateSwipeTo('brand', 'next');
+    }
+  });
+
+  if (container) {
+    container.addEventListener('touchstart', (event) => {
+      const touch = event.changedTouches?.[0];
+      if (!touch) return;
+      touchStartX = touch.clientX;
+      touchStartY = touch.clientY;
+    }, { passive: true });
+
+    container.addEventListener('touchend', (event) => {
+      if (isAnimating) return;
+      const touch = event.changedTouches?.[0];
+      if (!touch) return;
+
+      const deltaX = touch.clientX - touchStartX;
+      const deltaY = touch.clientY - touchStartY;
+      const absX = Math.abs(deltaX);
+      const absY = Math.abs(deltaY);
+
+      if (absX < 55 || absX < absY * 1.2) return;
+
+      if (deltaX < 0 && currentMode !== 'brand') {
+        animateSwipeTo('brand', 'next');
+      } else if (deltaX > 0 && currentMode !== 'social') {
+        animateSwipeTo('social', 'prev');
+      }
+    }, { passive: true });
+  }
+
+  renderMode(currentMode);
+}
+
+// ==========================================
+// 6. CUSTOM CURSOR
 // ==========================================
 class CustomCursor {
   constructor() {
@@ -887,7 +1161,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { passive: true });
   }
 
-  // 5. New Graphic Design Gallery animations
+  // 5. New Graphic Design Gallery mode switch
+  initNewGalleryToggle();
+
+  // 6. New Graphic Design Gallery animations
   const ngRows = document.querySelectorAll('.ng-row, .ng-banner');
   ngRows.forEach(row => {
     gsap.to(row, {

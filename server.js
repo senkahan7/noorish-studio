@@ -8,10 +8,36 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 const port = process.env.PORT || 3000;
+const socialDesignsDir = path.join(__dirname, 'public', 'assets', 'images', 'Social Media Designs');
 
 const distDir = path.join(__dirname, 'dist');
 const hasDist = fs.existsSync(distDir);
 const staticRoot = hasDist ? distDir : __dirname;
+
+app.get('/social-image', (req, res) => {
+  const file = req.query.file;
+  if (typeof file !== 'string' || !file) {
+    res.status(400).send('Missing file parameter');
+    return;
+  }
+
+  if (file.includes('..') || file.includes('/') || file.includes('\\')) {
+    res.status(400).send('Invalid file path');
+    return;
+  }
+
+  const filePath = path.join(socialDesignsDir, file);
+  if (!filePath.startsWith(socialDesignsDir) || !fs.existsSync(filePath)) {
+    res.status(404).send('Not found');
+    return;
+  }
+
+  const ext = path.extname(filePath).toLowerCase();
+  if (ext === '.png') res.type('png');
+  if (ext === '.jpg' || ext === '.jpeg') res.type('jpeg');
+
+  res.sendFile(filePath);
+});
 
 // Static assets
 app.use(express.static(staticRoot));
