@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noorish Studio — Video Editing & Graphic Design Studio</title>
+    <meta name="description" content="Award-winning creative studio offering cinematic video editing and stunning graphic design. Crafting visual narratives that move audiences.">
+    <meta name="keywords" content="video editor, graphic design, cinematography, branding, post-production, motion design, visual identity">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,500;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script type="module" crossorigin src="/assets/index-BXE1Sn2z.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-ADCLfAT4.css">
+</head>
+<body>
+    <!-- Interactive Topographic Canvas Background -->
+    <canvas id="topoCanvas" class="topo-canvas"></canvas>
+
+
+
+    <!-- Custom Cursor -->
+    <div class="cursor" id="cursor">
+        <div class="cursor-dot"></div>
+        <div class="cursor-ring"></div>
+    </div>
+
+    <!-- THE SLATE — Cinematic Clapperboard Loader -->
+    <div class="sl" id="siteLoader">
+        <!-- White snap flash -->
+        <div class="sl-flash" id="slFlash"></div>
+
+        <!-- Clapperboard -->
+        <div class="sl-clap" id="slClap">
+            <!-- Sticks / Head (rotating part) -->
+            <div class="sl-clap-head" id="slClapHead">
+                <div class="sl-clap-sticks"></div>
+                <div class="sl-clap-hinge-row">
+                    <div class="sl-hinge"></div>
+                    <div class="sl-hinge"></div>
+                </div>
+            </div>
+            <!-- Information Board -->
+            <div class="sl-clap-body">
+                <div class="sl-clap-row sl-clap-row--main">
+                    <span class="sl-key">PRODUCTION</span>
+                    <span class="sl-val sl-val--big">NOORISH STUDIO</span>
+                </div>
+                <div class="sl-clap-row">
+                    <span class="sl-key">DIRECTOR</span>
+                    <span class="sl-val">NOORISH</span>
+                </div>
+                <div class="sl-clap-divider"></div>
+                <div class="sl-clap-meta">
+                    <div class="sl-meta-col">
+                        <span class="sl-key">SCENE</span>
+                        <span class="sl-val">PORTFOLIO · WEB</span>
+                    </div>
+                    <div class="sl-meta-col sl-meta-col--take">
+                        <span class="sl-key">TAKE</span>
+                        <span class="sl-val sl-val--take">01</span>
+                    </div>
+                    <div class="sl-meta-col">
+                        <span class="sl-key">DATE</span>
+                        <span class="sl-val">2025</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Logo Reveal Stage (shown after clap exits) -->
+        <div class="sl-stage" id="slStage">
+            <div class="sl-logo-chars" id="slLogoChars">
+                <span>N</span><span>O</span><span>O</span><span>R</span><span>I</span><span>S</span><span>H</span>
+            </div>
+            <div class="sl-logo-sub" id="slLogoSub">STUDIO</div>
+            <div class="sl-progress-wrap">
+                <div class="sl-progress-track">
+                    <div class="sl-progress-fill" id="slProgressFill"></div>
+                </div>
+                <span class="sl-percent" id="slPercent">0%</span>
+            </div>
+            <div class="sl-stage-tag" id="slStageTag">Content that builds brands.</div>
+        </div>
+    </div>
+
+    <!-- Page Wipe Transition (exits after loader) -->
+    <div class="page-wipe" id="pageWipe"></div>
+
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <a href="#" class="nav-logo" data-hover>
+            <span class="nav-logo-text">NOORISH</span>
+        </a>
+        <div class="nav-center nav-pills">
+            <a href="#works" class="nav-pill" data-hover>EDITS</a>
+            <a href="#new-gallery" class="nav-pill" data-hover>DESIGNS</a>
+        </div>
+        <a href="#contact" class="nav-pill nav-cta" data-hover>CONTACT</a>
+        <button
+            class="nav-menu-toggle"
+            id="navMenuToggle"
+            type="button"
+            aria-label="Open navigation menu"
+            aria-expanded="false"
+            aria-controls="navMobilePanel"
+            data-hover
+        >
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+    <div class="nav-mobile-backdrop" id="navBackdrop" aria-hidden="true"></div>
+    <aside class="nav-mobile-panel" id="navMobilePanel" aria-hidden="true">
+        <a href="#works" class="nav-mobile-link" data-hover>EDITS</a>
+        <a href="#new-gallery" class="nav-mobile-link" data-hover>DESIGNS</a>
+        <a href="#contact" class="nav-mobile-link nav-mobile-link--primary" data-hover>CONTACT</a>
+    </aside>
+
+    <!-- Hero Section -->
+    <section class="hero section-theme--light" id="hero" data-bg="cream">
+        <div class="hero-bg">
+            <!-- Hero portrait removed per request -->
+        </div>
+        <div class="hero-content">
+            <div class="hero-title-wrapper">
+                <h1 class="hero-title" id="heroTitle">
+                    <span class="hero-line"><span class="hero-line-inner" data-text="Content">Content</span></span>
+                    <span class="hero-line"><span class="hero-line-inner hero-line-studio font-serif" data-text="that builds brands.">that builds brands.</span></span>
+                </h1>
+            </div>
+            <p class="hero-subtitle" id="heroSubtitle"><span class="text-marker">Video, motion & design for social growth.</span></p>
+            <p class="hero-supporting" id="heroSupporting">Scroll-stopping video. High-impact design. Built for attention.</p>
+            <div class="hero-services-tags">
+                <span class="hero-tag">VIDEO</span>
+                <span class="hero-tag-sep">×</span>
+                <span class="hero-tag">MOTION</span>
+                <span class="hero-tag-sep">×</span>
+                <span class="hero-tag">DESIGN</span>
+            </div>
+        </div>
+
+        <div class="hero-scroll" id="heroScroll">
+            <span class="hero-scroll-text">SCROLL</span>
+            <div class="hero-scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- Section 1: Selected Works - Horizontal Filmstrip -->
+    <section class="works section-theme--light" id="works" data-bg="cream">
+        <div class="works-header">
+            <div class="works-header-left">
+                <h2 class="section-number">01</h2>
+                <h2 class="works-title split-text" data-animate="split">SAMPLE <span class="font-serif">edits</span></h2>
+                <p class="works-subtitle">Video editing & design projects that move audiences</p>
+            </div>
+            <div class="works-nav works-nav--inline" aria-label="Works navigation">
+                <button class="works-nav-btn" type="button" data-dir="prev" aria-label="Previous works">
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M14.5 6 L8.5 12 L14.5 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <button class="works-nav-btn" type="button" data-dir="next" aria-label="Next works">
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M9.5 6 L15.5 12 L9.5 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="filmstrip-wrapper">
+            <div class="filmstrip" id="filmstrip">
+                <div class="filmstrip-track">
+                    <article class="filmstrip-item" data-hover>
+                        <div class="filmstrip-media" tabindex="0" role="button" aria-label="Play sample 01">
+                            <div class="filmstrip-poster" style="--poster: url('https://drive.google.com/thumbnail?id=1ZxOeSxDtorxop0wBF8gpSzNgpjytdtXp&sz=w1000');"></div>
+                            <iframe class="filmstrip-embed" data-src="https://drive.google.com/file/d/1ZxOeSxDtorxop0wBF8gpSzNgpjytdtXp/preview" title="Video sample 01" allow="autoplay; fullscreen" loading="lazy" allowfullscreen></iframe>
+                            <div class="filmstrip-overlay"></div>
+                            
+                            <div class="filmstrip-play" aria-hidden="true">
+                                <svg viewBox="0 0 60 60" fill="none">
+                                    <circle cx="30" cy="30" r="24" stroke="currentColor" stroke-width="2"/>
+                                    <polygon points="26,20 26,40 42,30" fill="currentColor"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="filmstrip-info">
+                            <span class="filmstrip-number">01</span>
+                            <h3 class="filmstrip-name">SAMPLE 01</h3>
+                            <p class="filmstrip-cat">Video Edit</p>
+                        </div>
+                    </article>
+                    <article class="filmstrip-item" data-hover>
+                        <div class="filmstrip-media" tabindex="0" role="button" aria-label="Play sample 02">
+                            <div class="filmstrip-poster" style="--poster: url('https://drive.google.com/thumbnail?id=1WABU2-OsHhG-K0n19TV5XMHCEph7xI2d&sz=w1000');"></div>
+                            <iframe class="filmstrip-embed" data-src="https://drive.google.com/file/d/1WABU2-OsHhG-K0n19TV5XMHCEph7xI2d/preview" title="Video sample 02" allow="autoplay; fullscreen" loading="lazy" allowfullscreen></iframe>
+                            <div class="filmstrip-overlay"></div>
+                            
+                            <div class="filmstrip-play" aria-hidden="true">
+                                <svg viewBox="0 0 60 60" fill="none">
+                                    <circle cx="30" cy="30" r="24" stroke="currentColor" stroke-width="2"/>
+                                    <polygon points="26,20 26,40 42,30" fill="currentColor"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="filmstrip-info">
+                            <span class="filmstrip-number">02</span>
+                            <h3 class="filmstrip-name">SAMPLE 02</h3>
+                            <p class="filmstrip-cat">Video Edit</p>
+                        </div>
+                    </article>
+                    <article class="filmstrip-item" data-hover>
+                        <div class="filmstrip-media" tabindex="0" role="button" aria-label="Play sample 03">
+                            <div class="filmstrip-poster" style="--poster: url('https://drive.google.com/thumbnail?id=1mVfvRKfbsz7755-DH0Q2-J8amya9RbqJ&sz=w1000');"></div>
+                            <iframe class="filmstrip-embed" data-src="https://drive.google.com/file/d/1mVfvRKfbsz7755-DH0Q2-J8amya9RbqJ/preview" title="Video sample 03" allow="autoplay; fullscreen" loading="lazy" allowfullscreen></iframe>
+                            <div class="filmstrip-overlay"></div>
+                            
+                            <div class="filmstrip-play" aria-hidden="true">
+                                <svg viewBox="0 0 60 60" fill="none">
+                                    <circle cx="30" cy="30" r="24" stroke="currentColor" stroke-width="2"/>
+                                    <polygon points="26,20 26,40 42,30" fill="currentColor"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="filmstrip-info">
+                            <span class="filmstrip-number">03</span>
+                            <h3 class="filmstrip-name">SAMPLE 03</h3>
+                            <p class="filmstrip-cat">Video Edit</p>
+                        </div>
+                    </article>
+                    <article class="filmstrip-item" data-hover>
+                        <div class="filmstrip-media" tabindex="0" role="button" aria-label="Play sample 04">
+                            <div class="filmstrip-poster" style="--poster: url('https://drive.google.com/thumbnail?id=1YMTSqiplINgHMPlfGSG8ASiRKSfE_doE&sz=w1000');"></div>
+                            <iframe class="filmstrip-embed" data-src="https://drive.google.com/file/d/1YMTSqiplINgHMPlfGSG8ASiRKSfE_doE/preview" title="Video sample 04" allow="autoplay; fullscreen" loading="lazy" allowfullscreen></iframe>
+                            <div class="filmstrip-overlay"></div>
+                            
+                            <div class="filmstrip-play" aria-hidden="true">
+                                <svg viewBox="0 0 60 60" fill="none">
+                                    <circle cx="30" cy="30" r="24" stroke="currentColor" stroke-width="2"/>
+                                    <polygon points="26,20 26,40 42,30" fill="currentColor"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="filmstrip-info">
+                            <span class="filmstrip-number">04</span>
+                            <h3 class="filmstrip-name">SAMPLE 04</h3>
+                            <p class="filmstrip-cat">Video Edit</p>
+                        </div>
+                    </article>
+                    <article class="filmstrip-item" data-hover>
+                        <div class="filmstrip-media" tabindex="0" role="button" aria-label="Play sample 05">
+                            <div class="filmstrip-poster" style="--poster: url('https://drive.google.com/thumbnail?id=1m_bGBf1TanHQhEBXM9VUsUkCMNE4S28p&sz=w1000');"></div>
+                            <iframe class="filmstrip-embed" data-src="https://drive.google.com/file/d/1m_bGBf1TanHQhEBXM9VUsUkCMNE4S28p/preview" title="Video sample 05" allow="autoplay; fullscreen" loading="lazy" allowfullscreen></iframe>
+                            <div class="filmstrip-overlay"></div>
+                            
+                            <div class="filmstrip-play" aria-hidden="true">
+                                <svg viewBox="0 0 60 60" fill="none">
+                                    <circle cx="30" cy="30" r="24" stroke="currentColor" stroke-width="2"/>
+                                    <polygon points="26,20 26,40 42,30" fill="currentColor"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="filmstrip-info">
+                            <span class="filmstrip-number">05</span>
+                            <h3 class="filmstrip-name">SAMPLE 05</h3>
+                            <p class="filmstrip-cat">Video Edit</p>
+                        </div>
+                    </article>
+                    <article class="filmstrip-item" data-hover>
+                        <div class="filmstrip-media" tabindex="0" role="button" aria-label="Play sample 06">
+                            <div class="filmstrip-poster" style="--poster: url('https://drive.google.com/thumbnail?id=1D3f3Gd9dU7X4zkCnSbtT7RhOjFni2qTa&sz=w1000');"></div>
+                            <iframe class="filmstrip-embed" data-src="https://drive.google.com/file/d/1D3f3Gd9dU7X4zkCnSbtT7RhOjFni2qTa/preview" title="Video sample 06" allow="autoplay; fullscreen" loading="lazy" allowfullscreen></iframe>
+                            <div class="filmstrip-overlay"></div>
+                            
+                            <div class="filmstrip-play" aria-hidden="true">
+                                <svg viewBox="0 0 60 60" fill="none">
+                                    <circle cx="30" cy="30" r="24" stroke="currentColor" stroke-width="2"/>
+                                    <polygon points="26,20 26,40 42,30" fill="currentColor"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="filmstrip-info">
+                            <span class="filmstrip-number">06</span>
+                            <h3 class="filmstrip-name">SAMPLE 06</h3>
+                            <p class="filmstrip-cat">Video Edit</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+        <div class="section-cta">
+            <a class="section-cta-btn" href="https://drive.google.com/drive/folders/1fSsUyln-bX-gM27vO5mLD5h3MrNL11FA?usp=drive_link" target="_blank" rel="noopener" data-hover>
+                <span class="section-cta-text">DISCOVER MORE</span>
+                <span class="section-cta-arrow">→</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Section 2: Kinetic Typography Manifesto -->
+    <section class="manifesto section-theme--light" id="manifesto" data-bg="cream" data-bg-start="top bottom" data-bg-end="bottom top">
+        <div class="manifesto-inner">
+            <div class="manifesto-line" data-speed="0.8">
+                <span class="manifesto-word" data-animate="scale">Cutting</span>
+                <span class="manifesto-word font-serif" data-animate="scale">Stories</span>
+            </div>
+            <div class="manifesto-line" data-speed="1.2">
+                <span class="manifesto-word manifesto-accent" data-animate="scale">Crafting</span>
+                <span class="manifesto-word font-serif" data-animate="scale">Emotion</span>
+            </div>
+            <div class="manifesto-line" data-speed="0.6">
+                <span class="manifesto-word" data-animate="scale">Designing</span>
+                <span class="manifesto-word font-serif" data-animate="scale">Impact</span>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- OLD GRAPHIC DESIGN (Wrapped in template to prevent comment nesting issues) -->
+    <template id="old-graphic-design-archive">
+        <!-- Section 3: Graphic Design Gallery - Categorized -->
+        <section class="gallery section-theme--light" id="gallery" data-bg="cream" data-bg-start="top top" data-bg-end="bottom top">
+            <div class="gallery-header">
+                <h2 class="section-number">03</h2>
+                <h2 class="gallery-title split-text" data-animate="split">GRAPHIC DESIGN <span class="font-serif">gallery</span></h2>
+            </div>
+            <div class="gallery-tabs" role="tablist" aria-label="Gallery categories">
+                <button class="gallery-tab active" data-tab="social" role="tab" aria-selected="true" aria-controls="tab-social">Social Media Design</button>
+                <button class="gallery-tab" data-tab="brand" role="tab" aria-selected="false" aria-controls="tab-brand">Brand Identity</button>
+                <button class="gallery-tab" data-tab="print" role="tab" aria-selected="false" aria-controls="tab-print">Print & Marketing</button>
+            </div>
+            <!-- Old content preserved inside template, omitted here to save space as it's archived -->
+        </section>
+    </template>
+
+    <!-- NEW GRAPHIC DESIGN -->
+    <section class="new-gallery" id="new-gallery">
+        <div class="ng-header">
+            <div class="ng-title-wrap">
+                <h2 class="ng-title">SOCIAL MEDIA DESIGN</h2>
+                <span class="ng-title-line" aria-hidden="true"></span>
+            </div>
+            <div class="ng-controls">
+                <button class="ng-toggle-btn" id="ngPrevBtn" type="button" aria-label="Back to Social Media Design" title="Back to Social Media Design" data-hover disabled>
+                    <span aria-hidden="true">&larr;</span>
+                </button>
+                <button class="ng-toggle-btn" id="ngNextBtn" type="button" aria-label="Switch to Brand Identity" title="Switch to Brand Identity" data-hover>
+                    <span aria-hidden="true">&rarr;</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="ng-container">
+            <div class="ng-grid-shell">
+            <!-- Row 1: Instagram Grids -->
+            <div class="ng-row" data-animate="fade-up">
+                <div class="ng-card">
+                    <div class="ng-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg>
+                    </div>
+                    <h3 class="ng-card-title">Instagram Grids</h3>
+                    <p class="ng-card-desc">Cohesive, clean and on-brand grids that create a strong visual identity.</p>
+                </div>
+                <div class="ng-media ng-media--3">
+                    <img src="/assets/images/Social Media Designs/Instagram-grid-1.png" alt="Instagram grid design 1" class="ng-img" />
+                    <img src="/assets/images/Social Media Designs/Instagram-grid-2.png" alt="Instagram grid design 2" class="ng-img" />
+                    <img src="/assets/images/Social Media Designs/Instagram-grid-3.png" alt="Instagram grid design 3" class="ng-img" />
+                </div>
+            </div>
+
+            <!-- Row 2: Carousel Posts -->
+            <div class="ng-row" data-animate="fade-up">
+                <div class="ng-card">
+                    <div class="ng-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 8h12M6 12h12M6 16h8"/></svg>
+                    </div>
+                    <h3 class="ng-card-title">Carousel Posts</h3>
+                    <p class="ng-card-desc">Swipe-worthy carousels that inform, engage and drive action.</p>
+                </div>
+                <div class="ng-media ng-media--3 ng-media--flush">
+                    <img src="/assets/images/Social Media Designs/Carousel-Posts-1.png" alt="Carousel post design 1" class="ng-img" />
+                    <img src="/assets/images/Social Media Designs/Carousel-Posts-2.png" alt="Carousel post design 2" class="ng-img" />
+                    <img src="/assets/images/Social Media Designs/Carousel-Posts-3.png" alt="Carousel post design 3" class="ng-img" />
+                </div>
+            </div>
+
+            <!-- Row 3: Story Designs -->
+            <div class="ng-row" data-animate="fade-up">
+                <div class="ng-card">
+                    <div class="ng-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>
+                    </div>
+                    <h3 class="ng-card-title">Story Designs</h3>
+                    <p class="ng-card-desc">Engaging story designs that capture attention and keep your brand top-of-mind.</p>
+                </div>
+                <div class="ng-media ng-media--4">
+                    <img src="/assets/images/Social Media Designs/Story-Design-1.png" alt="Story design 1" class="ng-img" />
+                    <img src="/assets/images/Social Media Designs/Story-Design-2.png" alt="Story design 2" class="ng-img" />
+                    <img src="/assets/images/Social Media Designs/Story-Design-3.png" alt="Story design 3" class="ng-img" />
+                    <img src="/assets/images/Social Media Designs/Story-Design-4.png" alt="Story design 4" class="ng-img" />
+                </div>
+            </div>
+
+            <!-- Row 4: Ad Creatives -->
+            <div class="ng-row" data-animate="fade-up">
+                <div class="ng-card">
+                    <div class="ng-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    </div>
+                    <h3 class="ng-card-title">Ad Creatives</h3>
+                    <p class="ng-card-desc">High-converting ad designs that stop the scroll and drive results.</p>
+                </div>
+                <div class="ng-media ng-media--4">
+                    <img src="/assets/images/Social Media Designs/Ad-Creatives-1.jpg" alt="Ad creative design 1" class="ng-img" />
+                    <img src="/assets/images/Social Media Designs/Ad-Creatives-2.jpg" alt="Ad creative design 2" class="ng-img" />
+                    <img src="/assets/images/Social Media Designs/Ad-Creatives-3.png" alt="Ad creative design 3" class="ng-img" />
+                    <img src="/assets/images/Social Media Designs/Ad-Creatives-4.jpg" alt="Ad creative design 4" class="ng-img" />
+                </div>
+            </div>
+            </div>
+
+            <!-- Bottom Banner -->
+            <div class="ng-banner" data-animate="fade-up">
+                <div class="ng-banner-left">
+                    <div class="ng-banner-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 12l2 2 4-4"/></svg>
+                    </div>
+                    <div class="ng-banner-text">
+                        Ready to <span class="ng-highlight">elevate</span> your brand<br>with stunning social media designs?
+                    </div>
+                </div>
+                <a href="#contact" class="ng-btn">LET'S WORK TOGETHER &rarr;</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Testimonials Marquee -->
+    <section class="testimonials section-theme--light" id="testimonials" data-bg="cream">
+        <div class="testimonials-header">
+            <h2 class="section-number">02</h2>
+            <h2 class="testimonials-title split-text" data-animate="split">CLIENT <span class="font-serif">reviews</span></h2>
+            <p class="testimonials-subtitle">What people say about our work</p>
+        </div>
+        <div class="marquee-wrapper">
+            <div class="marquee" id="marquee">
+                <div class="marquee-track">
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"Noorish transformed our brand story into something cinematic and unforgettable."</p>
+                        <div class="testimonial-author">
+                            <span class="testimonial-name">— Sarah Chen</span>
+                            <span class="testimonial-role">Creative Director, Apex Sports</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"Their design work elevated our entire visual identity. The brand system they created is pure art."</p>
+                        <div class="testimonial-author">
+                            <span class="testimonial-name">— Marcus Rivera</span>
+                            <span class="testimonial-role">Head of Brand, TechVault</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"Every frame is deliberate. Every cut is intentional. This is next-level editing."</p>
+                        <div class="testimonial-author">
+                            <span class="testimonial-name">— Emma Blackwell</span>
+                            <span class="testimonial-role">Producer, Meridian Films</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"From logo to launch video — Noorish handled everything. Truly a one-stop creative powerhouse."</p>
+                        <div class="testimonial-author">
+                            <span class="testimonial-name">— David Park</span>
+                            <span class="testimonial-role">Founder, Eidolon Motors</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"Working with Noorish feels like collaborating with a true visual artist."</p>
+                        <div class="testimonial-author">
+                            <span class="testimonial-name">— Lina Kaur</span>
+                            <span class="testimonial-role">Director, Lumina Agency</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 6: Contact -->
+    <section class="contact section-theme--light" id="contact" data-bg="cream">
+        <div class="contact-inner">
+            <div class="contact-header">
+                <h2 class="contact-title split-text" data-animate="split">LET'S <span class="font-serif">create</span></h2>
+                <p class="contact-subtitle"><span class="text-marker">let's bring your vision to life.</span></p>
+            </div>
+            <form class="contact-form" id="contactForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="name">YOUR NAME</label>
+                        <input type="text" id="name" class="form-input" placeholder="John Doe" data-hover required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="email">YOUR EMAIL</label>
+                        <input type="email" id="email" class="form-input" placeholder="john@example.com" data-hover required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="project">PROJECT TYPE</label>
+                    <select id="project" class="form-input" data-hover>
+                        <option value="" disabled selected>Select project type</option>
+                        <option value="video-commercial">Video — Commercial / Ad</option>
+                        <option value="video-music">Video — Music Video</option>
+                        <option value="video-brand">Video — Brand Film</option>
+                        <option value="design-brand">Design — Brand Identity</option>
+                        <option value="design-packaging">Design — Packaging</option>
+                        <option value="design-digital">Design — Digital / Social</option>
+                        <option value="both">Both Video & Design</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="attachment">ATTACHMENT (OPTIONAL)</label>
+                    <input type="file" id="attachment" class="form-input form-file" accept="image/*,video/*" data-hover>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="message">TELL US ABOUT YOUR PROJECT</label>
+                    <textarea id="message" class="form-input form-textarea" placeholder="Describe your vision..." data-hover rows="4"></textarea>
+                </div>
+                <button type="submit" class="form-submit" data-hover>
+                    <span class="form-submit-text">SEND MESSAGE</span>
+                    <span class="form-submit-arrow">→</span>
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer section-theme--dark" data-bg="dark">
+        <div class="footer-inner">
+            <div class="footer-left">
+                <span class="footer-logo">NOORISH STUDIO</span>
+            </div>
+            <div class="footer-links">
+                <a href="https://www.instagram.com/noorish_studio/" class="footer-link" target="_blank" rel="noopener noreferrer" data-hover>Instagram</a>
+            </div>
+            <div class="footer-right">
+                <a href="mailto:noorishedits@gmail.com" class="footer-email" data-hover>noorishedits@gmail.com</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

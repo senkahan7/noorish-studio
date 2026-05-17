@@ -127,6 +127,7 @@ class TopographicBackground {
     this.dpr = Math.min(window.devicePixelRatio || 1, 2);
     this.time = 0;
     this.mouse = { x: this.width/2, y: this.height/2, targetX: this.width/2, targetY: this.height/2 };
+    this.scroll = { y: window.scrollY || 0, velocity: 0, momentum: 0, phase: 0 };
     this.isDark = false; 
     this.lowPower = LOW_POWER;
     
@@ -137,7 +138,7 @@ class TopographicBackground {
     ];
     
     this.thresholds = this.lowPower ? [-2, -0.8, 0.8, 2] : [-2.4, -1.6, -0.8, 0, 0.8, 1.6, 2.4];
-    this.cellSize = this.lowPower ? 28 : 18; // Higher resolution for smoother segments
+    this.cellSize = this.lowPower ? 28 : 14; // Higher resolution for smoother contour curves
     this.timeStep = this.lowPower ? 0.003 : 0.005;
 
     this.init();
@@ -151,6 +152,13 @@ class TopographicBackground {
         this.mouse.targetX = e.clientX;
         this.mouse.targetY = e.clientY;
       });
+
+      window.addEventListener('scroll', () => {
+        const currentY = window.scrollY || 0;
+        const delta = currentY - this.scroll.y;
+        this.scroll.y = currentY;
+        this.scroll.velocity = Math.max(-120, Math.min(120, delta));
+      }, { passive: true });
     }
 
     if (this.lowPower) {
@@ -185,7 +193,7 @@ class TopographicBackground {
     }
   }
 
-  getValue(x, y, t, mouseX, mouseY) {
+  getValue(x, y, t, mouseX, mouseY, scrollPhase = 0, scrollMomentum = 0) {
     let dx = x - mouseX;
     let dy = y - mouseY;
     let dist = Math.sqrt(dx*dx + dy*dy);
@@ -200,14 +208,16 @@ class TopographicBackground {
         pushY = (dy / dist) * push;
     }
 
-    let nx = (x + pushX) * 0.0015;
-    let ny = (y + pushY) * 0.0015;
-    let nt = t * 1.0;
+    const flowX = scrollMomentum * 0.001;
+    const flowY = scrollMomentum * 0.00065;
+    let nx = (x + pushX) * 0.0015 + flowX;
+    let ny = (y + pushY) * 0.0015 - flowY;
+    let nt = t * 1.0 + scrollPhase;
 
     // Layered analytic noise for beautiful concentric looping peaks
     let v = Math.sin(nx * 3.5 + nt) * Math.cos(ny * 3.5 + nt * 0.8) * 1.8 + 
             Math.sin(nx * 1.5 - nt * 0.5) * Math.cos(ny * 2.0 + nt * 0.6) * 1.2 +
-            Math.sin(nx * 5.0 + ny * 4.0 + nt * 1.2) * 0.5;
+            Math.sin(nx * 5.0 + ny * 4.0 + nt * 1.2 + scrollMomentum * 0.018) * 0.5;
 
     return v;
   }
@@ -240,22 +250,38 @@ class TopographicBackground {
     if (!this.lowPower) {
       this.mouse.x += (this.mouse.targetX - this.mouse.x) * 0.05;
       this.mouse.y += (this.mouse.targetY - this.mouse.y) * 0.05;
+      this.scroll.momentum += (this.scroll.velocity - this.scroll.momentum) * 0.14;
+      this.scroll.velocity *= 0.82;
+      if (Math.abs(this.scroll.velocity) < 0.01) this.scroll.velocity = 0;
+      this.scroll.phase += this.scroll.momentum * 0.0025;
     }
 
     this.ctx.clearRect(0, 0, this.width, this.height);
     
     // Softer line opacities for more subtle topographic feel
     this.ctx.strokeStyle = this.isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(30, 30, 30, 0.3)';
-    this.ctx.lineWidth = 1.2;
+    this.ctx.lineWidth = this.lowPower ? 1.15 : 1.05;
     this.ctx.lineCap = 'round';
     this.ctx.lineJoin = 'round';
+    this.ctx.miterLimit = 2;
+    this.ctx.imageSmoothingEnabled = true;
+    this.ctx.shadowBlur = this.lowPower ? 0 : 0.8;
+    this.ctx.shadowColor = this.isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(20, 20, 20, 0.16)';
     
     // Calculate noise grid once per frame
     for (let r = 0; r < this.rows; r++) {
         for (let c = 0; c < this.cols; c++) {
             let px = c * this.cellSize;
-            let py = r * this.cellSize;
-            this.grid[r * this.cols + c] = this.getValue(px, py, this.time, this.mouse.x, this.mouse.y);
+            let py = r * this.cellSize + this.scroll.momentum * 0.6;
+            this.grid[r * this.cols + c] = this.getValue(
+              px,
+              py,
+              this.time,
+              this.mouse.x,
+              this.mouse.y,
+              this.scroll.phase,
+              this.scroll.momentum
+            );
         }
     }
 
@@ -290,6 +316,7 @@ class TopographicBackground {
     }
     
     this.ctx.stroke();
+    this.ctx.shadowBlur = 0;
   }
 
   render() {
@@ -818,9 +845,9 @@ function initNewGalleryToggle() {
           desc: 'Cohesive, clean and on-brand grids that create a strong visual identity.',
           mediaClass: 'ng-media--3',
           images: [
-            { src: '/social-image?file=Instagram-grid-1.png', alt: 'Instagram grid design 1' },
-            { src: '/social-image?file=Instagram-grid-2.png', alt: 'Instagram grid design 2' },
-            { src: '/social-image?file=Instagram-grid-3.png', alt: 'Instagram grid design 3' }
+            { src: '/assets/images/Social%20Media%20Designs/Instagram-grid-1.png', alt: 'Instagram grid design 1' },
+            { src: '/assets/images/Social%20Media%20Designs/Instagram-grid-2.png', alt: 'Instagram grid design 2' },
+            { src: '/assets/images/Social%20Media%20Designs/Instagram-grid-3.png', alt: 'Instagram grid design 3' }
           ]
         },
         {
@@ -829,9 +856,9 @@ function initNewGalleryToggle() {
           mediaClass: 'ng-media--3',
           flush: true,
           images: [
-            { src: '/social-image?file=Carousel-Posts-1.png', alt: 'Carousel post design 1' },
-            { src: '/social-image?file=Carousel-Posts-2.png', alt: 'Carousel post design 2' },
-            { src: '/social-image?file=Carousel-Posts-3.png', alt: 'Carousel post design 3' }
+            { src: '/assets/images/Social%20Media%20Designs/Carousel-Posts-1.png', alt: 'Carousel post design 1' },
+            { src: '/assets/images/Social%20Media%20Designs/Carousel-Posts-2.png', alt: 'Carousel post design 2' },
+            { src: '/assets/images/Social%20Media%20Designs/Carousel-Posts-3.png', alt: 'Carousel post design 3' }
           ]
         },
         {
@@ -839,10 +866,10 @@ function initNewGalleryToggle() {
           desc: 'Engaging story designs that capture attention and keep your brand top-of-mind.',
           mediaClass: 'ng-media--4',
           images: [
-            { src: '/social-image?file=Story-Design-1.png', alt: 'Story design 1' },
-            { src: '/social-image?file=Story-Design-2.png', alt: 'Story design 2' },
-            { src: '/social-image?file=Story-Design-3.png', alt: 'Story design 3' },
-            { src: '/social-image?file=Story-Design-4.png', alt: 'Story design 4' }
+            { src: '/assets/images/Social%20Media%20Designs/Story-Design-1.png', alt: 'Story design 1' },
+            { src: '/assets/images/Social%20Media%20Designs/Story-Design-2.png', alt: 'Story design 2' },
+            { src: '/assets/images/Social%20Media%20Designs/Story-Design-3.png', alt: 'Story design 3' },
+            { src: '/assets/images/Social%20Media%20Designs/Story-Design-4.png', alt: 'Story design 4' }
           ]
         },
         {
@@ -850,10 +877,10 @@ function initNewGalleryToggle() {
           desc: 'High-converting ad designs that stop the scroll and drive results.',
           mediaClass: 'ng-media--4',
           images: [
-            { src: '/social-image?file=Ad-Creatives-1.jpg', alt: 'Ad creative design 1' },
-            { src: '/social-image?file=Ad-Creatives-2.jpg', alt: 'Ad creative design 2' },
-            { src: '/social-image?file=Ad-Creatives-3.png', alt: 'Ad creative design 3' },
-            { src: '/social-image?file=Ad-Creatives-4.jpg', alt: 'Ad creative design 4' }
+            { src: '/assets/images/Social%20Media%20Designs/Ad-Creatives-1.jpg', alt: 'Ad creative design 1' },
+            { src: '/assets/images/Social%20Media%20Designs/Ad-Creatives-2.jpg', alt: 'Ad creative design 2' },
+            { src: '/assets/images/Social%20Media%20Designs/Ad-Creatives-3.png', alt: 'Ad creative design 3' },
+            { src: '/assets/images/Social%20Media%20Designs/Ad-Creatives-4.jpg', alt: 'Ad creative design 4' }
           ]
         }
       ]
@@ -963,18 +990,20 @@ function initNewGalleryToggle() {
     }, 0);
 
     timeline.to(titleEl, {
-      xPercent: outX * 2,
-      opacity: 0.35,
-      duration: 0.2,
+      opacity: 0.15,
+      y: -8,
+      scale: 0.96,
+      filter: 'blur(6px)',
+      duration: 0.18,
       ease: 'power2.in'
     }, 0);
 
     if (titleLine) {
       timeline.to(titleLine, {
-        xPercent: outX * 2,
-        opacity: 0.35,
-        scaleX: 0.45,
-        duration: 0.2,
+        opacity: 0.2,
+        scaleX: 0.35,
+        y: -2,
+        duration: 0.18,
         ease: 'power2.in'
       }, 0);
     }
@@ -996,10 +1025,12 @@ function initNewGalleryToggle() {
 
     timeline.fromTo(
       titleEl,
-      { xPercent: inX * 2, opacity: 0.35 },
+      { opacity: 0.2, y: 8, scale: 1.03, filter: 'blur(6px)' },
       {
-        xPercent: 0,
         opacity: 1,
+        y: 0,
+        scale: 1,
+        filter: 'blur(0px)',
         duration: 0.34,
         ease: 'power2.out'
       },
@@ -1009,11 +1040,11 @@ function initNewGalleryToggle() {
     if (titleLine) {
       timeline.fromTo(
         titleLine,
-        { xPercent: inX * 2, opacity: 0.35, scaleX: 0.45 },
+        { opacity: 0.25, scaleX: 0.35, y: -2 },
         {
-          xPercent: 0,
           opacity: 1,
           scaleX: 1,
+          y: 0,
           duration: 0.34,
           ease: 'power2.out'
         },
@@ -1066,7 +1097,61 @@ function initNewGalleryToggle() {
 }
 
 // ==========================================
-// 6. CUSTOM CURSOR
+// 6. MOBILE NAV MENU
+// ==========================================
+function initMobileNavMenu() {
+  const toggle = document.getElementById('navMenuToggle');
+  const panel = document.getElementById('navMobilePanel');
+  const backdrop = document.getElementById('navBackdrop');
+  if (!toggle || !panel || !backdrop) return;
+
+  const closeMenu = () => {
+    document.body.classList.remove('nav-menu-open');
+    toggle.setAttribute('aria-expanded', 'false');
+    panel.setAttribute('aria-hidden', 'true');
+    backdrop.setAttribute('aria-hidden', 'true');
+  };
+
+  const openMenu = () => {
+    document.body.classList.add('nav-menu-open');
+    toggle.setAttribute('aria-expanded', 'true');
+    panel.setAttribute('aria-hidden', 'false');
+    backdrop.setAttribute('aria-hidden', 'false');
+  };
+
+  toggle.addEventListener('click', () => {
+    if (document.body.classList.contains('nav-menu-open')) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
+  });
+
+  backdrop.addEventListener('click', closeMenu);
+  panel.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', closeMenu);
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && document.body.classList.contains('nav-menu-open')) {
+      closeMenu();
+    }
+  });
+
+  const desktopQuery = window.matchMedia('(min-width: 769px)');
+  const handleViewportChange = (event) => {
+    if (event.matches) closeMenu();
+  };
+
+  if (desktopQuery.addEventListener) {
+    desktopQuery.addEventListener('change', handleViewportChange);
+  } else {
+    desktopQuery.addListener(handleViewportChange);
+  }
+}
+
+// ==========================================
+// 7. CUSTOM CURSOR
 // ==========================================
 class CustomCursor {
   constructor() {
@@ -1161,10 +1246,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { passive: true });
   }
 
-  // 5. New Graphic Design Gallery mode switch
+  // 5. Mobile nav menu
+  initMobileNavMenu();
+
+  // 6. New Graphic Design Gallery mode switch
   initNewGalleryToggle();
 
-  // 6. New Graphic Design Gallery animations
+  // 7. New Graphic Design Gallery animations
   const ngRows = document.querySelectorAll('.ng-row, .ng-banner');
   ngRows.forEach(row => {
     gsap.to(row, {
