@@ -2376,6 +2376,52 @@ footer.section-theme--dark .footer-email:hover {
 
 .footer-email:hover { color: var(--c-accent); }
 
+/* === Mobile Floating Sticky Navigation === */
+.mobile-sticky-nav {
+  display: none; /* Hidden on desktop */
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.5rem;
+  flex-direction: column;
+  gap: 0.6rem;
+  align-items: flex-end;
+  z-index: var(--z-nav); /* Keeps it accessible above content */
+}
+
+.mobile-sticky-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1.5px solid #111111;
+  color: #111111;
+  padding: 0.55rem 1.35rem;
+  border-radius: 999px;
+  font-family: var(--f-display), sans-serif;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: 0 8px 24px rgba(17, 17, 17, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), 
+              box-shadow 0.2s ease, 
+              background-color 0.2s ease, 
+              color 0.2s ease, 
+              border-color 0.2s ease;
+  text-decoration: none;
+}
+
+.mobile-sticky-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 12px 28px rgba(124, 46, 176, 0.22);
+}
+
+.mobile-sticky-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
 /* === Responsive === */
 @media (max-width: 1024px) {
   .gallery-grid {
@@ -2464,8 +2510,8 @@ footer.section-theme--dark .footer-email:hover {
   }
 
   .testimonial-card { width: 320px; padding: 1.5rem; }
-  .nav-center,
-  .nav-cta { display: none; }
+  .nav-center.nav-pills,
+  .nav-pill.nav-cta { display: none !important; }
   .nav-menu-toggle { display: inline-flex; }
   .nav-menu-toggle:hover {
     transform: translateY(-1px);
@@ -2542,6 +2588,10 @@ footer.section-theme--dark .footer-email:hover {
   .hero-services-tags { flex-wrap: wrap; }
 
   .float-vec { display: none; }
+
+  .mobile-sticky-nav {
+    display: flex;
+  }
 }
 
 @media (max-width: 480px) {
@@ -2787,6 +2837,46 @@ footer.section-theme--dark .footer-email:hover {
   .ng-media--3 { grid-template-columns: repeat(3, 1fr); }
   .ng-media--4 { grid-template-columns: repeat(4, 1fr); }
   .ng-media--6 { grid-template-columns: repeat(3, 1fr); }
+
+  .ng-row {
+    flex-direction: row;
+    gap: 0.75rem;
+    align-items: stretch;
+  }
+
+  .ng-card {
+    flex: 0 0 115px; /* Slim card to sit beautifully side-by-side on mobile */
+    padding: 0.85rem 0.6rem;
+    border-radius: 8px;
+    justify-content: flex-start;
+  }
+
+  .ng-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+  }
+
+  .ng-icon svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .ng-card-title {
+    font-size: 0.78rem;
+    margin-bottom: 0.4rem;
+    line-height: 1.25;
+  }
+
+  .ng-card-desc {
+    font-size: 0.6rem;
+    line-height: 1.35;
+  }
+
+  .ng-media {
+    gap: 0.5rem;
+  }
 }
 
 .ng-banner {
