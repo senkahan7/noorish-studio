@@ -1,32 +1,4 @@
-/**
- * Hero.tsx
- * ─────────────────────────────────────────────────────────────────────────────
- * Noorish Studio — Cinematic Hero Section
- *
- * Composition:
- *   <Hero>
- *     ├── <nav>          — fixed navigation (transparent → blur on scroll)
- *     ├── <HeroScene>    — R3F canvas (video plane, bloom, parallax)
- *     ├── .hero__grain   — animated film grain overlay (CSS)
- *     ├── .hero__vignette— radial + linear gradient depth
- *     └── .hero__content — HTML text layer (eyebrow, title, subtitle, CTA)
- *
- * GSAP timeline fires once on mount:
- *   0.3s  → eyebrow slides + fades in
- *   0.6s  → title chars reveal with rotateX stagger
- *   1.8s  → subtitle clips in from left
- *   2.2s  → CTA fades + rises
- *   2.5s  → scroll indicator fades
- *
- * ScrollTrigger:
- *   Pinned for 120vh. As user scrolls through that pin, scrollProgress ref
- *   (0 → 1) is updated — HeroScene reads it each frame for the camera push.
- *
- * Usage:
- *   import Hero from '@/components/Hero/Hero'
- *   <Hero videoSrc="/videos/showreel.mp4" onViewWork={() => scrollToWorks()} />
- * ─────────────────────────────────────────────────────────────────────────────
- */
+/* Hero — Cinematic hero: nav, R3F canvas, content, CTA */
 
 import {
   useRef,
@@ -53,11 +25,7 @@ interface HeroProps {
 
 // ─── Char split helper ────────────────────────────────────────────────────────
 
-/**
- * Splits a string into individual <span> characters with data attributes.
- * Pure React — no split-type dependency needed for a single heading.
- * Each char gets class="char" so GSAP can target them.
- */
+// Split heading into span-wrapped chars for GSAP animation
 function SplitChars({ text }: { text: string }) {
   return (
     <>

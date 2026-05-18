@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Noorish Studio — Video Editing & Graphic Design Studio</title>
-    <meta name="description" content="Award-winning creative studio offering cinematic video editing and stunning graphic design. Crafting visual narratives that move audiences.">
+    <title>Noorish Studio</title>
+    <meta name="description" content="Brand that creates your visuals">
     <meta name="keywords" content="video editor, graphic design, cinematography, branding, post-production, motion design, visual identity">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,500;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/src/styles/main.css">
+    <link rel="icon" href="/public/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#D946EF">
+<link rel="stylesheet" href="/src/styles/main.css">
 </head>
 <body>
     <!-- Interactive Topographic Canvas Background -->
@@ -71,7 +73,7 @@
             <div class="sl-logo-chars" id="slLogoChars">
                 <span>N</span><span>O</span><span>O</span><span>R</span><span>I</span><span>S</span><span>H</span>
             </div>
-            <div class="sl-logo-sub" id="slLogoSub">STUDIO</div>
+            <div class="sl-logo-sub" id="slLogoSub">studio</div>
             <div class="sl-progress-wrap">
                 <div class="sl-progress-track">
                     <div class="sl-progress-fill" id="slProgressFill"></div>
@@ -94,7 +96,7 @@
             <a href="#works" class="nav-pill" data-hover>EDITS</a>
             <a href="#new-gallery" class="nav-pill" data-hover>DESIGNS</a>
         </div>
-        <a href="#contact" class="nav-pill nav-cta" data-hover>CONTACT</a>
+        <a href="#contact" class="nav-pill nav-cta" id="contactToggle" aria-expanded="false" data-hover>CONTACT</a>
         <button
             class="nav-menu-toggle"
             id="navMenuToggle"
@@ -111,8 +113,31 @@
     </nav>
     <div class="nav-mobile-backdrop" id="navBackdrop" aria-hidden="true"></div>
     <aside class="nav-mobile-panel" id="navMobilePanel" aria-hidden="true">
-        <a href="#contact" class="nav-mobile-link nav-mobile-link--primary" data-hover>CONTACT</a>
+        <a href="#contact" class="nav-mobile-link nav-mobile-link--primary" id="contactToggleMobile" aria-expanded="false" data-hover>CONTACT</a>
     </aside>
+    <div class="contact-reveal" id="contactReveal" aria-hidden="true">
+        <a href="https://www.instagram.com/noorish_studio" class="contact-reveal-item" target="_blank" rel="noopener noreferrer" aria-label="Open Instagram" title="Instagram" data-hover>
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <rect x="3.5" y="3.5" width="17" height="17" rx="5" stroke="currentColor" stroke-width="1.8"/>
+                <circle cx="12" cy="12" r="3.4" stroke="currentColor" stroke-width="1.8"/>
+                <circle cx="17.2" cy="6.8" r="1" fill="currentColor"/>
+            </svg>
+        </a>
+        <a href="https://discord.com/users/310759527962116096" class="contact-reveal-item" target="_blank" rel="noopener noreferrer" aria-label="Open Discord profile" title="Discord" data-hover>
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M7.6 17.6C6.2 16.6 5 14.4 5 12.2c0-2.5 1.4-4.7 3.6-5.9l1.6 2.1M16.4 17.6c1.4-1 2.6-3.2 2.6-5.4 0-2.5-1.4-4.7-3.6-5.9l-1.6 2.1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="9.4" cy="12.3" r="1.1" fill="currentColor"/>
+                <circle cx="14.6" cy="12.3" r="1.1" fill="currentColor"/>
+                <path d="M9.2 15.1c.9.8 4.7.8 5.6 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+        </a>
+        <a href="https://wa.me/923257833336" class="contact-reveal-item" target="_blank" rel="noopener noreferrer" aria-label="Open WhatsApp chat" title="WhatsApp" data-hover>
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 4.2c-4.2 0-7.6 3.2-7.6 7.3 0 1.5.5 2.8 1.3 4L5 20l4.7-1.2c.7.2 1.5.3 2.3.3 4.2 0 7.6-3.2 7.6-7.3S16.2 4.2 12 4.2Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9.4 9.7c.2 1.4 1.5 3.1 2.8 3.8.7.4 1.1.2 1.4-.1l.5-.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </a>
+    </div>
 
     <!-- Mobile Floating Sticky Navigation -->
     <div class="mobile-sticky-nav" id="mobileStickyNav">
@@ -343,10 +368,10 @@
                 <span class="ng-title-line" aria-hidden="true"></span>
             </div>
             <div class="ng-controls">
-                <button class="ng-toggle-btn" id="ngPrevBtn" type="button" aria-label="Back to Social Media Design" title="Back to Social Media Design" data-hover disabled>
+                <button class="ng-toggle-btn" data-ng-toggle="prev" type="button" aria-label="Back to Social Media Design" title="Back to Social Media Design" data-hover disabled>
                     <span aria-hidden="true">&larr;</span>
                 </button>
-                <button class="ng-toggle-btn" id="ngNextBtn" type="button" aria-label="Switch to Brand Identity" title="Switch to Brand Identity" data-hover>
+                <button class="ng-toggle-btn" data-ng-toggle="next" type="button" aria-label="Switch to Brand Identity" title="Switch to Brand Identity" data-hover>
                     <span aria-hidden="true">&rarr;</span>
                 </button>
             </div>
@@ -419,6 +444,15 @@
                     <img src="/assets/images/Social%20Media%20Designs/Ad-Creatives-4.jpg" alt="Ad creative design 4" class="ng-img" />
                 </div>
             </div>
+            </div>
+
+            <div class="ng-controls ng-controls--bottom" aria-label="Graphic design navigation">
+                <button class="ng-toggle-btn" data-ng-toggle="prev" type="button" aria-label="Back to Social Media Design" title="Back to Social Media Design" data-hover disabled>
+                    <span aria-hidden="true">&larr;</span>
+                </button>
+                <button class="ng-toggle-btn" data-ng-toggle="next" type="button" aria-label="Switch to Brand Identity" title="Switch to Brand Identity" data-hover>
+                    <span aria-hidden="true">&rarr;</span>
+                </button>
             </div>
 
             <!-- Bottom Banner -->

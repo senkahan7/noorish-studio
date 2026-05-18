@@ -11,28 +11,8 @@ export interface MouseParallaxData {
   strength: number
 }
 
-/**
- * useMouseParallax
- *
- * Tracks the mouse position and exposes both a raw "target" and a lerped
- * "smooth" version. Designed for use inside R3F useFrame loops — the lerp()
- * call is intentionally imperative so Three.js can drive it without React
- * re-renders.
- *
- * @param strength  How far the scene shifts at the extremes (in world units).
- *                  Defaults to 0.5 — tune per-scene.
- *
- * Usage in R3F scene:
- *   const parallax = useMouseParallax(0.4)
- *   useFrame(() => {
- *     parallax.lerp(0.05)
- *     mesh.position.x = parallax.smooth.x * parallax.strength
- *   })
- *
- * Usage for DOM parallax:
- *   const parallax = useMouseParallax()
- *   // In a rAF loop or CSS variable setter
- */
+// Mouse parallax hook: provides target, smooth, lerp, strength
+
 export function useMouseParallax(strength: number = 0.5): MouseParallaxData {
   const target = useRef({ x: 0, y: 0 })
   const smooth = useRef({ x: 0, y: 0 })

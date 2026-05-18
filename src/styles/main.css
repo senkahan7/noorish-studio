@@ -107,7 +107,28 @@ button, input, textarea, select { font-family: inherit; }
   height: 100%;
   z-index: 1; /* Ensure it stays above the morphing backgrounds (z-index 0) */
   pointer-events: none;
+  opacity: 1;
   filter: blur(0.6px); /* Smoothens the segmented lines into organic curves */
+}
+
+body.loader-active .topo-canvas {
+  z-index: calc(var(--z-loader) - 1);
+  opacity: 0.95;
+  filter: blur(0.45px) brightness(2.8) contrast(1.55);
+}
+
+body.loader-active::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--z-loader) - 2);
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 20% 15%, rgba(66, 66, 66, 0.24), transparent 50%),
+    radial-gradient(circle at 82% 78%, rgba(38, 38, 38, 0.22), transparent 54%),
+    linear-gradient(145deg, #040404, #0b0b0b, #060606);
+  background-size: 170% 170%, 160% 160%, 190% 190%;
+  animation: slGradientDrift 11s ease-in-out infinite alternate;
 }
 
 /* Background morph system removed for performance */
@@ -227,11 +248,20 @@ button, input, textarea, select { font-family: inherit; }
   position: fixed;
   inset: 0;
   z-index: var(--z-loader);
-  background: #080808;
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+}
+
+@keyframes slGradientDrift {
+  0% {
+    background-position: 0% 30%, 100% 80%, 0% 50%;
+  }
+  100% {
+    background-position: 100% 60%, 0% 20%, 100% 50%;
+  }
 }
 .sl-flash {
   position: absolute;
@@ -374,11 +404,14 @@ button, input, textarea, select { font-family: inherit; }
   will-change: transform, opacity;
 }
 .sl-logo-sub {
-  font-family: var(--f-display);
-  font-size: clamp(0.75rem, 2vw, 1.1rem);
-  font-weight: 400;
-  letter-spacing: 0.6em;
-  color: var(--c-accent);
+  font-family: var(--f-serif);
+  font-size: clamp(1.05rem, 2.6vw, 1.6rem);
+  font-weight: 500;
+  font-style: italic;
+  letter-spacing: 0.22em;
+  color: #d6dae3;
+  text-transform: lowercase;
+  text-shadow: 0 0 16px rgba(214, 218, 227, 0.45);
   margin-top: 0.5rem;
   margin-bottom: 2.5rem;
   opacity: 0;
@@ -414,10 +447,12 @@ button, input, textarea, select { font-family: inherit; }
 }
 .sl-stage-tag {
   font-family: var(--f-body);
-  font-size: clamp(0.7rem, 1.5vw, 0.85rem);
-  color: rgba(255,255,255,0.25);
+  font-size: clamp(0.82rem, 1.8vw, 1rem);
+  color: rgba(236, 241, 248, 0.78);
+  font-weight: 500;
   margin-top: 1rem;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
+  text-shadow: 0 0 12px rgba(255, 255, 255, 0.22);
   opacity: 0;
   font-style: italic;
 }
@@ -599,6 +634,65 @@ button, input, textarea, select { font-family: inherit; }
 
 .nav-cta {
   text-decoration: none;
+}
+
+.contact-reveal {
+  position: fixed;
+  top: 5.25rem;
+  right: var(--s-page);
+  z-index: calc(var(--z-nav) + 4);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.5rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(17, 17, 17, 0.12);
+  box-shadow: 0 14px 28px rgba(17, 17, 17, 0.14);
+  opacity: 0;
+  transform: translateY(-10px) scale(0.96);
+  pointer-events: none;
+  transition: opacity 0.24s ease, transform 0.24s ease;
+}
+
+.contact-reveal.is-open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.contact-reveal-item {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid rgba(17, 17, 17, 0.12);
+  background: rgba(255, 255, 255, 0.88);
+  color: #7c2eb0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(8px) scale(0.9);
+  transition: opacity 0.2s ease, transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.contact-reveal-item svg {
+  width: 20px;
+  height: 20px;
+}
+
+.contact-reveal.is-open .contact-reveal-item {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.contact-reveal.is-open .contact-reveal-item:nth-child(1) { transition-delay: 0.04s; }
+.contact-reveal.is-open .contact-reveal-item:nth-child(2) { transition-delay: 0.08s; }
+.contact-reveal.is-open .contact-reveal-item:nth-child(3) { transition-delay: 0.12s; }
+
+.contact-reveal-item:hover {
+  background: #9b4dca;
+  color: #ffffff;
 }
 
 .nav-menu-toggle {
@@ -2434,6 +2528,11 @@ footer.section-theme--dark .footer-email:hover {
 }
 
 @media (max-width: 768px) {
+  .topo-canvas { display: block; }
+  .contact-reveal {
+    top: 5.4rem;
+    right: 1rem;
+  }
   .cursor { display: none; }
   body, button, input, textarea, select, a { cursor: auto; }
 
@@ -2646,6 +2745,13 @@ footer.section-theme--dark .footer-email:hover {
   gap: 0.65rem;
 }
 
+.ng-controls--bottom {
+  position: static;
+  width: 100%;
+  justify-content: center;
+  margin-top: 0.25rem;
+}
+
 .ng-toggle-btn {
   width: 54px;
   height: 54px;
@@ -2807,9 +2913,72 @@ footer.section-theme--dark .footer-email:hover {
   object-fit: cover;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  cursor: zoom-in;
 }
 
 .ng-img.wide { aspect-ratio: 21 / 9; }
+
+body.ng-lightbox-open {
+  overflow: hidden;
+}
+
+.ng-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 11000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1rem, 4vw, 2rem);
+  background: rgba(8, 8, 10, 0.92);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.ng-lightbox.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.ng-lightbox-img {
+  width: auto;
+  height: auto;
+  max-width: min(94vw, 1240px);
+  max-height: 82vh;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+  background: #111;
+}
+
+.ng-lightbox-caption {
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: rgba(245, 245, 240, 0.8);
+  text-align: center;
+}
+
+.ng-lightbox-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  font-size: 1.6rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
 
 @media (max-width: 767px) {
   .ng-header {
@@ -2876,6 +3045,15 @@ footer.section-theme--dark .footer-email:hover {
 
   .ng-media {
     gap: 0.5rem;
+  }
+
+  .ng-lightbox-img {
+    max-width: 95vw;
+    max-height: 76vh;
+  }
+
+  .ng-lightbox-caption {
+    font-size: 0.78rem;
   }
 }
 

@@ -49,11 +49,7 @@ const TILT_Y = -0.06
 
 // ─── VideoPlane ───────────────────────────────────────────────────────────────
 
-/**
- * The widescreen video plane. Floats gently and responds to mouse parallax
- * via rotation — the plane itself rotates while the camera also shifts, giving
- * compounding depth without motion sickness.
- */
+// Video plane: plays showreel and responds to parallax
 function VideoPlane({ videoSrc, parallax }: VideoPlaneProps) {
   const meshRef = useRef<THREE.Mesh>(null)
 
@@ -105,10 +101,7 @@ function VideoPlane({ videoSrc, parallax }: VideoPlaneProps) {
 
 // ─── Edge Glow / Frame ────────────────────────────────────────────────────────
 
-/**
- * A barely-visible golden border plane sits just behind the video.
- * The bloom pass picks up its emissive and creates a soft cinematic halo.
- */
+// Golden frame glow behind the video
 function FrameGlow({ width, height }: FrameGlowProps) {
   const meshRef = useRef<THREE.Mesh>(null)
 
@@ -136,13 +129,7 @@ function FrameGlow({ width, height }: FrameGlowProps) {
 
 // ─── CameraRig ────────────────────────────────────────────────────────────────
 
-/**
- * Controls two camera behaviors:
- * 1. Scroll push-in: Z eases from CAM_Z_START → CAM_Z_END as scrollProgress → 1
- * 2. Mouse parallax: subtle X/Y offset, separate lerp factor for a floaty feel
- *
- * Operates entirely in useFrame — no React state, no re-renders.
- */
+// Camera rig: scroll push-in + mouse parallax (no React state)
 function CameraRig({ scrollProgress, parallax }: CameraRigProps) {
   const { camera } = useThree()
 
@@ -178,10 +165,7 @@ function CameraRig({ scrollProgress, parallax }: CameraRigProps) {
 
 // ─── Fallback (Suspense) ──────────────────────────────────────────────────────
 
-/**
- * Shown while the video texture is loading.
- * A very dark plane keeps the layout stable so the hero text never jumps.
- */
+// Fallback mesh shown while video loads
 function VideoFallback() {
   return (
     <mesh position={[0, 0, 0]}>
@@ -237,22 +221,7 @@ function Scene({ videoSrc, scrollProgress }: SceneProps) {
 
 // ─── HeroScene (exported) ─────────────────────────────────────────────────────
 
-/**
- * HeroScene
- *
- * Drop this into the hero section as a full-bleed background layer.
- * The parent (Hero.tsx) owns the scrollProgress ref and updates it via
- * GSAP ScrollTrigger, which this scene then reads each frame.
- *
- * @example
- * const scrollProgress = useRef(0)
- * return (
- *   <section>
- *     <HeroScene videoSrc="/showreel.mp4" scrollProgress={scrollProgress} />
- *     <div className="hero-content">...</div>
- *   </section>
- * )
- */
+// HeroScene: canvas that reads scrollProgress from parent
 export default function HeroScene({
   videoSrc = '/videos/showreel.mp4',
   scrollProgress,
