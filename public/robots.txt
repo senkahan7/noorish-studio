@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://noorishportfolio.netlify.app/sitemap.xml
