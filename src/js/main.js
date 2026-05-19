@@ -921,6 +921,7 @@ function initNewGalleryToggle() {
   const modes = {
     social: {
       title: 'SOCIAL MEDIA DESIGN',
+      titleHtml: 'SOCIAL MEDIA <span class="font-serif">design</span>',
       showBanner: true,
       rows: [
         {
@@ -970,6 +971,7 @@ function initNewGalleryToggle() {
     },
     brand: {
       title: 'BRAND IDENTITY',
+      titleHtml: 'BRAND <span class="font-serif">identity</span>',
       showBanner: false,
       rows: [
         {
@@ -1013,11 +1015,23 @@ function initNewGalleryToggle() {
   let touchStartX = 0;
   let touchStartY = 0;
 
+  const scrollToSectionTop = () => {
+    const top = Math.max(0, window.scrollY + section.getBoundingClientRect().top - 12);
+    window.scrollTo({
+      top,
+      behavior: PREFERS_REDUCED ? 'auto' : 'smooth'
+    });
+  };
+
   const renderMode = (mode) => {
     const modeData = modes[mode];
     if (!modeData) return;
 
-    titleEl.textContent = modeData.title;
+    if (modeData.titleHtml) {
+      titleEl.innerHTML = modeData.titleHtml;
+    } else {
+      titleEl.textContent = modeData.title;
+    }
 
     rows.forEach((row, index) => {
       const rowData = modeData.rows[index];
@@ -1058,7 +1072,7 @@ function initNewGalleryToggle() {
     }
 
     isAnimating = true;
-    const outX = direction === 'next' ? -8 : 8;
+    const outX = direction === 'next' ? -6 : 6;
     const inX = -outX;
     const timeline = gsap.timeline({
       onComplete: () => { isAnimating = false; }
@@ -1066,18 +1080,18 @@ function initNewGalleryToggle() {
 
     timeline.to(animatedSurface, {
       xPercent: outX,
-      opacity: 0.45,
-      duration: 0.22,
-      ease: 'power2.in'
+      opacity: 0.6,
+      duration: 0.32,
+      ease: 'power3.inOut'
     }, 0);
 
     timeline.to(titleEl, {
-      opacity: 0.15,
-      y: -8,
-      scale: 0.96,
-      filter: 'blur(6px)',
-      duration: 0.18,
-      ease: 'power2.in'
+      opacity: 0.2,
+      y: -6,
+      scale: 0.98,
+      filter: 'blur(4px)',
+      duration: 0.28,
+      ease: 'power3.inOut'
     }, 0);
 
     if (titleLine) {
@@ -1085,8 +1099,8 @@ function initNewGalleryToggle() {
         opacity: 0.2,
         scaleX: 0.35,
         y: -2,
-        duration: 0.18,
-        ease: 'power2.in'
+        duration: 0.28,
+        ease: 'power3.inOut'
       }, 0);
     }
 
@@ -1096,25 +1110,25 @@ function initNewGalleryToggle() {
 
     timeline.fromTo(
       animatedSurface,
-      { xPercent: inX, opacity: 0.45 },
+      { xPercent: inX, opacity: 0.6 },
       {
         xPercent: 0,
         opacity: 1,
-        duration: 0.34,
-        ease: 'power2.out'
+        duration: 0.5,
+        ease: 'power3.out'
       }
     );
 
     timeline.fromTo(
       titleEl,
-      { opacity: 0.2, y: 8, scale: 1.03, filter: 'blur(6px)' },
+      { opacity: 0.2, y: 6, scale: 1.01, filter: 'blur(4px)' },
       {
         opacity: 1,
         y: 0,
         scale: 1,
         filter: 'blur(0px)',
-        duration: 0.34,
-        ease: 'power2.out'
+        duration: 0.5,
+        ease: 'power3.out'
       },
       '<'
     );
@@ -1127,8 +1141,8 @@ function initNewGalleryToggle() {
           opacity: 1,
           scaleX: 1,
           y: 0,
-          duration: 0.34,
-          ease: 'power2.out'
+          duration: 0.5,
+          ease: 'power3.out'
         },
         '<'
       );
@@ -1140,6 +1154,7 @@ function initNewGalleryToggle() {
       if (currentMode !== 'social') {
         animateSwipeTo('social', 'prev');
       }
+      scrollToSectionTop();
     });
   });
 
@@ -1148,6 +1163,7 @@ function initNewGalleryToggle() {
       if (currentMode !== 'brand') {
         animateSwipeTo('brand', 'next');
       }
+      scrollToSectionTop();
     });
   });
 
@@ -1186,11 +1202,16 @@ function initNewGalleryToggle() {
 // 6. CONTACT LINKS REVEAL
 // ==========================================
 function initContactReveal() {
-  const reveal = document.getElementById('contactReveal');
+  const navReveal = document.getElementById('contactReveal');
+  const sectionReveal = document.getElementById('contactRevealSection');
   const desktopTrigger = document.getElementById('contactToggle');
   const mobileTrigger = document.getElementById('contactToggleMobile');
-  const triggers = [desktopTrigger, mobileTrigger].filter(Boolean);
-  if (!reveal || triggers.length === 0) return;
+  const sectionTrigger = document.getElementById('contactToggleSection');
+  const navTriggers = [desktopTrigger, mobileTrigger].filter(Boolean);
+  const sectionTriggers = [sectionTrigger].filter(Boolean);
+  const allReveals = [navReveal, sectionReveal].filter(Boolean);
+  const allTriggers = [...navTriggers, ...sectionTriggers];
+  if (allReveals.length === 0 || allTriggers.length === 0) return;
 
   const navMenuToggle = document.getElementById('navMenuToggle');
   const navMobilePanel = document.getElementById('navMobilePanel');
@@ -1203,64 +1224,150 @@ function initContactReveal() {
     if (navBackdrop) navBackdrop.setAttribute('aria-hidden', 'true');
   };
 
-  const closeReveal = () => {
-    reveal.classList.remove('is-open');
-    reveal.setAttribute('aria-hidden', 'true');
-    triggers.forEach((trigger) => trigger.setAttribute('aria-expanded', 'false'));
+  const closeReveal = (revealEl) => {
+    if (!revealEl) return;
+    revealEl.classList.remove('is-open');
+    revealEl.setAttribute('aria-hidden', 'true');
   };
 
-  const openReveal = () => {
-    closeMobileMenu();
-    reveal.classList.add('is-open');
-    reveal.setAttribute('aria-hidden', 'false');
-    triggers.forEach((trigger) => trigger.setAttribute('aria-expanded', 'true'));
+  const closeAllReveals = () => {
+    allReveals.forEach((revealEl) => closeReveal(revealEl));
+    allTriggers.forEach((trigger) => trigger.setAttribute('aria-expanded', 'false'));
   };
 
-  const toggleReveal = () => {
-    if (reveal.classList.contains('is-open')) {
-      closeReveal();
-    } else {
-      openReveal();
+  const openReveal = (revealEl, owningTriggers, shouldCloseMenu = false) => {
+    if (!revealEl) return;
+    closeAllReveals();
+    if (shouldCloseMenu) closeMobileMenu();
+    revealEl.classList.add('is-open');
+    revealEl.setAttribute('aria-hidden', 'false');
+    owningTriggers.forEach((trigger) => trigger?.setAttribute('aria-expanded', 'true'));
+  };
+
+  const toggleReveal = (revealEl, owningTriggers, shouldCloseMenu = false) => {
+    if (!revealEl) return;
+    if (revealEl.classList.contains('is-open')) {
+      closeAllReveals();
+      return;
     }
+    openReveal(revealEl, owningTriggers, shouldCloseMenu);
   };
 
-  triggers.forEach((trigger) => {
+  allTriggers.forEach((trigger) => {
     trigger.setAttribute('aria-expanded', 'false');
+  });
+
+  navTriggers.forEach((trigger) => {
     trigger.addEventListener('click', (event) => {
       event.preventDefault();
       event.stopPropagation();
-      toggleReveal();
+      toggleReveal(navReveal, navTriggers, true);
     });
   });
 
-  reveal.querySelectorAll('a').forEach((link) => {
-    link.addEventListener('click', () => {
-      closeReveal();
+  sectionTriggers.forEach((trigger) => {
+    trigger.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      toggleReveal(sectionReveal, sectionTriggers);
     });
   });
 
-  reveal.addEventListener('click', (event) => {
-    event.stopPropagation();
+  allReveals.forEach((revealEl) => {
+    revealEl.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        closeAllReveals();
+      });
+    });
+
+    revealEl.addEventListener('click', (event) => {
+      event.stopPropagation();
+    });
   });
 
   document.addEventListener('click', (event) => {
     if (!(event.target instanceof Element)) return;
-    if (reveal.contains(event.target)) return;
-    if (triggers.some((trigger) => trigger.contains(event.target))) return;
-    closeReveal();
+    if (allReveals.some((revealEl) => revealEl.contains(event.target))) return;
+    if (allTriggers.some((trigger) => trigger.contains(event.target))) return;
+    closeAllReveals();
   });
 
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') {
-      closeReveal();
+      closeAllReveals();
     }
   });
 
-  window.addEventListener('resize', closeReveal);
+  window.addEventListener('resize', closeAllReveals);
 }
 
 // ==========================================
-// 7. MOBILE NAV MENU
+// 7. MAIL COPY TOAST
+// ==========================================
+function initMailCopyToast() {
+  const toast = document.getElementById('clipboardToast');
+  if (!toast) return;
+
+  let hideTimer = null;
+
+  const showToast = () => {
+    toast.classList.add('is-visible');
+    toast.setAttribute('aria-hidden', 'false');
+    if (hideTimer) window.clearTimeout(hideTimer);
+    hideTimer = window.setTimeout(() => {
+      toast.classList.remove('is-visible');
+      toast.setAttribute('aria-hidden', 'true');
+    }, 2200);
+  };
+
+  const fallbackCopy = (text) => {
+    const input = document.createElement('input');
+    input.value = text;
+    input.setAttribute('readonly', '');
+    input.style.position = 'absolute';
+    input.style.left = '-9999px';
+    document.body.appendChild(input);
+    input.select();
+    let copied = false;
+    try {
+      copied = document.execCommand('copy');
+    } catch (err) {
+      copied = false;
+    }
+    document.body.removeChild(input);
+    return copied;
+  };
+
+  const copyEmail = async (email) => {
+    if (!email) return;
+    let copied = false;
+    if (navigator.clipboard && window.isSecureContext) {
+      try {
+        await navigator.clipboard.writeText(email);
+        copied = true;
+      } catch (err) {
+        copied = false;
+      }
+    }
+    if (!copied) {
+      copied = fallbackCopy(email);
+    }
+    if (copied) {
+      showToast();
+    }
+  };
+
+  document.querySelectorAll('a[href^="mailto:"]').forEach((link) => {
+    link.addEventListener('click', () => {
+      const href = link.getAttribute('href') || '';
+      const email = href.replace(/^mailto:/i, '').split('?')[0].trim();
+      void copyEmail(email);
+    });
+  });
+}
+
+// ==========================================
+// 8. MOBILE NAV MENU
 // ==========================================
 function initMobileNavMenu() {
   const toggle = document.getElementById('navMenuToggle');
@@ -1314,7 +1421,7 @@ function initMobileNavMenu() {
 }
 
 // ==========================================
-// 8. CUSTOM CURSOR
+// 9. CUSTOM CURSOR
 // ==========================================
 class CustomCursor {
   constructor() {
@@ -1410,13 +1517,16 @@ document.addEventListener('DOMContentLoaded', () => {
   // 5. Contact links reveal
   initContactReveal();
 
-  // 6. Mobile nav menu
+  // 6. Mail copy toast
+  initMailCopyToast();
+
+  // 7. Mobile nav menu
   initMobileNavMenu();
 
-  // 7. New Graphic Design Gallery mode switch
+  // 8. New Graphic Design Gallery mode switch
   initNewGalleryToggle();
 
-  // 8. New Graphic Design Gallery animations
+  // 9. New Graphic Design Gallery animations
   const ngRows = document.querySelectorAll('.ng-row, .ng-banner');
   ngRows.forEach(row => {
     gsap.to(row, {
